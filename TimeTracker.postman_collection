@@ -500,13 +500,13 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "{{rootUrl}}/api/clients/3",
+					"raw": "{{rootUrl}}/api/projects/3",
 					"host": [
 						"{{rootUrl}}"
 					],
 					"path": [
 						"api",
-						"clients",
+						"projects",
 						"3"
 					]
 				},
@@ -537,7 +537,7 @@
 	],
 	"variable": [
 		{
-			"id": "ea32c37c-b847-413c-9598-0cdd3ec48985",
+			"id": "695f9577-41a1-49f9-8615-a55debae4279",
 			"key": "rootUrl",
 			"value": "https://localhost:44383",
 			"type": "string"
