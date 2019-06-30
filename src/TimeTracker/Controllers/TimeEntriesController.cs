@@ -113,7 +113,11 @@ namespace TimeTracker.Controllers
         {
             _logger.LogDebug($"Updating time entry with id {id}");
 
-            var timeEntry = await _dbContext.TimeEntries.FindAsync(id);
+            var timeEntry = await _dbContext.TimeEntries
+                .Include(x => x.User)
+                .Include(x => x.Project)
+                .Include(x => x.Project.Client)
+                .SingleOrDefaultAsync(x => x.Id == id);
 
             if (timeEntry == null)
             {
