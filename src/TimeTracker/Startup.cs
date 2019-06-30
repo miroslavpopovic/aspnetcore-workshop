@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TimeTracker.Data;
+using TimeTracker.Extensions;
 using TimeTracker.Models.Validation;
 
 namespace TimeTracker
@@ -24,6 +25,8 @@ namespace TimeTracker
         {
             services.AddDbContext<TimeTrackerDbContext>(options =>
                 options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddJwtBearerAuthentication(Configuration);
 
             services.AddControllers().AddFluentValidation(
                 fv => fv.RegisterValidatorsFromAssemblyContaining<UserInputModelValidator>());
@@ -47,6 +50,8 @@ namespace TimeTracker
             app.UseMiddleware<ErrorHandlingMiddleware>();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
