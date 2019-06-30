@@ -7,539 +7,1183 @@
 	},
 	"item": [
 		{
-			"name": "Get users",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{rootUrl}}/api/users?page=1&size=5",
-					"host": [
-						"{{rootUrl}}"
-					],
-					"path": [
-						"api",
-						"users"
-					],
-					"query": [
+			"name": "No Auth",
+			"item": [
+				{
+					"name": "Get users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}/api/users?page=1&size=5",
+							"host": [
+								"{{rootUrl}}"
+							],
+							"path": [
+								"api",
+								"users"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Page number to retrieve"
+								},
+								{
+									"key": "size",
+									"value": "5",
+									"description": "Size of a single page"
+								}
+							]
+						},
+						"description": "Get a page of users."
+					},
+					"response": []
+				},
+				{
+					"name": "Get clients",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}/api/clients?page=1&size=5",
+							"host": [
+								"{{rootUrl}}"
+							],
+							"path": [
+								"api",
+								"clients"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Page number to retrieve"
+								},
+								{
+									"key": "size",
+									"value": "5",
+									"description": "Size of a single page"
+								}
+							]
+						},
+						"description": "Get a page of clients."
+					},
+					"response": []
+				},
+				{
+					"name": "Get projects",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}/api/projects?page=1&size=5",
+							"host": [
+								"{{rootUrl}}"
+							],
+							"path": [
+								"api",
+								"projects"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Page number to retrieve"
+								},
+								{
+									"key": "size",
+									"value": "5",
+									"description": "Size of a single page"
+								}
+							]
+						},
+						"description": "Get a page of projects."
+					},
+					"response": []
+				},
+				{
+					"name": "Get time entries",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}/api/time-entries?page=1&size=5",
+							"host": [
+								"{{rootUrl}}"
+							],
+							"path": [
+								"api",
+								"time-entries"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Page number to retrieve"
+								},
+								{
+									"key": "size",
+									"value": "5",
+									"description": "Size of a single page"
+								}
+							]
+						},
+						"description": "Get a page of time entries."
+					},
+					"response": []
+				},
+				{
+					"name": "Get user by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}/api/users/1",
+							"host": [
+								"{{rootUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"1"
+							]
+						},
+						"description": "Get a single user by user id."
+					},
+					"response": []
+				},
+				{
+					"name": "Get client by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}/api/clients/1",
+							"host": [
+								"{{rootUrl}}"
+							],
+							"path": [
+								"api",
+								"clients",
+								"1"
+							]
+						},
+						"description": "Get a single client by client id."
+					},
+					"response": []
+				},
+				{
+					"name": "Get project by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}/api/projects/1",
+							"host": [
+								"{{rootUrl}}"
+							],
+							"path": [
+								"api",
+								"projects",
+								"1"
+							]
+						},
+						"description": "Get a single project by project id."
+					},
+					"response": []
+				},
+				{
+					"name": "Get time entry by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}/api/time-entries/1",
+							"host": [
+								"{{rootUrl}}"
+							],
+							"path": [
+								"api",
+								"time-entries",
+								"1"
+							]
+						},
+						"description": "Get a single time entry by time entry id."
+					},
+					"response": []
+				},
+				{
+					"name": "Create user",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Postman Test User\",\n\t\"hourRate\": 20\n}"
+						},
+						"url": {
+							"raw": "{{rootUrl}}/api/users",
+							"host": [
+								"{{rootUrl}}"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						},
+						"description": "Create a new user"
+					},
+					"response": []
+				},
+				{
+					"name": "Create client",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Postman Test Client\"\n}"
+						},
+						"url": {
+							"raw": "{{rootUrl}}/api/clients",
+							"host": [
+								"{{rootUrl}}"
+							],
+							"path": [
+								"api",
+								"clients"
+							]
+						},
+						"description": "Create a new client"
+					},
+					"response": []
+				},
+				{
+					"name": "Create project",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Postman Test Client\",\n\t\"clientId\": 1\n}"
+						},
+						"url": {
+							"raw": "{{rootUrl}}/api/projects",
+							"host": [
+								"{{rootUrl}}"
+							],
+							"path": [
+								"api",
+								"projects"
+							]
+						},
+						"description": "Create a new project"
+					},
+					"response": []
+				},
+				{
+					"name": "Create time entry",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"userId\": 1,\n\t\"projectId\": 1,\n\t\"entryDate\": \"2019-07-01\",\n\t\"hours\": 6,\n\t\"description\": \"Created from Postman\"\n}"
+						},
+						"url": {
+							"raw": "{{rootUrl}}/api/time-entries",
+							"host": [
+								"{{rootUrl}}"
+							],
+							"path": [
+								"api",
+								"time-entries"
+							]
+						},
+						"description": "Create a new time entry"
+					},
+					"response": []
+				},
+				{
+					"name": "Update user",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Postman Test User UPDATE\",\n\t\"hourRate\": 15\n}"
+						},
+						"url": {
+							"raw": "{{rootUrl}}/api/users/3",
+							"host": [
+								"{{rootUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"3"
+							]
+						},
+						"description": "Update existing user"
+					},
+					"response": []
+				},
+				{
+					"name": "Update client",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Postman Test Client UPDATE\"\n}"
+						},
+						"url": {
+							"raw": "{{rootUrl}}/api/clients/3",
+							"host": [
+								"{{rootUrl}}"
+							],
+							"path": [
+								"api",
+								"clients",
+								"3"
+							]
+						},
+						"description": "Update existing client"
+					},
+					"response": []
+				},
+				{
+					"name": "Update project",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Postman Test Project UPDATE\",\n\t\"clientId\": 1\n}"
+						},
+						"url": {
+							"raw": "{{rootUrl}}/api/projects/3",
+							"host": [
+								"{{rootUrl}}"
+							],
+							"path": [
+								"api",
+								"projects",
+								"3"
+							]
+						},
+						"description": "Update existing project"
+					},
+					"response": []
+				},
+				{
+					"name": "Update time entry",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"userId\": 1,\n\t\"projectId\": 1,\n\t\"entryDate\": \"2019-07-02\",\n\t\"hours\": 5,\n\t\"description\": \"Updated from Postman\"\n}"
+						},
+						"url": {
+							"raw": "{{rootUrl}}/api/time-entries/1",
+							"host": [
+								"{{rootUrl}}"
+							],
+							"path": [
+								"api",
+								"time-entries",
+								"1"
+							]
+						},
+						"description": "Update existing time entry"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete user",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}/api/users/3",
+							"host": [
+								"{{rootUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"3"
+							]
+						},
+						"description": "Delete an existing user"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete client",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}/api/clients/3",
+							"host": [
+								"{{rootUrl}}"
+							],
+							"path": [
+								"api",
+								"clients",
+								"3"
+							]
+						},
+						"description": "Delete an existing client"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete project",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}/api/projects/3",
+							"host": [
+								"{{rootUrl}}"
+							],
+							"path": [
+								"api",
+								"projects",
+								"3"
+							]
+						},
+						"description": "Delete an existing project"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete time entry",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}/api/time-entries/1",
+							"host": [
+								"{{rootUrl}}"
+							],
+							"path": [
+								"api",
+								"time-entries",
+								"1"
+							]
+						},
+						"description": "Delete an existing time entry"
+					},
+					"response": []
+				}
+			],
+			"description": "These are requests prior to adding Bearer token auth"
+		},
+		{
+			"name": "Bearer Token Auth",
+			"item": [
+				{
+					"name": "Admin",
+					"item": [
 						{
-							"key": "page",
-							"value": "1",
-							"description": "Page number to retrieve"
+							"name": "Create user",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"Postman Test User\",\n\t\"hourRate\": 20\n}"
+								},
+								"url": {
+									"raw": "{{rootUrl}}/api/users",
+									"host": [
+										"{{rootUrl}}"
+									],
+									"path": [
+										"api",
+										"users"
+									]
+								},
+								"description": "Create a new user"
+							},
+							"response": []
 						},
 						{
-							"key": "size",
-							"value": "5",
-							"description": "Size of a single page"
-						}
-					]
-				},
-				"description": "Get a page of users."
-			},
-			"response": []
-		},
-		{
-			"name": "Get clients",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{rootUrl}}/api/clients?page=1&size=5",
-					"host": [
-						"{{rootUrl}}"
-					],
-					"path": [
-						"api",
-						"clients"
-					],
-					"query": [
-						{
-							"key": "page",
-							"value": "1",
-							"description": "Page number to retrieve"
+							"name": "Create client",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"Postman Test Client\"\n}"
+								},
+								"url": {
+									"raw": "{{rootUrl}}/api/clients",
+									"host": [
+										"{{rootUrl}}"
+									],
+									"path": [
+										"api",
+										"clients"
+									]
+								},
+								"description": "Create a new client"
+							},
+							"response": []
 						},
 						{
-							"key": "size",
-							"value": "5",
-							"description": "Size of a single page"
-						}
-					]
-				},
-				"description": "Get a page of clients."
-			},
-			"response": []
-		},
-		{
-			"name": "Get projects",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{rootUrl}}/api/projects?page=1&size=5",
-					"host": [
-						"{{rootUrl}}"
-					],
-					"path": [
-						"api",
-						"projects"
-					],
-					"query": [
-						{
-							"key": "page",
-							"value": "1",
-							"description": "Page number to retrieve"
+							"name": "Create project",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"Postman Test Client\",\n\t\"clientId\": 1\n}"
+								},
+								"url": {
+									"raw": "{{rootUrl}}/api/projects",
+									"host": [
+										"{{rootUrl}}"
+									],
+									"path": [
+										"api",
+										"projects"
+									]
+								},
+								"description": "Create a new project"
+							},
+							"response": []
 						},
 						{
-							"key": "size",
-							"value": "5",
-							"description": "Size of a single page"
-						}
-					]
-				},
-				"description": "Get a page of projects."
-			},
-			"response": []
-		},
-		{
-			"name": "Get time entries",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{rootUrl}}/api/time-entries?page=1&size=5",
-					"host": [
-						"{{rootUrl}}"
-					],
-					"path": [
-						"api",
-						"time-entries"
-					],
-					"query": [
-						{
-							"key": "page",
-							"value": "1",
-							"description": "Page number to retrieve"
+							"name": "Create time entry",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"userId\": 1,\n\t\"projectId\": 1,\n\t\"entryDate\": \"2019-07-01\",\n\t\"hours\": 6,\n\t\"description\": \"Created from Postman\"\n}"
+								},
+								"url": {
+									"raw": "{{rootUrl}}/api/time-entries",
+									"host": [
+										"{{rootUrl}}"
+									],
+									"path": [
+										"api",
+										"time-entries"
+									]
+								},
+								"description": "Create a new time entry"
+							},
+							"response": []
 						},
 						{
-							"key": "size",
-							"value": "5",
-							"description": "Size of a single page"
+							"name": "Update user",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"Postman Test User UPDATE\",\n\t\"hourRate\": 15\n}"
+								},
+								"url": {
+									"raw": "{{rootUrl}}/api/users/3",
+									"host": [
+										"{{rootUrl}}"
+									],
+									"path": [
+										"api",
+										"users",
+										"3"
+									]
+								},
+								"description": "Update existing user"
+							},
+							"response": []
+						},
+						{
+							"name": "Update client",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"Postman Test Client UPDATE\"\n}"
+								},
+								"url": {
+									"raw": "{{rootUrl}}/api/clients/3",
+									"host": [
+										"{{rootUrl}}"
+									],
+									"path": [
+										"api",
+										"clients",
+										"3"
+									]
+								},
+								"description": "Update existing client"
+							},
+							"response": []
+						},
+						{
+							"name": "Update project",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"Postman Test Project UPDATE\",\n\t\"clientId\": 1\n}"
+								},
+								"url": {
+									"raw": "{{rootUrl}}/api/projects/3",
+									"host": [
+										"{{rootUrl}}"
+									],
+									"path": [
+										"api",
+										"projects",
+										"3"
+									]
+								},
+								"description": "Update existing project"
+							},
+							"response": []
+						},
+						{
+							"name": "Update time entry",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"userId\": 1,\n\t\"projectId\": 1,\n\t\"entryDate\": \"2019-07-02\",\n\t\"hours\": 5,\n\t\"description\": \"Updated from Postman\"\n}"
+								},
+								"url": {
+									"raw": "{{rootUrl}}/api/time-entries/1",
+									"host": [
+										"{{rootUrl}}"
+									],
+									"path": [
+										"api",
+										"time-entries",
+										"1"
+									]
+								},
+								"description": "Update existing time entry"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete user",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{rootUrl}}/api/users/3",
+									"host": [
+										"{{rootUrl}}"
+									],
+									"path": [
+										"api",
+										"users",
+										"3"
+									]
+								},
+								"description": "Delete an existing user"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete client",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{rootUrl}}/api/clients/3",
+									"host": [
+										"{{rootUrl}}"
+									],
+									"path": [
+										"api",
+										"clients",
+										"3"
+									]
+								},
+								"description": "Delete an existing client"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete project",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{rootUrl}}/api/projects/3",
+									"host": [
+										"{{rootUrl}}"
+									],
+									"path": [
+										"api",
+										"projects",
+										"3"
+									]
+								},
+								"description": "Delete an existing project"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete time entry",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{rootUrl}}/api/time-entries/1",
+									"host": [
+										"{{rootUrl}}"
+									],
+									"path": [
+										"api",
+										"time-entries",
+										"1"
+									]
+								},
+								"description": "Delete an existing time entry"
+							},
+							"response": []
 						}
-					]
-				},
-				"description": "Get a page of time entries."
-			},
-			"response": []
-		},
-		{
-			"name": "Get user by id",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{rootUrl}}/api/users/1",
-					"host": [
-						"{{rootUrl}}"
 					],
-					"path": [
-						"api",
-						"users",
-						"1"
-					]
-				},
-				"description": "Get a single user by user id."
-			},
-			"response": []
-		},
-		{
-			"name": "Get client by id",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{rootUrl}}/api/clients/1",
-					"host": [
-						"{{rootUrl}}"
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "{{adminToken}}",
+								"type": "string"
+							}
+						]
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "15a3a647-d5d4-436a-8691-fac7e5b68985",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "57ee5cf2-6467-4e30-9c8f-dde980c39205",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
 					],
-					"path": [
-						"api",
-						"clients",
-						"1"
-					]
+					"_postman_isSubFolder": true
 				},
-				"description": "Get a single client by client id."
-			},
-			"response": []
-		},
-		{
-			"name": "Get project by id",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{rootUrl}}/api/projects/1",
-					"host": [
-						"{{rootUrl}}"
-					],
-					"path": [
-						"api",
-						"projects",
-						"1"
-					]
+				{
+					"name": "Get users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}/api/users?page=1&size=5",
+							"host": [
+								"{{rootUrl}}"
+							],
+							"path": [
+								"api",
+								"users"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Page number to retrieve"
+								},
+								{
+									"key": "size",
+									"value": "5",
+									"description": "Size of a single page"
+								}
+							]
+						},
+						"description": "Get a page of users."
+					},
+					"response": []
 				},
-				"description": "Get a single project by project id."
-			},
-			"response": []
-		},
-		{
-			"name": "Get time entry by id",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{rootUrl}}/api/time-entries/1",
-					"host": [
-						"{{rootUrl}}"
-					],
-					"path": [
-						"api",
-						"time-entries",
-						"1"
-					]
+				{
+					"name": "Get clients",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}/api/clients?page=1&size=5",
+							"host": [
+								"{{rootUrl}}"
+							],
+							"path": [
+								"api",
+								"clients"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Page number to retrieve"
+								},
+								{
+									"key": "size",
+									"value": "5",
+									"description": "Size of a single page"
+								}
+							]
+						},
+						"description": "Get a page of clients."
+					},
+					"response": []
 				},
-				"description": "Get a single time entry by time entry id."
-			},
-			"response": []
-		},
-		{
-			"name": "Create user",
-			"request": {
-				"method": "POST",
-				"header": [
+				{
+					"name": "Get projects",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}/api/projects?page=1&size=5",
+							"host": [
+								"{{rootUrl}}"
+							],
+							"path": [
+								"api",
+								"projects"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Page number to retrieve"
+								},
+								{
+									"key": "size",
+									"value": "5",
+									"description": "Size of a single page"
+								}
+							]
+						},
+						"description": "Get a page of projects."
+					},
+					"response": []
+				},
+				{
+					"name": "Get time entries",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}/api/time-entries?page=1&size=5",
+							"host": [
+								"{{rootUrl}}"
+							],
+							"path": [
+								"api",
+								"time-entries"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Page number to retrieve"
+								},
+								{
+									"key": "size",
+									"value": "5",
+									"description": "Size of a single page"
+								}
+							]
+						},
+						"description": "Get a page of time entries."
+					},
+					"response": []
+				},
+				{
+					"name": "Get user by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}/api/users/1",
+							"host": [
+								"{{rootUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"1"
+							]
+						},
+						"description": "Get a single user by user id."
+					},
+					"response": []
+				},
+				{
+					"name": "Get client by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}/api/clients/1",
+							"host": [
+								"{{rootUrl}}"
+							],
+							"path": [
+								"api",
+								"clients",
+								"1"
+							]
+						},
+						"description": "Get a single client by client id."
+					},
+					"response": []
+				},
+				{
+					"name": "Get project by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}/api/projects/1",
+							"host": [
+								"{{rootUrl}}"
+							],
+							"path": [
+								"api",
+								"projects",
+								"1"
+							]
+						},
+						"description": "Get a single project by project id."
+					},
+					"response": []
+				},
+				{
+					"name": "Get time entry by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}/api/time-entries/1",
+							"host": [
+								"{{rootUrl}}"
+							],
+							"path": [
+								"api",
+								"time-entries",
+								"1"
+							]
+						},
+						"description": "Get a single time entry by time entry id."
+					},
+					"response": []
+				}
+			],
+			"description": "These are requests prior to adding Bearer token auth",
+			"auth": {
+				"type": "bearer",
+				"bearer": [
 					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"value": "application/json",
-						"type": "text"
+						"key": "token",
+						"value": "{{token}}",
+						"type": "string"
 					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"name\": \"Postman Test User\",\n\t\"hourRate\": 20\n}"
-				},
-				"url": {
-					"raw": "{{rootUrl}}/api/users",
-					"host": [
-						"{{rootUrl}}"
-					],
-					"path": [
-						"api",
-						"users"
-					]
-				},
-				"description": "Create a new user"
+				]
 			},
-			"response": []
-		},
-		{
-			"name": "Create client",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"type": "text",
-						"value": "application/json"
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "e899460b-31b1-4ae8-acbc-8581defed833",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
 					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"name\": \"Postman Test Client\"\n}"
 				},
-				"url": {
-					"raw": "{{rootUrl}}/api/clients",
-					"host": [
-						"{{rootUrl}}"
-					],
-					"path": [
-						"api",
-						"clients"
-					]
-				},
-				"description": "Create a new client"
-			},
-			"response": []
-		},
-		{
-			"name": "Create project",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"type": "text",
-						"value": "application/json"
+				{
+					"listen": "test",
+					"script": {
+						"id": "203dccbe-8c22-4676-b577-4a2f0846954b",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
 					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"name\": \"Postman Test Client\",\n\t\"clientId\": 1\n}"
-				},
-				"url": {
-					"raw": "{{rootUrl}}/api/projects",
-					"host": [
-						"{{rootUrl}}"
-					],
-					"path": [
-						"api",
-						"projects"
-					]
-				},
-				"description": "Create a new project"
-			},
-			"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "3fd6fce7-2da4-4e7c-832f-f0a3c8d83f9b",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
 		},
 		{
-			"name": "Create time entry",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"type": "text",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"userId\": 1,\n\t\"projectId\": 1,\n\t\"entryDate\": \"2019-07-01\",\n\t\"hours\": 6,\n\t\"description\": \"Created from Postman\"\n}"
-				},
-				"url": {
-					"raw": "{{rootUrl}}/api/time-entries",
-					"host": [
-						"{{rootUrl}}"
-					],
-					"path": [
-						"api",
-						"time-entries"
-					]
-				},
-				"description": "Create a new time entry"
-			},
-			"response": []
-		},
-		{
-			"name": "Update user",
-			"request": {
-				"method": "PUT",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"name\": \"Postman Test User UPDATE\",\n\t\"hourRate\": 15\n}"
-				},
-				"url": {
-					"raw": "{{rootUrl}}/api/users/3",
-					"host": [
-						"{{rootUrl}}"
-					],
-					"path": [
-						"api",
-						"users",
-						"3"
-					]
-				},
-				"description": "Update existing user"
-			},
-			"response": []
-		},
-		{
-			"name": "Update client",
-			"request": {
-				"method": "PUT",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"type": "text",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"name\": \"Postman Test Client UPDATE\"\n}"
-				},
-				"url": {
-					"raw": "{{rootUrl}}/api/clients/3",
-					"host": [
-						"{{rootUrl}}"
-					],
-					"path": [
-						"api",
-						"clients",
-						"3"
-					]
-				},
-				"description": "Update existing client"
-			},
-			"response": []
-		},
-		{
-			"name": "Update project",
-			"request": {
-				"method": "PUT",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"type": "text",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"name\": \"Postman Test Project UPDATE\",\n\t\"clientId\": 1\n}"
-				},
-				"url": {
-					"raw": "{{rootUrl}}/api/projects/3",
-					"host": [
-						"{{rootUrl}}"
-					],
-					"path": [
-						"api",
-						"projects",
-						"3"
-					]
-				},
-				"description": "Update existing project"
-			},
-			"response": []
-		},
-		{
-			"name": "Update time entry",
-			"request": {
-				"method": "PUT",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"type": "text",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"userId\": 1,\n\t\"projectId\": 1,\n\t\"entryDate\": \"2019-07-02\",\n\t\"hours\": 5,\n\t\"description\": \"Updated from Postman\"\n}"
-				},
-				"url": {
-					"raw": "{{rootUrl}}/api/time-entries/1",
-					"host": [
-						"{{rootUrl}}"
-					],
-					"path": [
-						"api",
-						"time-entries",
-						"1"
-					]
-				},
-				"description": "Update existing time entry"
-			},
-			"response": []
-		},
-		{
-			"name": "Delete user",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "{{rootUrl}}/api/users/3",
-					"host": [
-						"{{rootUrl}}"
-					],
-					"path": [
-						"api",
-						"users",
-						"3"
-					]
-				},
-				"description": "Delete an existing user"
-			},
-			"response": []
-		},
-		{
-			"name": "Delete client",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "{{rootUrl}}/api/clients/3",
-					"host": [
-						"{{rootUrl}}"
-					],
-					"path": [
-						"api",
-						"clients",
-						"3"
-					]
-				},
-				"description": "Delete an existing client"
-			},
-			"response": []
-		},
-		{
-			"name": "Delete project",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "{{rootUrl}}/api/projects/3",
-					"host": [
-						"{{rootUrl}}"
-					],
-					"path": [
-						"api",
-						"projects",
-						"3"
-					]
-				},
-				"description": "Delete an existing project"
-			},
-			"response": []
-		},
-		{
-			"name": "Delete time entry",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "{{rootUrl}}/api/time-entries/1",
-					"host": [
-						"{{rootUrl}}"
-					],
-					"path": [
-						"api",
-						"time-entries",
-						"1"
-					]
-				},
-				"description": "Delete an existing time entry"
-			},
-			"response": []
+			"listen": "test",
+			"script": {
+				"id": "42dfd7b4-b0c6-4d04-8083-20ca1bfbd7d6",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
 		}
 	],
 	"variable": [
 		{
-			"id": "695f9577-41a1-49f9-8615-a55debae4279",
+			"id": "823306a7-a652-4ab8-931e-b80b0041f09c",
 			"key": "rootUrl",
 			"value": "https://localhost:44383",
+			"type": "string"
+		},
+		{
+			"id": "16e73a35-4595-47eb-b43d-9b76b7876baa",
+			"key": "token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "184d1c5f-6d2c-40e2-b337-da7c27f38315",
+			"key": "adminToken",
+			"value": "",
 			"type": "string"
 		}
 	]
