@@ -1,4 +1,5 @@
 ﻿using System;
+using TimeTracker.Domain;
 
 namespace TimeTracker.Models
 {
@@ -15,5 +16,23 @@ namespace TimeTracker.Models
         public int Hours { get; set; }
         public decimal HourRate { get; set; }
         public string Description { get; set; }
+
+        public static TimeEntryModel FromTimeEntry(TimeEntry timeEntry)
+        {
+            return new TimeEntryModel
+            {
+                Id = timeEntry.Id,
+                UserId = timeEntry.User.Id,
+                UserName = timeEntry.User.Name,
+                ProjectId = timeEntry.Project.Id,
+                ProjectName = timeEntry.Project.Name,
+                ClientId = timeEntry.Project.Client.Id,
+                ClientName = timeEntry.Project.Client.Name,
+                EntryDate = timeEntry.EntryDate,
+                Hours = timeEntry.Hours,
+                HourRate = timeEntry.HourRate,
+                Description = timeEntry.Description
+            };
+        }
     }
 }

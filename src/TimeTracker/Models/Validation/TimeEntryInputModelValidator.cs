@@ -18,10 +18,7 @@ namespace TimeTracker.Models.Validation
                 .LessThan(new DateTime(2100, 1, 1));
 
             RuleFor(x => x.Hours)
-                .ExclusiveBetween(0, 25);
-
-            RuleFor(x => x.HourRate)
-                .InclusiveBetween(1, 1000);
+                .InclusiveBetween(1, 24);
 
             RuleFor(x => x.Description)
                 .NotEmpty()
