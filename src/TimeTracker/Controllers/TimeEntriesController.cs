@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -10,6 +11,9 @@ using TimeTracker.Models;
 
 namespace TimeTracker.Controllers
 {
+    /// <summary>
+    /// Time entries endpoint of TimeTracker API.
+    /// </summary>
     [ApiController]
     [Authorize]
     [Route("/api/time-entries")]
@@ -18,13 +22,24 @@ namespace TimeTracker.Controllers
         private readonly TimeTrackerDbContext _dbContext;
         private readonly ILogger<TimeEntriesController> _logger;
 
+        /// <summary>
+        /// Creates a new instance of see <see cref="TimeEntriesController"/> with given dependencies.
+        /// </summary>
+        /// <param name="dbContext">DB context instance.</param>
+        /// <param name="logger">Logger instance.</param>
         public TimeEntriesController(TimeTrackerDbContext dbContext, ILogger<TimeEntriesController> logger)
         {
             _dbContext = dbContext;
             _logger = logger;
         }
 
+        /// <summary>
+        /// Get a single time entry by id.
+        /// </summary>
+        /// <param name="id">Id of the time entry to retrieve.</param>
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(TimeEntryModel))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<TimeEntryModel>> GetById(long id)
         {
             _logger.LogDebug($"Getting a time entry with id {id}");
@@ -43,7 +58,13 @@ namespace TimeTracker.Controllers
             return TimeEntryModel.FromTimeEntry(timeEntry);
         }
 
+        /// <summary>
+        /// Get one page of time entries.
+        /// </summary>
+        /// <param name="page">Page number.</param>
+        /// <param name="size">Page size.</param>
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedList<TimeEntryModel>))]
         public async Task<ActionResult<PagedList<TimeEntryModel>>> GetPage(int page = 1, int size = 5)
         {
             _logger.LogDebug($"Getting a page {page} of time entries with page size {size}");
@@ -65,6 +86,10 @@ namespace TimeTracker.Controllers
             };
         }
 
+        /// <summary>
+        /// Delete a single time entry with the given id.
+        /// </summary>
+        /// <param name="id">Id of the time entry to delete.</param>
         [Authorize(Roles = "admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(long id)
@@ -84,8 +109,13 @@ namespace TimeTracker.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Create a new time entry from the supplied data.
+        /// </summary>
+        /// <param name="model">Data to create the time entry from.</param>
         [Authorize(Roles = "admin")]
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(TimeEntryModel))]
         public async Task<ActionResult<TimeEntryModel>> Create(TimeEntryInputModel model)
         {
             _logger.LogDebug(
@@ -112,8 +142,15 @@ namespace TimeTracker.Controllers
             return CreatedAtAction(nameof(GetById), "TimeEntries", new {id = timeEntry.Id}, resultModel);
         }
 
+        /// <summary>
+        /// Modify the time entry with the given id, using the supplied data.
+        /// </summary>
+        /// <param name="id">Id of the time entry to modify.</param>
+        /// <param name="model">Data to modify the time entry from.</param>
         [Authorize(Roles = "admin")]
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(TimeEntryModel))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<TimeEntryModel>> Update(long id, TimeEntryInputModel model)
         {
             _logger.LogDebug($"Updating time entry with id {id}");

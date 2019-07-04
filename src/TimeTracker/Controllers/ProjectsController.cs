@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -10,6 +11,9 @@ using TimeTracker.Models;
 
 namespace TimeTracker.Controllers
 {
+    /// <summary>
+    /// Projects endpoint for TimeTracker API.
+    /// </summary>
     [ApiController]
     [Authorize]
     [Route("/api/projects")]
@@ -18,13 +22,24 @@ namespace TimeTracker.Controllers
         private readonly TimeTrackerDbContext _dbContext;
         private readonly ILogger<ProjectsController> _logger;
 
+        /// <summary>
+        /// Creates a new instance of <see cref="ProjectsController"/> with given dependencies.
+        /// </summary>
+        /// <param name="dbContext">DB context instance.</param>
+        /// <param name="logger">Logger instance.</param>
         public ProjectsController(TimeTrackerDbContext dbContext, ILogger<ProjectsController> logger)
         {
             _dbContext = dbContext;
             _logger = logger;
         }
 
+        /// <summary>
+        /// Get a single project by id.
+        /// </summary>
+        /// <param name="id">Id of the project to retrieve.</param>
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProjectModel))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ProjectModel>> GetById(long id)
         {
             _logger.LogDebug($"Getting a project with id {id}");
@@ -41,7 +56,13 @@ namespace TimeTracker.Controllers
             return ProjectModel.FromProject(project);
         }
 
+        /// <summary>
+        /// Get one page of projects.
+        /// </summary>
+        /// <param name="page">Page number.</param>
+        /// <param name="size">Page size.</param>
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedList<ProjectModel>))]
         public async Task<ActionResult<PagedList<ProjectModel>>> GetPage(int page = 1, int size = 5)
         {
             _logger.LogDebug($"Getting a page {page} of projects with page size {size}");
@@ -61,6 +82,10 @@ namespace TimeTracker.Controllers
             };
         }
 
+        /// <summary>
+        /// Delete a single project with the given id.
+        /// </summary>
+        /// <param name="id">Id of the project to delete.</param>
         [Authorize(Roles = "admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(long id)
@@ -80,8 +105,13 @@ namespace TimeTracker.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Create a new project from the supplied data.
+        /// </summary>
+        /// <param name="model">Data to create the project from.</param>
         [Authorize(Roles = "admin")]
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ProjectModel))]
         public async Task<ActionResult<ProjectModel>> Create(ProjectInputModel model)
         {
             _logger.LogDebug($"Creating a new project with name {model.Name}");
@@ -103,8 +133,15 @@ namespace TimeTracker.Controllers
             return CreatedAtAction(nameof(GetById), "projects", new {id = project.Id}, resultModel);
         }
 
+        /// <summary>
+        /// Modify the project with the given id, using the supplied data.
+        /// </summary>
+        /// <param name="id">Id of the project to modify.</param>
+        /// <param name="model">Data to modify the project from.</param>
         [Authorize(Roles = "admin")]
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProjectModel))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ProjectModel>> Update(long id, ProjectInputModel model)
         {
             _logger.LogDebug($"Updating project with id {id}");
