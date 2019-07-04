@@ -50,6 +50,7 @@ namespace TimeTracker
             app.UseHttpsRedirection();
 
             app.UseMiddleware<ErrorHandlingMiddleware>();
+            app.UseMiddleware<LimitingMiddleware>();
 
             app.UseRouting();
 
