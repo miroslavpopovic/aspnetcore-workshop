@@ -34,7 +34,8 @@ namespace TimeTracker
 
             services.AddOpenApi();
 
-            services.AddHealthChecks();
+            services.AddHealthChecks()
+                .AddSqlite(Configuration.GetConnectionString("DefaultConnection"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
