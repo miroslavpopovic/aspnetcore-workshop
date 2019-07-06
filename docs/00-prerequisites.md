@@ -15,9 +15,10 @@ For this workshop, you will need the following:
         - .NET Core cross-platform development
 2. Latest [.NET Core 3.0 SDK Preview](https://dotnet.microsoft.com/download/dotnet-core/3.0)
 3. Latest [Blazor extension](https://marketplace.visualstudio.com/items?itemName=aspnet.blazor)
-4. [Official git client](https://git-scm.com/downloads)
-5. [GitHub](https://github.com/) account
-6. [Postman](https://www.getpostman.com/)
+4. Latest [Blazor template installed](https://docs.microsoft.com/en-us/aspnet/core/blazor/get-started?view=aspnetcore-3.0&tabs=visual-studio) - `dotnet new -i Microsoft.AspNetCore.Blazor.Templates::3.0.0-preview6.19307.2`
+5. [Official git client](https://git-scm.com/downloads)
+6. [GitHub](https://github.com/) account
+7. [Postman](https://www.getpostman.com/)
 
 If the time allows, we will also explore publish and deployment scenarios. For that, you will also need:
 

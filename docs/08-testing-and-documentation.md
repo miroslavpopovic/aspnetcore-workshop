@@ -26,7 +26,7 @@ You'll get a new project with `UnitTest1.cs` file. Remove that file, as we'll ad
 
 Now add the reference to `TimeTracker` project. Right click on the `TimeTracker.Tests` project in solution explorer, select *Add > Reference* and check `TimeTracker` project.
 
-![Name the test project](images/vs-add-project-reference.png)
+![Add project reference](images/vs-add-project-reference.png)
 
 ### Adding `UsersController` unit tests
 

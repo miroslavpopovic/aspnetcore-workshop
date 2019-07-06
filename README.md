@@ -33,3 +33,4 @@ Make sure you follow the [prerequisites](docs/00-prerequisites.md) document to p
 | [Session #8](/docs/08-testing-and-documentation.md) | Creating unit and integration tests, adding Swagger support |
 | [Session #9](/docs/09-versioning-limiting-monitoring.md) | Versioning APIs, usage limiting, monitoring and creating health checks |
 | [Session #10](/docs/10-blazor-client.md) | Introduction to Blazor and creating client-side Blazor client |
+| [Session #99](/docs/99-resources.md) | Resources and further reading |
