@@ -9,7 +9,7 @@
         <h1>Users</h1>
     </div>
     <div class="col text-right">
-        <button type="button" class="btn btn-primary"><i class="oi oi-plus"></i> Add new</button>
+        <a href="/users/add" class="btn btn-primary"><i class="oi oi-plus"></i> Add new</a>
     </div>
 </div>
 
@@ -35,8 +35,8 @@ else
                     <td>@user.HourRate</td>
                     <td class="text-right">
                         <div class="btn-group" role="group">
-                            <button type="button" class="btn btn-light"><i class="oi oi-pencil"></i> Edit</button>
-                            <button type="button" class="btn btn-light text-danger"><i class="oi oi-delete"></i> Delete</button>
+                            <a href="/users/@(user.Id)/edit" class="btn btn-light"><i class="oi oi-pencil"></i> Edit</a>
+                            <a href="/users/@(user.Id)/delete" class="btn btn-light text-danger"><i class="oi oi-delete"></i> Delete</a>
                         </div>
                     </td>
                 </tr>
