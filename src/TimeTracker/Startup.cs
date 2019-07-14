@@ -30,6 +30,8 @@ namespace TimeTracker
 
             services.AddJwtBearerAuthentication(Configuration);
 
+            services.AddCors();
+
             services.AddControllers().AddFluentValidation(
                 fv => fv.RegisterValidatorsFromAssemblyContaining<UserInputModelValidator>());
 
@@ -62,8 +64,15 @@ namespace TimeTracker
             app.UseRouting();
 
             app.UseAuthentication();
-
             app.UseAuthorization();
+
+            // NOTE: this is just for demo purpose! Usually, you should limit access to a specific origin
+            // More info: https://docs.microsoft.com/en-us/aspnet/core/security/cors?view=aspnetcore-3.0
+            app.UseCors(
+                builder => builder
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader());
 
             app.UseOpenApi();
             app.UseSwaggerUi3();

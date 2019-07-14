@@ -1,15 +1,36 @@
+@using TimeTracker.Client.Security
 @inherits LayoutComponentBase
+@inject TokenAuthenticationStateProvider AuthStateProvider
 
 <div class="sidebar">
     <NavMenu />
 </div>
 
 <div class="main">
-    <div class="top-row px-4">
-        <a href="http://blazor.net" target="_blank" class="ml-md-auto">About</a>
+    <div class="top-row px-4 justify-content-end">
+        <nav class="nav">
+            <AuthorizeView>
+                <Authorized>
+                    <a class="nav-link disabled" href="#">
+                        Hello, <strong>@context.User.Identity.Name</strong>!
+                    </a>
+                    <a href="javascript: void(0);" class="nav-link" onclick="@LogOut">Logout</a>
+                </Authorized>
+                <NotAuthorized>
+                    <a href="/login" class="nav-link">Login</a>
+                </NotAuthorized>
+            </AuthorizeView>
+
+            <a href="https://github.com/miroslavpopovic/aspnetcore-workshop" target="_blank" class="nav-link">About</a>
+        </nav>
     </div>
 
     <div class="content px-4">
         @Body
     </div>
 </div>
+
+@code {
+    public Task LogOut()
+        => AuthStateProvider.SetTokenAsync(null, null);
+}

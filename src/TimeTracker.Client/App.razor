@@ -1,5 +1,14 @@
-﻿<Router AppAssembly="typeof(Program).Assembly">
-    <NotFoundContent>
-        <p>Sorry, there's nothing at this address.</p>
-    </NotFoundContent>
-</Router>
+﻿<CascadingAuthenticationState>
+    <Router AppAssembly="typeof(Program).Assembly">
+        <NotFoundContent>
+            <p>Sorry, there's nothing at this address.</p>
+        </NotFoundContent>
+        <NotAuthorizedContent>
+            <h1>Access denied</h1>
+            <p>Only logged-in users can access the TimeTracker client app.</p>
+        </NotAuthorizedContent>
+        <AuthorizingContent>
+            Logging in...
+        </AuthorizingContent>
+    </Router>
+</CascadingAuthenticationState>
