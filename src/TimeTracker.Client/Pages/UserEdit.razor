@@ -18,8 +18,13 @@ else
 }
 
 <EditForm Model="@user" OnValidSubmit="@SaveUser">
-    @*<DataAnnotationsValidator />*@
+    <DataAnnotationsValidator />
     <ValidationSummary />
+
+    @if (!string.IsNullOrWhiteSpace(errorMessage))
+    {
+        <div class="alert alert-danger">@errorMessage</div>
+    }
 
     <div class="form-group">
         <label for="name">Name</label>
@@ -30,11 +35,6 @@ else
         <label for="hourRate">Hour rate</label>
         <InputNumber id="hourRate" class="form-control" @bind-Value="@user.HourRate" />
     </div>
-
-    @if (!string.IsNullOrWhiteSpace(errorMessage))
-    {
-        <div class="alert alert-danger">@errorMessage</div>
-    }
 
     <button type="submit" class="btn btn-primary">Save</button>
     <a href="/users" class="btn btn-link">Cancel</a>
