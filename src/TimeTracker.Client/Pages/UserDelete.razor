@@ -1,4 +1,4 @@
-﻿@page "/users/{id:long}/delete"
+@page "/users/{id:long}/delete"
 @using System.ComponentModel
 @using Microsoft.AspNetCore.Components
 @using TimeTracker.Client.Models
@@ -32,12 +32,12 @@
     private async Task LoadUser()
     {
         var url = $"users/{Id}";
-        user = await ApiService.GetJsonAsync<UserModel>(url);
+        user = await ApiService.GetAsync<UserModel>(url);
     }
 
     private async Task DeleteUser()
     {
-        if (await ApiService.Delete($"users/{user.Id}"))
+        if (await ApiService.DeleteAsync($"users/{user.Id}"))
         {
             UriHelper.NavigateTo("/users");
         }

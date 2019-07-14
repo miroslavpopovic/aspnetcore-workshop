@@ -54,7 +54,7 @@
         try
         {
             var token = await Http.GetStringAsync(url);
-            var user = await ApiService.GetJsonAsync<UserModel>($"users/{userId}", token);
+            var user = await ApiService.GetAsync<UserModel>($"users/{userId}", token);
 
             await AuthStateProvider.SetTokenAndUserAsync(token, user);
 

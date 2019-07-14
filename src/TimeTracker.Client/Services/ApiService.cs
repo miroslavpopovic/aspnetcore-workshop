@@ -18,7 +18,7 @@ namespace TimeTracker.Client.Services
             _authStateProvider = authStateProvider;
         }
 
-        public async Task<T> GetJsonAsync<T>(string url, string token = null)
+        public async Task<T> GetAsync<T>(string url, string token = null)
         {
             var response = await SendAuthorizedRequest<T>(HttpMethod.Get, url, default, token);
             var responseBytes = await response.Content.ReadAsByteArrayAsync();
@@ -26,19 +26,19 @@ namespace TimeTracker.Client.Services
                 responseBytes, new JsonSerializerOptions {PropertyNamingPolicy = JsonNamingPolicy.CamelCase});
         }
 
-        public async Task<bool> Create<T>(string url, T inputModel)
+        public async Task<bool> CreateAsync<T>(string url, T inputModel)
         {
             var response = await SendAuthorizedRequest(HttpMethod.Post, url, inputModel);
             return response.IsSuccessStatusCode;
         }
 
-        public async Task<bool> Update<T>(string url, T inputModel)
+        public async Task<bool> UpdateAsync<T>(string url, T inputModel)
         {
             var response = await SendAuthorizedRequest(HttpMethod.Put, url, inputModel);
             return response.IsSuccessStatusCode;
         }
 
-        public async Task<bool> Delete(string url)
+        public async Task<bool> DeleteAsync(string url)
         {
             var response = await SendAuthorizedRequest<object>(HttpMethod.Delete, url);
             return response.IsSuccessStatusCode;

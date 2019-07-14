@@ -1,4 +1,4 @@
-﻿@page  "/users"
+@page  "/users"
 @using TimeTracker.Client.Models
 @using TimeTracker.Client.Services
 @attribute [Authorize]
@@ -59,7 +59,7 @@ private async Task LoadUsers(int page = 1)
 {
     const int pageSize = 1;
     var url = $"users?page={page}&size={pageSize}";
-    users = await ApiService.GetJsonAsync<PagedList<UserModel>>(url);
+    users = await ApiService.GetAsync<PagedList<UserModel>>(url);
 
     // State change not triggered from for loop above
     base.StateHasChanged();

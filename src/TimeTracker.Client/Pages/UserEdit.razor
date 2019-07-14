@@ -56,7 +56,7 @@ else
     private async Task LoadUser()
     {
         var url = $"users/{Id}";
-        var model = await ApiService.GetJsonAsync<UserModel>(url);
+        var model = await ApiService.GetAsync<UserModel>(url);
 
         user = new UserInputModel
         {
@@ -71,11 +71,11 @@ else
 
         if (Id > 0)
         {
-            success = await ApiService.Update<UserInputModel>($"users/{Id}", user);
+            success = await ApiService.UpdateAsync<UserInputModel>($"users/{Id}", user);
         }
         else
         {
-            success = await ApiService.Create<UserInputModel>("users", user);
+            success = await ApiService.CreateAsync<UserInputModel>("users", user);
         }
 
         if (success)
