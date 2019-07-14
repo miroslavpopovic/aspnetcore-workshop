@@ -10,6 +10,10 @@ app {
     flex-direction: column;
 }
 
+.table td, .table th {
+    vertical-align: middle;
+}
+
 .top-row {
     height: 3.5rem;
     display: flex;

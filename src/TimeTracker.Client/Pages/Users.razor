@@ -1,0 +1,67 @@
+﻿@page  "/users"
+@using TimeTracker.Client.Models
+@using TimeTracker.Client.Services
+@attribute [Authorize]
+@inject ApiService ApiService
+
+<div class="row">
+    <div class="col">
+        <h1>Users</h1>
+    </div>
+    <div class="col text-right">
+        <button type="button" class="btn btn-primary"><i class="oi oi-plus"></i> Add new</button>
+    </div>
+</div>
+
+@if (users == null)
+{
+    <div>Loading...</div>
+}
+else
+{
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>User name</th>
+                <th>Hour rate</th>
+                <th>&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in users.Items)
+            {
+                <tr>
+                    <td>@user.Name</td>
+                    <td>@user.HourRate</td>
+                    <td class="text-right">
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-light"><i class="oi oi-pencil"></i> Edit</button>
+                            <button type="button" class="btn btn-light text-danger"><i class="oi oi-delete"></i> Delete</button>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <Pager Model="@users" Loader="@LoadUsers" />
+}
+
+@code {
+PagedList<UserModel> users;
+
+protected override async Task OnInitAsync()
+{
+    await LoadUsers();
+}
+
+private async Task LoadUsers(int page = 1)
+{
+    const int pageSize = 1;
+    var url = $"users?page={page}&size={pageSize}";
+    users = await ApiService.GetJsonAsync<PagedList<UserModel>>(url);
+
+    // State change not triggered from for loop above
+    base.StateHasChanged();
+}
+}

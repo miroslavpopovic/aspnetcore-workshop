@@ -1,0 +1,48 @@
+﻿@typeparam T
+@using TimeTracker.Client.Models
+
+@if (Model != null)
+{
+    <nav aria-label="Pager">
+        <ul class="pagination">
+            @if (Model.Page == 1)
+            {
+                <li class="page-item disabled">
+                    <a class="page-link" href="javascript: void(0)" tabindex="-1">&laquo;</a>
+                </li>
+            }
+            else
+            {
+                <li class="page-item">
+                    <a class="page-link" href="javascript: void(0)" onclick="@(async () => await Loader(1))">&laquo;</a>
+                </li>
+            }
+            @for (var i = 1; i <= Model.TotalPages; i++)
+            {
+                var pageNumber = i;
+                var item = Model.Items.FirstOrDefault();
+
+                <li class="page-item @(pageNumber == Model.Page ? "active" : "")">
+                    <a class="page-link" href="javascript: void(0)" onclick="@(async () => await Loader(pageNumber))">@i</a>
+                </li>
+            }
+            @if (Model.Page == Model.TotalPages)
+            {
+                <li class="page-item disabled">
+                    <a class="page-link" href="javascript: void(0)" tabindex="-1">&raquo;</a>
+                </li>
+            }
+            else
+            {
+                <li class="page-item">
+                    <a class="page-link" href="javascript: void(0)" onclick="@(async () => await Loader(Model.TotalPages))">&raquo;</a>
+                </li>
+            }
+        </ul>
+    </nav>
+}
+
+@code {
+    [Parameter] PagedList<T> Model { get; set; }
+    [Parameter] Func<int, Task> Loader { get; set; }
+}
