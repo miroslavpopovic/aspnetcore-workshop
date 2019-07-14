@@ -36,7 +36,7 @@ namespace TimeTracker.Client.Security
         public async Task<UserModel> GetUserAsync() =>
             await _jsRuntime.InvokeAsync<UserModel>("blazorLocalStorage.get", "user");
 
-        public async Task SetTokenAsync(string token, UserModel user)
+        public async Task SetTokenAndUserAsync(string token, UserModel user)
         {
             await _jsRuntime.InvokeAsync<object>("blazorLocalStorage.set", "authToken", token);
             await _jsRuntime.InvokeAsync<object>("blazorLocalStorage.set", "user", user);
@@ -48,7 +48,10 @@ namespace TimeTracker.Client.Security
             var payload = jwt.Split('.')[1];
             var jsonBytes = ParseBase64WithoutPadding(payload);
             var keyValuePairs = JsonSerializer.Parse<Dictionary<string, object>>(jsonBytes);
+
+            // We need this claim to fill AuthState.User.Identity.Name (to display current user name)
             keyValuePairs.Add("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name", user.Name);
+
             return keyValuePairs.Select(kvp => new Claim(kvp.Key, kvp.Value.ToString()));
         }
 

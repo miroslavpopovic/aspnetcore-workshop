@@ -1,11 +1,12 @@
 ﻿@page "/login"
+@using Microsoft.AspNetCore.Components
 @using TimeTracker.Client.Models
 @using TimeTracker.Client.Security
 @using TimeTracker.Client.Services
 @inject HttpClient Http
 @inject ApiService ApiService
 @inject TokenAuthenticationStateProvider AuthStateProvider
-@inject IJSRuntime JsRuntime
+@inject IUriHelper UriHelper
 
 <h1>Login</h1>
 
@@ -27,43 +28,41 @@
 </EditForm>
 
 @code {
-string errorMessage;
-string userId = string.Empty;
-UserModel user;
+    string errorMessage;
+    string userId = string.Empty;
 
-public Task LogInRegular()
-{
-    return LogIn(false);
-}
-
-public Task LogInAdmin()
-{
-    return LogIn(true);
-}
-
-private async Task LogIn(bool admin)
-{
-    var url = Config.TokenUrl;
-    if (admin)
+    public Task LogInRegular()
     {
-        url += "?admin=true";
+        return LogIn(false);
     }
 
-    errorMessage = string.Empty;
-
-    try
+    public Task LogInAdmin()
     {
-        var token = await Http.GetStringAsync(url);
-        await JsRuntime.InvokeAsync<object>("console.log", "token is", token);
-
-        user = await ApiService.GetJsonAsync<UserModel>($"users/{userId}", token);
-
-        await AuthStateProvider.SetTokenAsync(token, user);
+        return LogIn(true);
     }
-    catch (Exception ex)
+
+    private async Task LogIn(bool admin)
     {
-        errorMessage = ex.Message;
-    }
-}
+        var url = Config.TokenUrl;
+        if (admin)
+        {
+            url += "?admin=true";
+        }
 
+        errorMessage = string.Empty;
+
+        try
+        {
+            var token = await Http.GetStringAsync(url);
+            var user = await ApiService.GetJsonAsync<UserModel>($"users/{userId}", token);
+
+            await AuthStateProvider.SetTokenAndUserAsync(token, user);
+
+            UriHelper.NavigateTo("/");
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+    }
 }
