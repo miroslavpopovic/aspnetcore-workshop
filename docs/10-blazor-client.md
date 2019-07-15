@@ -813,11 +813,113 @@ That's it! All the user functionalities are implemented. It will be a good start
 
 ### Loading lookups
 
-TODO
+All the list, edit and delete pages for `Clients` and `Projects` are similar to pages for `Users`. One difference is the `ProjectEdit` page, since it also requires a lookup list of clients, displayed as a dropdown.
+
+To implement it, we need a hack since `InputSelect` component does not support numeric types, only strings. Steve Sanderson's [suggestion](https://github.com/aspnet/AspNetCore/issues/11181#issuecomment-506288035) to create `InputSelectNumber` also fails in our case. One of the workarounds that are working is to use a string `clientId` defined in a page itself and bind to that, instead of binding to `project.ClientId`. Here are the relevant parts from `ProjectEdit` page:
+
+```razor
+<!-- Below Name InputText box -->
+<div class="form-group">
+    <label for="clientId">Client</label>
+    <InputSelect id="clientId" class="form-control" @bind-Value="@clientId">
+        <option value="">Select client...</option>
+        @foreach (var client in clients)
+        {
+            <option value="@client.Value">@client.Name</option>
+        }
+    </InputSelect>
+</div>
+
+<!-- Inside @code -->
+@code {
+    [Parameter] private long Id { get; set; }
+    private string clientId = string.Empty;
+    private Lookup[] clients = new Lookup[] {};
+    private ProjectInputModel project = new ProjectInputModel();
+    private string errorMessage;
+
+    protected override async Task OnInitAsync()
+    {
+        await LoadClients();
+
+        if (Id > 0)
+        {
+            await LoadProject();
+        }
+    }
+
+    private async Task LoadClients()
+    {
+        var clientsUrl = $"clients?page=1&size={int.MaxValue}";
+        var clientsList = await ApiService.GetAsync<PagedList<ClientModel>>(clientsUrl);
+        clients = clientsList.Items.Select(x => new Lookup(x.Name, x.Id.ToString())).ToArray();
+    }
+
+    private async Task LoadProject()
+    {
+        var url = $"projects/{Id}";
+        var model = await ApiService.GetAsync<ProjectModel>(url);
+
+        project = new ProjectInputModel
+        {
+            Name = model.Name,
+            ClientId = model.ClientId
+        };
+
+        clientId = model.ClientId.ToString();
+    }
+
+    private async Task SaveProject()
+    {
+        bool success;
+        project.ClientId = long.Parse(clientId);
+
+        if (Id > 0)
+        {
+            success = await ApiService.UpdateAsync<ProjectInputModel>($"projects/{Id}", project);
+        }
+        else
+        {
+            success = await ApiService.CreateAsync<ProjectInputModel>("projects", project);
+        }
+
+        if (success)
+        {
+            UriHelper.NavigateTo("/projects");
+        }
+        else
+        {
+            errorMessage = "Error saving project";
+        }
+    }
+}
+```
+
+`clientId` property is set when loading the project and read when saving the project. In `SaveProject` method, it parses the given string into `long` parameter type and assigns to `project.ClientId`.
+
+Notice how we loaded the clients and converted them to `Lookup` instances. Here's the definition of `Lookup` class. It helps with binding to `InputSelect` components.
+
+```c#
+public class Lookup
+{
+    public Lookup()
+    {
+    }
+
+    public Lookup(string name, string value)
+    {
+        Name = name;
+        Value = value;
+    }
+
+    public string Name { get; set; }
+    public string Value { get; set; }
+}
+```
 
 ### Time entries pages
 
-TODO
+For time entries, we'll implement edit and delete pages only. The page with the list of time entries is not necessary. Instead, the dashboard page (home page) will contain a list of time entries for the current month and current user.
 
 ### Home page dashboard
 

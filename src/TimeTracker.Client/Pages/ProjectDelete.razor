@@ -1,0 +1,49 @@
+@page "/projects/{id:long}/delete"
+@using System.ComponentModel
+@using Microsoft.AspNetCore.Components
+@using TimeTracker.Client.Models
+@using TimeTracker.Client.Services
+@attribute [Authorize]
+@inject ApiService ApiService
+@inject IUriHelper UriHelper
+
+<h1>Delete project @(project == null ? string.Empty : project.Name)</h1>
+
+<div class="alert alert-warning">Are you sure you want to delete this project?</div>
+
+@if (!string.IsNullOrWhiteSpace(errorMessage))
+{
+    <div class="alert alert-danger">@errorMessage</div>
+}
+
+<button type="button" class="btn btn-danger" onclick="@DeleteProject">Delete</button>
+<a href="/projects" class="btn btn-link">Cancel</a>
+
+@code {
+    [Parameter] private long Id { get; set; }
+    private ProjectModel project;
+    private string errorMessage;
+
+    protected override async Task OnInitAsync()
+    {
+        await LoadProject();
+    }
+
+    private async Task LoadProject()
+    {
+        var url = $"projects/{Id}";
+        project = await ApiService.GetAsync<ProjectModel>(url);
+    }
+
+    private async Task DeleteProject()
+    {
+        if (await ApiService.DeleteAsync($"projects/{project.Id}"))
+        {
+            UriHelper.NavigateTo("/projects");
+        }
+        else
+        {
+            errorMessage = "Error saving project";
+        }
+    }
+}

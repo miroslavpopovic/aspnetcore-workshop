@@ -1,0 +1,84 @@
+﻿@page "/clients/{id:long}/edit"
+@page "/clients/add"
+@using System.ComponentModel
+@using Microsoft.AspNetCore.Components
+@using TimeTracker.Client.Models
+@using TimeTracker.Client.Services
+@attribute [Authorize]
+@inject ApiService ApiService
+@inject IUriHelper UriHelper
+
+@if (Id == 0)
+{
+    <h1>Add new client</h1>
+}
+else
+{
+    <h1>Edit client @(client == null ? string.Empty : client.Name)</h1>
+}
+
+<EditForm Model="@client" OnValidSubmit="@SaveClient">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    @if (!string.IsNullOrWhiteSpace(errorMessage))
+    {
+        <div class="alert alert-danger">@errorMessage</div>
+    }
+
+    <div class="form-group">
+        <label for="name">Name</label>
+        <InputText id="name" class="form-control" @bind-Value="@client.Name" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a href="/clients" class="btn btn-link">Cancel</a>
+</EditForm>
+
+@code {
+    [Parameter] private long Id { get; set; }
+    private ClientInputModel client = new ClientInputModel();
+    private string errorMessage;
+
+    protected override async Task OnInitAsync()
+    {
+        if (Id > 0)
+        {
+            await LoadClient();
+        }
+    }
+
+    private async Task LoadClient()
+    {
+        var url = $"clients/{Id}";
+        var model = await ApiService.GetAsync<ClientModel>(url);
+
+        client = new ClientInputModel
+        {
+            Name = model.Name
+        };
+    }
+
+    private async Task SaveClient()
+    {
+        bool success;
+
+        if (Id > 0)
+        {
+            success = await ApiService.UpdateAsync<ClientInputModel>($"clients/{Id}", client);
+        }
+        else
+        {
+            success = await ApiService.CreateAsync<ClientInputModel>("clients", client);
+        }
+
+        if (success)
+        {
+            UriHelper.NavigateTo("/clients");
+        }
+        else
+        {
+            errorMessage = "Error saving client";
+        }
+    }
+}

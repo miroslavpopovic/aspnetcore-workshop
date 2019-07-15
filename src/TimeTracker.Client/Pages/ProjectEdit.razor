@@ -1,0 +1,110 @@
+﻿@page "/projects/{id:long}/edit"
+@page "/projects/add"
+@using System.ComponentModel
+@using Microsoft.AspNetCore.Components
+@using TimeTracker.Client.Models
+@using TimeTracker.Client.Services
+@attribute [Authorize]
+@inject ApiService ApiService
+@inject IUriHelper UriHelper
+
+@if (Id == 0)
+{
+<h1>Add new project</h1>
+}
+else
+{
+<h1>Edit project @(project == null ? string.Empty : project.Name)</h1>
+}
+
+<EditForm Model="@project" OnValidSubmit="@SaveProject">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    @if (!string.IsNullOrWhiteSpace(errorMessage))
+    {
+    <div class="alert alert-danger">@errorMessage</div>
+    }
+
+    <div class="form-group">
+        <label for="name">Name</label>
+        <InputText id="name" class="form-control" @bind-Value="@project.Name" />
+    </div>
+
+    <div class="form-group">
+        <label for="clientId">Client</label>
+        <InputSelect id="clientId" class="form-control" @bind-Value="@clientId">
+            <option value="">Select client...</option>
+            @foreach (var client in clients)
+            {
+                <option value="@client.Value">@client.Name</option>
+            }
+        </InputSelect>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a href="/projects" class="btn btn-link">Cancel</a>
+</EditForm>
+
+@code {
+    [Parameter] private long Id { get; set; }
+    private string clientId = string.Empty;
+    private Lookup[] clients = new Lookup[] {};
+    private ProjectInputModel project = new ProjectInputModel();
+    private string errorMessage;
+
+    protected override async Task OnInitAsync()
+    {
+        await LoadClients();
+
+        if (Id > 0)
+        {
+            await LoadProject();
+        }
+    }
+
+    private async Task LoadClients()
+    {
+        var clientsUrl = $"clients?page=1&size={int.MaxValue}";
+        var clientsList = await ApiService.GetAsync<PagedList<ClientModel>>(clientsUrl);
+        clients = clientsList.Items.Select(x => new Lookup(x.Name, x.Id.ToString())).ToArray();
+    }
+
+    private async Task LoadProject()
+    {
+        var url = $"projects/{Id}";
+        var model = await ApiService.GetAsync<ProjectModel>(url);
+
+        project = new ProjectInputModel
+        {
+            Name = model.Name,
+            ClientId = model.ClientId
+        };
+
+        clientId = model.ClientId.ToString();
+    }
+
+    private async Task SaveProject()
+    {
+        bool success;
+        project.ClientId = long.Parse(clientId);
+
+        if (Id > 0)
+        {
+            success = await ApiService.UpdateAsync<ProjectInputModel>($"projects/{Id}", project);
+        }
+        else
+        {
+            success = await ApiService.CreateAsync<ProjectInputModel>("projects", project);
+        }
+
+        if (success)
+        {
+            UriHelper.NavigateTo("/projects");
+        }
+        else
+        {
+            errorMessage = "Error saving project";
+        }
+    }
+}

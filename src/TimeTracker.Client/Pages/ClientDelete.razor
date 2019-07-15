@@ -1,0 +1,49 @@
+@page "/clients/{id:long}/delete"
+@using System.ComponentModel
+@using Microsoft.AspNetCore.Components
+@using TimeTracker.Client.Models
+@using TimeTracker.Client.Services
+@attribute [Authorize]
+@inject ApiService ApiService
+@inject IUriHelper UriHelper
+
+<h1>Delete client @(client == null ? string.Empty : client.Name)</h1>
+
+<div class="alert alert-warning">Are you sure you want to delete this client?</div>
+
+@if (!string.IsNullOrWhiteSpace(errorMessage))
+{
+    <div class="alert alert-danger">@errorMessage</div>
+}
+
+<button type="button" class="btn btn-danger" onclick="@DeleteClient">Delete</button>
+<a href="/clients" class="btn btn-link">Cancel</a>
+
+@code {
+    [Parameter] private long Id { get; set; }
+    private ClientModel client;
+    private string errorMessage;
+
+    protected override async Task OnInitAsync()
+    {
+        await LoadClient();
+    }
+
+    private async Task LoadClient()
+    {
+        var url = $"clients/{Id}";
+        client = await ApiService.GetAsync<ClientModel>(url);
+    }
+
+    private async Task DeleteClient()
+    {
+        if (await ApiService.DeleteAsync($"clients/{client.Id}"))
+        {
+            UriHelper.NavigateTo("/clients");
+        }
+        else
+        {
+            errorMessage = "Error saving client";
+        }
+    }
+}

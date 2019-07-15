@@ -1,0 +1,65 @@
+@page  "/clients"
+@using TimeTracker.Client.Models
+@using TimeTracker.Client.Services
+@attribute [Authorize]
+@inject ApiService ApiService
+
+<div class="row">
+    <div class="col">
+        <h1>Clients</h1>
+    </div>
+    <div class="col text-right">
+        <a href="/clients/add" class="btn btn-primary"><i class="oi oi-plus"></i> Add new</a>
+    </div>
+</div>
+
+@if (clients == null)
+{
+    <div>Loading...</div>
+}
+else
+{
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Client name</th>
+                <th>&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var client in clients.Items)
+            {
+                <tr>
+                    <td>@client.Name</td>
+                    <td class="text-right">
+                        <div class="btn-group" role="group">
+                            <a href="/clients/@(client.Id)/edit" class="btn btn-light"><i class="oi oi-pencil"></i> Edit</a>
+                            <a href="/clients/@(client.Id)/delete" class="btn btn-light text-danger"><i class="oi oi-delete"></i> Delete</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <Pager Model="@clients" Loader="@LoadClients" />
+}
+
+@code {
+    PagedList<ClientModel> clients;
+
+    protected override async Task OnInitAsync()
+    {
+        await LoadClients();
+    }
+
+    private async Task LoadClients(int page = 1)
+    {
+        const int pageSize = 5;
+        var url = $"clients?page={page}&size={pageSize}";
+        clients = await ApiService.GetAsync<PagedList<ClientModel>>(url);
+
+        // State change not triggered from for loop above
+        base.StateHasChanged();
+    }
+}
