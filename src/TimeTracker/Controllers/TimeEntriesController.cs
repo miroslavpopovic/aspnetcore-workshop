@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -56,6 +57,33 @@ namespace TimeTracker.Controllers
             }
 
             return TimeEntryModel.FromTimeEntry(timeEntry);
+        }
+
+        /// <summary>
+        /// Gets a list of time entries for a specified user and month.
+        /// </summary>
+        /// <param name="userId">User id to get the entries for.</param>
+        /// <param name="year">Year of the time entry.</param>
+        /// <param name="month">Month of the time entry.</param>
+        [HttpGet("user/{userId}/{year}/{month}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(TimeEntryModel[]))]
+        public async Task<ActionResult<TimeEntryModel[]>> GetByUserAndMonth(long userId, int year, int month)
+        {
+            _logger.LogDebug($"Getting all time entries for month {year}-{month} for user with id {userId}");
+
+            var startDate = new DateTime(year, month, 1);
+            var endDate = startDate.AddMonths(1);
+
+            var timeEntries = await _dbContext.TimeEntries
+                .Include(x => x.User)
+                .Include(x => x.Project)
+                .Include(x => x.Project.Client)
+                .Where(x => x.User.Id == userId && x.EntryDate >= startDate && x.EntryDate < endDate)
+                .ToListAsync();
+
+            return timeEntries
+                .Select(TimeEntryModel.FromTimeEntry)
+                .ToArray();
         }
 
         /// <summary>

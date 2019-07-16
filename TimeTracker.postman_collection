@@ -1030,6 +1030,29 @@
 					"response": []
 				},
 				{
+					"name": "Get time entries by user and month",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}/api/time-entries/user/1/2019/07",
+							"host": [
+								"{{rootUrl}}"
+							],
+							"path": [
+								"api",
+								"time-entries",
+								"user",
+								"1",
+								"2019",
+								"07"
+							]
+						},
+						"description": "Get a page of time entries."
+					},
+					"response": []
+				},
+				{
 					"name": "Get user by id",
 					"request": {
 						"method": "GET",
@@ -1169,19 +1192,19 @@
 	],
 	"variable": [
 		{
-			"id": "823306a7-a652-4ab8-931e-b80b0041f09c",
+			"id": "85b606c3-4036-47ea-9666-292c46666496",
 			"key": "rootUrl",
 			"value": "https://localhost:44383",
 			"type": "string"
 		},
 		{
-			"id": "16e73a35-4595-47eb-b43d-9b76b7876baa",
+			"id": "d64d1b5b-c831-4da0-996f-ab96e0f3a008",
 			"key": "token",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "184d1c5f-6d2c-40e2-b337-da7c27f38315",
+			"id": "d6ebe925-3a99-404b-a17d-e3337a9b8e07",
 			"key": "adminToken",
 			"value": "",
 			"type": "string"
