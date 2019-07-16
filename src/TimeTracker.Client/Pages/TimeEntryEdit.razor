@@ -1,0 +1,209 @@
+﻿@page "/time-entries/{id:long}/edit"
+@page "/time-entries/add"
+@using System.ComponentModel
+@using Microsoft.AspNetCore.Components
+@using TimeTracker.Client.Models
+@using TimeTracker.Client.Security
+@using TimeTracker.Client.Services
+@attribute [Authorize]
+@inject ApiService ApiService
+@inject TokenAuthenticationStateProvider AuthStateProvider
+@inject IUriHelper UriHelper
+
+@if (Id == 0)
+{
+    <h1>Add new time entry</h1>
+}
+else
+{
+    <h1>Edit time entry for @(timeEntry == null ? string.Empty : timeEntry.EntryDate.ToString("MMMM d, yyyy"))</h1>
+}
+
+<EditForm Model="@timeEntry" OnValidSubmit="@SaveTimeEntry">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    @if (!string.IsNullOrWhiteSpace(errorMessage))
+    {
+    <div class="alert alert-danger">@errorMessage</div>
+    }
+
+    <div class="form-group">
+        <label for="projectId">Project</label>
+        <InputSelect id="projectId" class="form-control" @bind-Value="@projectId">
+            <option value="">Select project...</option>
+            @foreach (var project in projects)
+            {
+            <option value="@project.Value">@project.Name</option>
+            }
+        </InputSelect>
+    </div>
+
+    <div class="form-group">
+        <label for="year">Date</label>
+        <div class="row">
+            <div class="col">
+                <InputSelect id="year" class="form-control" @bind-Value="@year">
+                    <option value="2019">2019</option>
+                    <option value="2020">2020</option>
+                    <option value="2021">2021</option>
+                    <option value="2022">2022</option>
+                    <option value="2023">2023</option>
+                    <option value="2024">2024</option>
+                    <option value="2025">2025</option>
+                    <option value="2026">2026</option>
+                    <option value="2027">2027</option>
+                    <option value="2028">2028</option>
+                </InputSelect>
+            </div>
+            <div class="col">
+                <InputSelect id="month" class="form-control" @bind-Value="@month">
+                    <option value="1">January</option>
+                    <option value="2">February</option>
+                    <option value="3">March</option>
+                    <option value="4">April</option>
+                    <option value="5">May</option>
+                    <option value="6">June</option>
+                    <option value="7">July</option>
+                    <option value="8">August</option>
+                    <option value="9">September</option>
+                    <option value="10">October</option>
+                    <option value="11">November</option>
+                    <option value="12">December</option>
+                </InputSelect>
+            </div>
+            <div class="col">
+                <InputSelect id="day" class="form-control" @bind-Value="@day">
+                    <option value="1">1st</option>
+                    <option value="2">2nd</option>
+                    <option value="3">3rd</option>
+                    <option value="4">4th</option>
+                    <option value="5">5th</option>
+                    <option value="6">6th</option>
+                    <option value="7">7th</option>
+                    <option value="8">8th</option>
+                    <option value="9">9th</option>
+                    <option value="10">10th</option>
+                    <option value="11">11th</option>
+                    <option value="12">12th</option>
+                    <option value="13">13th</option>
+                    <option value="14">14th</option>
+                    <option value="15">15th</option>
+                    <option value="16">16th</option>
+                    <option value="17">17th</option>
+                    <option value="18">18th</option>
+                    <option value="19">19th</option>
+                    <option value="20">20th</option>
+                    <option value="21">21st</option>
+                    <option value="22">22nd</option>
+                    <option value="23">23rd</option>
+                    <option value="24">24th</option>
+                    <option value="25">25th</option>
+                    <option value="26">26th</option>
+                    <option value="27">27th</option>
+                    <option value="28">28th</option>
+                    <option value="29">29th</option>
+                    <option value="30">30th</option>
+                    <option value="31">31th</option>
+                </InputSelect>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="hours">Hours</label>
+        <InputNumber id="name" class="form-control" @bind-Value="@timeEntry.Hours" />
+    </div>
+
+    <div class="form-group">
+        <label for="description">Description</label>
+        <InputTextArea id="description" class="form-control" @bind-Value="@timeEntry.Description" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a href="/" class="btn btn-link">Cancel</a>
+</EditForm>
+
+@code {
+    [Parameter] private long Id { get; set; }
+    private string projectId = string.Empty;
+    private Lookup[] projects = new Lookup[] {};
+    private TimeEntryInputModel timeEntry = new TimeEntryInputModel();
+    private string errorMessage;
+    private string year;
+    private string month;
+    private string day;
+
+    protected override async Task OnInitAsync()
+    {
+        await LoadProjects();
+
+        if (Id > 0)
+        {
+            await LoadTimeEntry();
+        }
+        else
+        {
+            timeEntry = new TimeEntryInputModel
+            {
+                UserId = (await AuthStateProvider.GetUserAsync()).Id,
+                EntryDate = DateTime.Today
+            };
+            year = DateTime.Today.Year.ToString();
+            month = DateTime.Today.Month.ToString();
+            day = DateTime.Today.Day.ToString();
+        }
+    }
+
+    private async Task LoadProjects()
+    {
+        var projectsUrl = $"projects?page=1&size={int.MaxValue}";
+        var projectsList = await ApiService.GetAsync<PagedList<ProjectModel>>(projectsUrl);
+        projects = projectsList.Items.Select(x => new Lookup($"{x.ClientName} - {x.Name}", x.Id.ToString())).ToArray();
+    }
+
+    private async Task LoadTimeEntry()
+    {
+        var url = $"time-entries/{Id}";
+        var model = await ApiService.GetAsync<TimeEntryModel>(url);
+
+        timeEntry = new TimeEntryInputModel
+        {
+            UserId = model.UserId,
+            ProjectId = model.ProjectId,
+            EntryDate = model.EntryDate,
+            Hours = model.Hours,
+            Description = model.Description
+        };
+
+        projectId = model.ProjectId.ToString();
+        year = model.EntryDate.Year.ToString();
+        month = model.EntryDate.Month.ToString();
+        day = model.EntryDate.Day.ToString();
+    }
+
+    private async Task SaveTimeEntry()
+    {
+        bool success;
+        timeEntry.ProjectId = long.Parse(projectId);
+        timeEntry.EntryDate = new DateTime(int.Parse(year), int.Parse(month), int.Parse(day));
+
+        if (Id > 0)
+        {
+            success = await ApiService.UpdateAsync<TimeEntryInputModel>($"time-entries/{Id}", timeEntry);
+        }
+        else
+        {
+            success = await ApiService.CreateAsync<TimeEntryInputModel>("time-entries", timeEntry);
+        }
+
+        if (success)
+        {
+            UriHelper.NavigateTo("/");
+        }
+        else
+        {
+            errorMessage = "Error saving time entry";
+        }
+    }
+}

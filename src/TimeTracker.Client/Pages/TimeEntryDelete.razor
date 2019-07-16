@@ -1,0 +1,49 @@
+@page "/time-entries/{id:long}/delete"
+@using System.ComponentModel
+@using Microsoft.AspNetCore.Components
+@using TimeTracker.Client.Models
+@using TimeTracker.Client.Services
+@attribute [Authorize]
+@inject ApiService ApiService
+@inject IUriHelper UriHelper
+
+<h1>Delete time entry for @(timeEntry == null ? string.Empty : timeEntry.EntryDate.ToString("MMMM d, yyyy"))</h1>
+
+<div class="alert alert-warning">Are you sure you want to delete this time entry?</div>
+
+@if (!string.IsNullOrWhiteSpace(errorMessage))
+{
+    <div class="alert alert-danger">@errorMessage</div>
+}
+
+<button type="button" class="btn btn-danger" onclick="@DeleteTimeEntry">Delete</button>
+<a href="/time-entries" class="btn btn-link">Cancel</a>
+
+@code {
+    [Parameter] private long Id { get; set; }
+    private TimeEntryModel timeEntry;
+    private string errorMessage;
+
+    protected override async Task OnInitAsync()
+    {
+        await LoadTimeEntry();
+    }
+
+    private async Task LoadTimeEntry()
+    {
+        var url = $"time-entries/{Id}";
+        timeEntry = await ApiService.GetAsync<TimeEntryModel>(url);
+    }
+
+    private async Task DeleteTimeEntry()
+    {
+        if (await ApiService.DeleteAsync($"time-entries/{timeEntry.Id}"))
+        {
+            UriHelper.NavigateTo("/time-entries");
+        }
+        else
+        {
+            errorMessage = "Error saving time entry";
+        }
+    }
+}
