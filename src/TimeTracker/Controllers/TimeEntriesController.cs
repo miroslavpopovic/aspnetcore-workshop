@@ -79,6 +79,7 @@ namespace TimeTracker.Controllers
                 .Include(x => x.Project)
                 .Include(x => x.Project.Client)
                 .Where(x => x.User.Id == userId && x.EntryDate >= startDate && x.EntryDate < endDate)
+                .OrderBy(x => x.EntryDate)
                 .ToListAsync();
 
             return timeEntries

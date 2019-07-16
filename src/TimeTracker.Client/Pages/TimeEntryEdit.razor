@@ -1,6 +1,7 @@
 ﻿@page "/time-entries/{id:long}/edit"
 @page "/time-entries/add"
 @using System.ComponentModel
+@using System.ComponentModel.DataAnnotations
 @using Microsoft.AspNetCore.Components
 @using TimeTracker.Client.Models
 @using TimeTracker.Client.Security
@@ -34,7 +35,7 @@ else
             <option value="">Select project...</option>
             @foreach (var project in projects)
             {
-            <option value="@project.Value">@project.Name</option>
+                <option value="@project.Value">@project.Name</option>
             }
         </InputSelect>
     </div>
@@ -44,6 +45,7 @@ else
         <div class="row">
             <div class="col">
                 <InputSelect id="year" class="form-control" @bind-Value="@year">
+                    <option value="">Select year...</option>
                     <option value="2019">2019</option>
                     <option value="2020">2020</option>
                     <option value="2021">2021</option>
@@ -58,6 +60,7 @@ else
             </div>
             <div class="col">
                 <InputSelect id="month" class="form-control" @bind-Value="@month">
+                    <option value="">Select month...</option>
                     <option value="1">January</option>
                     <option value="2">February</option>
                     <option value="3">March</option>
@@ -74,6 +77,7 @@ else
             </div>
             <div class="col">
                 <InputSelect id="day" class="form-control" @bind-Value="@day">
+                    <option value="">Select day...</option>
                     <option value="1">1st</option>
                     <option value="2">2nd</option>
                     <option value="3">3rd</option>
@@ -130,9 +134,9 @@ else
     private Lookup[] projects = new Lookup[] {};
     private TimeEntryInputModel timeEntry = new TimeEntryInputModel();
     private string errorMessage;
-    private string year;
-    private string month;
-    private string day;
+    private string year = string.Empty;
+    private string month = string.Empty;
+    private string day = string.Empty;
 
     protected override async Task OnInitAsync()
     {
@@ -147,7 +151,8 @@ else
             timeEntry = new TimeEntryInputModel
             {
                 UserId = (await AuthStateProvider.GetUserAsync()).Id,
-                EntryDate = DateTime.Today
+                EntryDate = DateTime.Today,
+                Hours = 1
             };
             year = DateTime.Today.Year.ToString();
             month = DateTime.Today.Month.ToString();
