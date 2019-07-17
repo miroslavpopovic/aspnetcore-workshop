@@ -255,3 +255,69 @@
 
 ## 10 Blazor client
 
+- Introduction to Blazor presentation
+- Create new Blazor (client-side) app - `TimeTracker.Client`
+    - Set it up as a startup project
+- Authentication
+    - Mention that this is a preview of Blazor - future breaking changes are possible
+    - Explain how we are simulating login
+    - Add `Models.UserModel` class
+    - Create `Security.TokenAuthenticationStateProvider`
+        - Explain what it does
+    - Add `Extensions.SecurityExtensions`
+        - Call it from `Startup.ConfigureServices`
+    - Modify `App.razor` to add `<CascadingAuthenticationState>`
+        - Explain
+    - Modify the main `_Imports.razor` 
+        - add `@using Microsoft.AspNetCore.Authorization`
+    - Add `wwwroot/scripts/localStorage.js`
+        - Include it in `wwwroot/index.html`
+    - Add `@attribute [Authorize]` attribute to some pages
+- Login page
+    - Enable CORS in API's `Startup`
+        - Explain Cors
+        - `services.AddCors()` before `AddControllers()`
+        - `appUseCors()` before `UseOpenApi()`
+    - Modify `MainLayout.razor`
+        - Use `<AuthorizeView>`
+        - Add `Login` and `Logout` links
+        - Implement `Logout` by setting token and user to `null`
+    - Add `Config` class to hold all the configuration constants (e.g. URLs)
+    - Add `Services.ApiService` with `GetAsync` method
+        - Explain `HttpClient` and how we get token
+    - Implement `Login.razor` page
+        - Explain `EditForm` component and its `Model` property
+        - Explain buttons and `onclick` handlers
+        - Explain `Login` methods
+        - Explain how errors are displayed
+- Preparing for custom pages
+    - Comment out `LimitingMiddleware`
+    - Remove `Counter.razor` and `FetchData.razor`
+    - Modify links in `NavMenu.razor`
+    - Refactor `ApiService` - add `SendAuthorizedRequest` private method
+    - Implement create, update and delete methods
+- Adding pages for users
+    - Create `Users.razor`
+        - Explain routing, DI, `OnInitAsync`...
+    - Implement `Shared/Pager.razor` component
+        - Explain parameters and how they are passed
+        - Explain usage of `PagedList<T>`
+        - Explain `Loader` function
+    - Add `Models` folder, copy models from API project and clean up
+    - Add data annotations validation
+    - Mention how this could be moved to shared project
+    - Add create and edit page and explain it
+    - Add delete user page
+- Leave attendees to implement all pages for clients and projects, or copy-paste from existing ones
+    - Explain loading lookups and using `InputSelect` component
+    - Implement `Models.Lookup` class
+- Adding pages for time entries
+    - Only add/edit and delete
+    - Explain date selection
+- Home page dashboard page
+    - Explain search
+    - Add new API endpoint `TimeEntriesController.GetByUserAndMonth` and explain
+
+## Show resources page
+
+## Close up!

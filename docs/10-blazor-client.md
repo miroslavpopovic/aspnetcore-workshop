@@ -252,7 +252,7 @@ public static class Config
 
 Note: Use the correct root for your API above.
 
-Aaaand, let's have one more ingredient before writing the login page itself. A service that will encapsulate making HTTP requests to API, using the current token. Add it under the `Service` folder/namespace.
+Aaaand, let's have one more ingredient before writing the login page itself. A service that will encapsulate making HTTP requests to API, using the current token. Add it under the `Services` folder/namespace.
 
 ```c#
 public class ApiService
@@ -369,6 +369,8 @@ Looks rather simple, doesn't it? We are using `<EditForm>` component which point
 `LogIn` method is containing the login logic. It creates a URL and makes a call to token endpoint. The token returned is used for loading the user with the given ID. If user is successfully retrieved, both token and user instance are saved locally using `TokenAuthenticationStateProvider.SetTokenAndUserAsync()`. After that, the user is redirected to home page.
 
 If any exception happens during token or user request, the exception message is retrieved and saved locally, and also bound to be displayed on a page as alert. 
+
+## Adding pages
 
 ### Preparing for custom pages
 
@@ -921,9 +923,290 @@ public class Lookup
 
 For time entries, we'll implement edit and delete pages only. The page with the list of time entries is not necessary. Instead, the dashboard page (home page) will contain a list of time entries for the current month and current user.
 
+We won't spend any time on `TimeEntryDelete.razor` page, since it's the same as other delete pages.
+
+`TimeEntryEdit.razor` is a bit more interesting. It will not have the ability to set up the user. The user that is currently logged in will be automatically set when creating new time entries, by using `AuthStateProvider.GetUserAsync()` and reading id of that user.
+
+```c#
+timeEntry = new TimeEntryInputModel
+{
+    UserId = (await AuthStateProvider.GetUserAsync()).Id,
+    EntryDate = DateTime.Today,
+    Hours = 1
+};
+```
+
+Edit page will also have date entry defined using three `InputSelect` components for year, month and day. Below is a relevant part of the edit page. For the full page, check out the source code in this repository.
+
+```razor
+<div class="form-group">
+    <label for="year">Date</label>
+    <div class="row">
+        <div class="col">
+            <InputSelect id="year" class="form-control" @bind-Value="@year">
+                <option value="">Select year...</option>
+                <option value="2019">2019</option>
+                <option value="2020">2020</option>
+                <option value="2021">2021</option>
+                <option value="2022">2022</option>
+                <option value="2023">2023</option>
+                <option value="2024">2024</option>
+                <option value="2025">2025</option>
+                <option value="2026">2026</option>
+                <option value="2027">2027</option>
+                <option value="2028">2028</option>
+            </InputSelect>
+        </div>
+        <div class="col">
+            <InputSelect id="month" class="form-control" @bind-Value="@month">
+                <option value="">Select month...</option>
+                <option value="1">January</option>
+                <option value="2">February</option>
+                <option value="3">March</option>
+                <option value="4">April</option>
+                <option value="5">May</option>
+                <option value="6">June</option>
+                <option value="7">July</option>
+                <option value="8">August</option>
+                <option value="9">September</option>
+                <option value="10">October</option>
+                <option value="11">November</option>
+                <option value="12">December</option>
+            </InputSelect>
+        </div>
+        <div class="col">
+            <InputSelect id="day" class="form-control" @bind-Value="@day">
+                <option value="">Select day...</option>
+                <option value="1">1st</option>
+                <option value="2">2nd</option>
+                <option value="3">3rd</option>
+                <option value="4">4th</option>
+                <option value="5">5th</option>
+                <option value="6">6th</option>
+                <option value="7">7th</option>
+                <option value="8">8th</option>
+                <option value="9">9th</option>
+                <option value="10">10th</option>
+                <option value="11">11th</option>
+                <option value="12">12th</option>
+                <option value="13">13th</option>
+                <option value="14">14th</option>
+                <option value="15">15th</option>
+                <option value="16">16th</option>
+                <option value="17">17th</option>
+                <option value="18">18th</option>
+                <option value="19">19th</option>
+                <option value="20">20th</option>
+                <option value="21">21st</option>
+                <option value="22">22nd</option>
+                <option value="23">23rd</option>
+                <option value="24">24th</option>
+                <option value="25">25th</option>
+                <option value="26">26th</option>
+                <option value="27">27th</option>
+                <option value="28">28th</option>
+                <option value="29">29th</option>
+                <option value="30">30th</option>
+                <option value="31">31th</option>
+            </InputSelect>
+        </div>
+    </div>
+</div>
+```
+
+Those `InputSelect` components are value bound to three fields in code:
+
+```c#
+private string year = string.Empty;
+private string month = string.Empty;
+private string day = string.Empty;
+```
+
+When loading the existing time entry, or creating a new one, those fields are initialized like this:
+
+```c#
+// When adding new time entry
+year = DateTime.Today.Year.ToString();
+month = DateTime.Today.Month.ToString();
+day = DateTime.Today.Day.ToString();
+
+// When editing existing time entry
+year = model.EntryDate.Year.ToString();
+month = model.EntryDate.Month.ToString();
+day = model.EntryDate.Day.ToString();
+```
+
+When time entry is saved, the `TimeEntry.EntryDate` is set from those fields:
+
+```c#
+timeEntry.EntryDate = 
+    new DateTime(int.Parse(year), int.Parse(month), int.Parse(day));
+```
+
 ### Home page dashboard
 
-TODO
+Finally, we came to the conclusion. The last page we're going to implement is a dashboard with the time entries and summary for one month. This is how it should look like:
+
+![Time Tracker Dashboard](images/blazor-dashboard.png)
+
+We will modify the `Index.razor` page to look like this. The top part of the page layout will be a search form with month and year selection, plus the ability to create a new time entry.
+
+```razor
+<EditForm Model="@this" OnValidSubmit="@LoadTimeEntries">
+    <div class="row">
+        <div class="col text-right">
+            <label for="year" class="form-control-plaintext">Month: </label>
+        </div>
+        <div class="col">
+            <InputSelect id="year" class="form-control" @bind-Value="@year">
+                <option value="2019">2019</option>
+                <option value="2020">2020</option>
+                <option value="2021">2021</option>
+                <option value="2022">2022</option>
+                <option value="2023">2023</option>
+                <option value="2024">2024</option>
+                <option value="2025">2025</option>
+                <option value="2026">2026</option>
+                <option value="2027">2027</option>
+                <option value="2028">2028</option>
+            </InputSelect>
+        </div>
+        <div class="col">
+            <InputSelect id="month" class="form-control" @bind-Value="@month">
+                <option value="1">January</option>
+                <option value="2">February</option>
+                <option value="3">March</option>
+                <option value="4">April</option>
+                <option value="5">May</option>
+                <option value="6">June</option>
+                <option value="7">July</option>
+                <option value="8">August</option>
+                <option value="9">September</option>
+                <option value="10">October</option>
+                <option value="11">November</option>
+                <option value="12">December</option>
+            </InputSelect>
+        </div>
+        <div class="col">
+            <button type="submit" class="btn btn-primary">Search</button>
+            <a href="/time-entries/add" class="btn btn-link">Add entry</a>
+        </div>
+    </div>
+</EditForm>
+```
+
+It should be pretty clear how the markup above will function. Month and year selection is the same as in `TimeEntryEdit.razor`.
+
+The central part of the page is reserved for a table of time entries and a summary below.
+
+```razor
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Client name</th>
+            <th>Project name</th>
+            <th>Date</th>
+            <th>Rate</th>
+            <th>Hours</th>
+            <th>Total</th>
+            <th>&nbsp;</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var timeEntry in timeEntries)
+        {
+            <tr>
+                <td>@timeEntry.ClientName</td>
+                <td>@timeEntry.ProjectName</td>
+                <td>@timeEntry.EntryDate.ToString("yyyy-MM-dd")</td>
+                <td>@timeEntry.HourRate</td>
+                <td>@timeEntry.Hours</td>
+                <td>@(timeEntry.HourRate * timeEntry.Hours)</td>
+                <td class="text-right">
+                    <div class="btn-group" role="group">
+                        <a href="/time-entries/@(timeEntry.Id)/edit" class="btn btn-light"><i class="oi oi-pencil"></i> Edit</a>
+                        <a href="/time-entries/@(timeEntry.Id)/delete" class="btn btn-light text-danger"><i class="oi oi-delete"></i> Delete</a>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="4" class="text-right font-weight-bold">Totals: </td>
+            <td class="font-weight-bold">@totalHours</td>
+            <td class="font-weight-bold">@totalAmount</td>
+        </tr>
+    </tfoot>
+</table>
+```
+
+To get the data here, we need to have another endpoint in our TimeTracker API, that will allow us to query the data per user, year and month. Let's add that now to `TimeEntriesController`.
+
+```c#
+/// <summary>
+/// Gets a list of time entries for a specified user and month.
+/// </summary>
+/// <param name="userId">User id to get the entries for.</param>
+/// <param name="year">Year of the time entry.</param>
+/// <param name="month">Month of the time entry.</param>
+[HttpGet("user/{userId}/{year}/{month}")]
+[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(TimeEntryModel[]))]
+public async Task<ActionResult<TimeEntryModel[]>> GetByUserAndMonth(
+    long userId, int year, int month)
+{
+    _logger.LogDebug(
+        $"Getting all time entries for month {year}-{month} for user with id {userId}");
+
+    var startDate = new DateTime(year, month, 1);
+    var endDate = startDate.AddMonths(1);
+
+    var timeEntries = await _dbContext.TimeEntries
+        .Include(x => x.User)
+        .Include(x => x.Project)
+        .Include(x => x.Project.Client)
+        .Where(x => x.User.Id == userId && x.EntryDate >= startDate && x.EntryDate < endDate)
+        .OrderBy(x => x.EntryDate)
+        .ToListAsync();
+
+    return timeEntries
+        .Select(TimeEntryModel.FromTimeEntry)
+        .ToArray();
+}
+```
+
+Here we are creating `startDate` and `endDate` from the given `year` and `month` parameter and use it in `Where` clause to get time entries for a single month: `x.EntryDate >= startDate && x.EntryDate < endDate`. Note: you can also add this request to your Postman collection and try it. The URL is `/api/time-entries/user/<userId>/<year>/<month>`.
+
+Great, now we have the endpoint, so let's call it from our `Index.razor` page. The call will be made on page initialization and also each time the *Search* button is clicked. This is the `@code` part of the `Index.razor` page:
+
+```c#
+private TimeEntryModel[] timeEntries;
+private string errorMessage;
+private string year;
+private string month;
+private decimal totalAmount;
+private decimal totalHours;
+
+protected override async Task OnInitAsync()
+{
+    year = DateTime.Today.Year.ToString();
+    month = DateTime.Today.Month.ToString();
+
+    await LoadTimeEntries();
+}
+
+private async Task LoadTimeEntries()
+{
+    var userId = (await AuthStateProvider.GetUserAsync()).Id;
+    var url = $"time-entries/user/{userId}/{int.Parse(year)}/{int.Parse(month)}";
+    timeEntries = await ApiService.GetAsync<TimeEntryModel[]>(url);
+
+    totalAmount = timeEntries.Sum(x => x.Hours * x.HourRate);
+    totalHours = timeEntries.Sum(x => x.Hours);
+}
+```
+
+That's it! We have reached the end of our journey. Hope you liked it!
 
 -------
 
