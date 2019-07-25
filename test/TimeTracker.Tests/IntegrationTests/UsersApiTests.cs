@@ -15,15 +15,16 @@ namespace TimeTracker.Tests.IntegrationTests
     public class UsersApiTests : IDisposable
     {
         private readonly HttpClient _client;
+        private readonly SqliteConnection _connection;
         private readonly string _nonAdminToken;
         private readonly string _adminToken;
-        private readonly SqliteConnection _connection;
 
         public UsersApiTests()
         {
             const string issuer = "http://localhost:44383";
             const string key = "some-long-secret-key";
 
+            // Must initialize and open Sqlite connection in order to keep in-memory database tables
             _connection = new SqliteConnection("DataSource=:memory:");
             _connection.Open();
 
@@ -32,7 +33,6 @@ namespace TimeTracker.Tests.IntegrationTests
             var server = new TestServer(new WebHostBuilder()
                 .UseSetting("Tokens:Issuer", issuer)
                 .UseSetting("Tokens:Key", key)
-                //.UseSetting("ConnectionStrings:DefaultConnection", "DataSource=:memory:")
                 .UseStartup<Startup>()
                 .UseUrls("https://localhost:44383"))
             {

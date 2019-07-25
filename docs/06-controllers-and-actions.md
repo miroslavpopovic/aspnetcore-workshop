@@ -305,7 +305,7 @@ Before we start implementing our controllers, we should take a moment to conside
 
 ### 1. Using `DbContext` class directly
 
-This is the most simple case, and hence we will use that in our sample. The con is that we won't be able to do proper unit testing, but nore on that in a future part.
+This is the most simple case, and hence we will use that in our sample. The con is that we won't be able to do proper unit testing, but more on that in a future part.
 
 ### 2. Using repositories
 

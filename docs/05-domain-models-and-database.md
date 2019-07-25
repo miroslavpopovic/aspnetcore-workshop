@@ -20,7 +20,7 @@ public class User
 
     [Required]
     public string Name { get; set; }
-    
+
     public decimal HourRate { get; set; }
 }
 ```
@@ -100,6 +100,8 @@ Our application need to know where the database is in order to use it. For that,
 
 In order to use access database, we will use [Entity Framework Core](https://docs.microsoft.com/en-us/ef/core/). EF Core is an object-relational mapper (O/RM), enabling .NET developers to work with a database using .NET objects, and eliminating the need for most of the data-access code they usually need to write. We won't go into EF Core details here, as it's not our focus. You just need to know that EF Core is an ORM that knows how to map your domain objects into database tables. We will configure it to use our database and write some code to read from and write to the database.
 
+*Warning: Entity Framework Core has a lot of issues in current preview version. It's possible that you will run into those issues too. Everything should be fixed in time for final release of .NET Core 3.0.*
+
 For now, let's install EF Core via NuGet. We'll install SQLite provider for EF Core which will in turn install EF Core as a dependency. Installing the NuGet package can be done through Visual Studio interface, NuGet Package Manager Console, .NET CLI tool which we already saw (`dotnet add package ...`), etc. Alternatively, it can be added manually to `.csproj` file. We'll use Visual Studio NuGet Package Manager interface for now.
 
 Right click on project in *Solution Explorer*, select *Manage NuGet Packages...*. Type `Microsoft.EntityFrameworkCore.Sqlite` on the *Browse* tab. Make sure that *Include prerelease* is checked as we are working with .NET Core 3.0 preview. Click *Install* on the correct package.
@@ -113,7 +115,7 @@ Now we need to create a `DbContext` class. `DbContext` instance represents a ses
 ```c#
 public class TimeTrackerDbContext : DbContext
 {
-    public TimeTrackerDbContext(DbContextOptions<TimeTrackerDbContext> options) 
+    public TimeTrackerDbContext(DbContextOptions<TimeTrackerDbContext> options)
         : base(options)
     {
     }
@@ -127,7 +129,7 @@ public class TimeTrackerDbContext : DbContext
 
 Our `TimeTrackerDbContext` inherits from base `DbContext` and initialize some options in the constructor.
 
-Finally, open your `Startup` class and add the following at the top of your `ConfigureServices` method to add our class to service registration and enable it for depencency injection:
+Finally, open your `Startup` class and add the following at the top of your `ConfigureServices` method to add our class to service registration and enable it for dependency injection:
 
 ```c#
 services.AddDbContext<TimeTrackerDbContext>(options =>
@@ -138,7 +140,7 @@ Done, we have set up our database!
 
 ## Migrations
 
-While working with databases, it's a good practice not to expect that the database exists and up to date with the current schema (database objects) the application is using. When working with EF Core, we can use EF Core Migrations to create initial schema of our database and to version it throughout all the changes we have in our domain model. E.g. if we add a new property to our domain model class, we also need to have a new column in the corresponding database table.
+While working with databases, it's a good practice not to expect that the database exists and is up to date with the current schema (database objects) the application is using. When working with EF Core, we can use EF Core Migrations to create initial schema of our database and to version it throughout all the changes we have in our domain model. E.g. if we add a new property to our domain model class, we also need to have a new column in the corresponding database table.
 
 EF Core Migrations are done using EF Core tools and we need to install them. We'll do a local tool installation. Since we haven't used tools before in our project, let's first create a tool manifest file. `dotnet-tools.json` manifest file will contain info about all the tools our application is using and their versions.
 

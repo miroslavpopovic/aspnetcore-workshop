@@ -58,23 +58,23 @@ Other templates you can try are `angular`, `react`, `grpc`, `worker` and `server
 
 ### New Project dialog
 
-The latest version of Visual Studio has a new redesigned New Project dialog where you can pick and configure all the templates we have mentiond above, when we tried `dotnet` CLI.
+The latest version of Visual Studio has a new redesigned New Project dialog where you can pick and configure all the templates we have mentioned above, when we tried `dotnet` CLI.
 
 ![New Project Dialog](images/vs-new-project-dialog.png)
 
-When craeting a new project in Visual Studio, you have the ability to select the location and define a solution name. Solution is a collection of projects.
+When creating a new project in Visual Studio, you have the ability to select the location and define a solution name. Solution is a collection of projects.
 
 ![New ASP.NET Core Dialog](images/vs-new-aspnetcore.png)
 
-In the current preview of .NET Core 3.0, all ASP.NET Core project templates, together with Grpc and Worker, are under ASP.NET Core Web Application group.
+In the current preview of .NET Core 3.0, all ASP.NET Core project templates, together with Grpc and Worker, are under *ASP.NET Core Web Application* group. They are also available separately. Use the filter on top to narrow the search.
 
 ![New ASP.NET Core Dialog](images/vs-new-aspnetcore-2.png)
 
 *Empty* and *API* projects are the templates that we have previously created with `dotnet new web` and `dotnet new webapi` CLI commands. *Web Application (Model-View-Controller)* is the MVC template we used before with `dotnet new mvc` CLI command. *Web Application* is a Razor Pages template. The concept is similar to MVC template, but it's been using events handling model, instead of request response. You can find more about Razor Pages in the [documentation](https://docs.microsoft.com/en-us/aspnet/core/razor-pages/?view=aspnetcore-3.0&tabs=visual-studio). Other templates should be self explanatory.
 
-You can notice options on the right side of dialog. Not all templates support these options. 
+You can notice options on the right side of dialog. Not all templates support these options.
 
-With *Authentication*, you select how users would be authenticated in your application - No Authentication, Individual User Account, Work or School Account or Windows Authentication. *Individual User Account* is an option that we have used above when creating new MVC application via CLI: `dotnet new mvc --auth Individual`. 
+With *Authentication*, you select how users would be authenticated in your application - No Authentication, Individual User Account, Work or School Account or Windows Authentication. *Individual User Account* is an option that we have used above when creating new MVC application via CLI: `dotnet new mvc --auth Individual`.
 
 *Configure for HTTPS* allow your application to support (and favor) HTTPS protocol, in addition to HTTP.
 
@@ -94,7 +94,7 @@ Next dialog will enable you to choose which files you want to override (i.e. Log
 
 This will generate a lot of files under your Identity area. Note that ASP.NET Core Identity pages are implemented using Razor Pages that we have mentioned above.
 
-A specially interesting file is `Account\Manage\EnableAuthenticator.cshtml`. It contains the instruction on how to add third-party QR-code generator. Use that as an exerecise.
+A specially interesting file is `Account\Manage\EnableAuthenticator.cshtml`. It contains the instruction on how to add third-party QR-code generator. Use that as an exercise.
 
 Running the application is as simple as pressing `F5` key. With it, a debugger will be started and the application will run under IIS Express server (by default). The defaults are different when project is created from the CLI without specifying any arguments.
 

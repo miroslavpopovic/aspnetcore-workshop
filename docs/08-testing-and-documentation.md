@@ -4,7 +4,7 @@ In this part, we'll cover unit and integration testing of our controllers, as we
 
 ## Unit and integration testing
 
-What is the difference between unit and integration testing? 
+What is the difference between unit and integration testing?
 
 With unit testing, you are testing a single unit of functionality of your application, usually a class, without the other parts affecting the test result. So the test is done in isolation. No other units nor their functionality will be triggered. In order to achieve that, if the class has dependencies, we are using test doubles (fakes, mocks or stubs - there's [a difference](https://blog.pragmatists.com/test-doubles-fakes-mocks-and-stubs-1a7491dfa3da) between these, but it's out of the scope of this workshop). This is where Dependency Injection really pays off. Usually, all the class dependencies are defined through constructor injection and are using interfaces. With that, it's easy to introduce test doubles. We'll unit test our controllers by giving them fake dependencies.
 
@@ -32,7 +32,7 @@ Now add the reference to `TimeTracker` project. Right click on the `TimeTracker.
 
 Add a new folder in the project named `UnitTests`. Add a new class in it named `UsersControllerTests`. So, the plan is to create some unit tests for `UsersController`. The code for testing other controllers would be pretty similar, and we'll leave that as an exercise to the reader / attendee.
 
-Depending on how your controllers are written, it can be easy, hard or nearly impossible to write unit tests. Controllers and action methods should not have a lot of logic. They should accept request, validate input models and handle it to some other service for processing. In our case, we only have EF Core `DbContext` as a service. When that service returns a response, action method should format the response accordingly and return to the caller. 
+Depending on how your controllers are written, it can be easy, hard or nearly impossible to write unit tests. Controllers and action methods should not have a lot of logic. They should accept request, validate input models and handle it to some other service for processing. In our case, we only have EF Core `DbContext` as a service. When that service returns a response, action method should format the response accordingly and return to the caller.
 
 Basically, controllers should behave as a kind of orchestrators. If they are defined like that it's very easy to unit test them. You call action method, giving it the input parameters and you check whether result is of correct HTTP status code and if it has expected body. That's it.
 
@@ -118,10 +118,9 @@ public class UsersControllerTests
         _controller = new UsersController(dbContext, logger);
     }
 
-    [Fact]
+    [Fact(Skip = "EF Core Preview issues - looking for entity with non-existing ID throws null reference exception")]
     public async Task GetById_IdIsNonExisting_ReturnsNotFoundResult()
     {
-        // EF Core Preview 6 issues - this will throw NullReferenceException
         var result = await _controller.GetById(0);
 
         Assert.IsType<NotFoundResult>(result);
@@ -129,9 +128,9 @@ public class UsersControllerTests
 }
 ```
 
-Note those pesky comments and extra lines above? It's because EF Core 3.0 Preview 6 has a lot of issues, which are clearly stated in [announcement post](https://devblogs.microsoft.com/dotnet/announcing-entity-framework-core-3-0-preview-6-and-entity-framework-6-3-preview-6/). This will be fixed with next release.
+Note those pesky comments and extra lines above? It's because EF Core 3.0 Preview 6 has a lot of issues, which are clearly stated in [announcement post](https://devblogs.microsoft.com/dotnet/announcing-entity-framework-core-3-0-preview-6-and-entity-framework-6-3-preview-6/). This will be fixed with next release. For now, we have added *Skip* message to the `[Fact]`.
 
-Run the test explorer in Visual Studio - *Test > Windows > Test Explorer* and select *Run All Tests*.
+Run the test explorer in Visual Studio - *Test > Windows > Test Explorer* and select *Run All Tests*. Note that your test should be ignored, and not displayed as successful.
 
 ![Test Explorer](images/vs-test-explorer.png)
 
@@ -187,10 +186,9 @@ public async Task GetPage_SecondPage_ReturnsExpectedResult()
 And here are some tests for deleting users:
 
 ```c#
-[Fact]
+[Fact(Skip = "EF Core Preview issues - looking for entity with non-existing ID throws null reference exception")]
 public async Task Delete_IdIsNotExisting_ReturnsNotFoundResult()
 {
-    // EF Core Preview 6 issues - this will throw NullReferenceException
     var result = await _controller.Delete(0);
 
     Assert.IsType<NotFoundResult>(result);
@@ -209,9 +207,22 @@ Tests for other methods can be implemented the same. Same goes for testing other
 
 ### Adding Users API integration tests
 
-Now let's add some integration tests that will test the HTTP surface of our APIs. 
+Now let's add some integration tests that will test the HTTP surface of our APIs.
 
 For this type of testing, we'll need to have a test server. ASP.NET Core is providing that in `Microsoft.AspNetCore.TestHost` NuGet package. Install it to the `TimeTracker.Tests` project (use prerelease).
+
+We'll need to create a small change in our `Startup` class in order to configure Sqlite differently for testing purpose. First, add the following line at the top of `Startup` class:
+
+```c#
+public static Action<IConfiguration, DbContextOptionsBuilder> ConfigureDbContext = (configuration, options) =>
+    options.UseSqlite(configuration.GetConnectionString("DefaultConnection"));
+```
+
+This will enable us to use a different configuration for DbContext from our tests. Then, modify the `AddDbContext` line in `Startup.ConfigureServices`, like this:
+
+```c#
+services.AddDbContext<TimeTrackerDbContext>(options => ConfigureDbContext(Configuration, options));
+```
 
 Add a new folder named `IntegrationTests` and in it `UsersApiTests` class. We'll also use constructor to initialize the things all our tests need - an `HttpClient` instance that will call our test server and two tokens, one for admin and one for non-admin access.
 
@@ -219,6 +230,7 @@ Add a new folder named `IntegrationTests` and in it `UsersApiTests` class. We'll
 public class UsersApiTests
 {
     private readonly HttpClient _client;
+    private readonly SqliteConnection _connection;
     private readonly string _nonAdminToken;
     private readonly string _adminToken;
 
@@ -227,15 +239,24 @@ public class UsersApiTests
         const string issuer = "http://localhost:44383";
         const string key = "some-long-secret-key";
 
+        // Must initialize and open Sqlite connection in order to keep in-memory database tables
+        _connection = new SqliteConnection("DataSource=:memory:");
+        _connection.Open();
+
+        Startup.ConfigureDbContext = (configuration, builder) => builder.UseSqlite(_connection);
+
         var server = new TestServer(new WebHostBuilder()
             .UseSetting("Tokens:Issuer", issuer)
             .UseSetting("Tokens:Key", key)
-            .UseSetting("ConnectionStrings:DefaultConnection", "DataSource=:memory:")
             .UseStartup<Startup>()
             .UseUrls("https://localhost:44383"))
         {
             BaseAddress = new Uri("https://localhost:44383")
         };
+
+        // Force creation of InMemory database
+        var dbContext = server.Services.GetService<TimeTrackerDbContext>();
+        dbContext.Database.EnsureCreated();
 
         _client = server.CreateClient();
 
@@ -247,7 +268,7 @@ public class UsersApiTests
 }
 ```
 
-Note that we are initializing some settings, including the connection string to use SQLite In Memory implementation. This is different from EF Core In Memory database. Why do we need this? When doing testing, we need to make sure that the result of one test doesn't affect the other tests and that the order the tests are run doesn't matter.
+Note that we are initializing some settings, including the override of the Sqlite settings to use SQLite In Memory implementation. This is different from EF Core In Memory database. Why do we need this? When doing testing, we need to make sure that the result of one test doesn't affect the other tests and that the order the tests are run doesn't matter.
 
 For instance, if the test to delete item is run before the test to get the item with the same id, the latter test should not fail because the item is previously deleted. We need to reset the state of the database on each test. This will be achieved by using SQLite In Memory database and creating a new instance of it on each test run.
 
@@ -313,8 +334,6 @@ public async Task Delete_ExistingId_ReturnsOk()
 ```
 
 Here we go through testing some failure scenarios first - no Authorization header provided, non-admin token used, no id given. At the end, we are testing with success scenario.
-
-NOTE: Again, if you are running EF Core 3.0 Preview 6, the last two tests will fail.
 
 As an exercise, create tests for other methods of Users API, as well as methods of Clients, Projects and Time Entry APIs.
 
