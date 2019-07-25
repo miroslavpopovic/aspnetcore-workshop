@@ -58,7 +58,7 @@ Go to your GitHub account and create a [new repository](https://github.com/new):
 
 ![GitHub new repository](images/github-new-repository.png)
 
-In the screenshot above, the repository name is `aspnetcore-workshop`, but you can name it as you like. Description should be provided also, especially if the repository is a public one. 
+In the screenshot above, the repository name is `aspnetcore-workshop`, but you can name it as you like. Description should also be provided, especially if the repository is a public one.
 
 You can choose to create private repository, if you don't want anyone to see it (you can share with up to 3 people for free). As a suggestion, make as many things as you can public and accessible to others. We can learn a lot by sharing code and reading other people's code. That's the beauty of open-source.
 
@@ -78,7 +78,7 @@ After the publishing is done, you'll be able to browse your code on GitHub and V
 
 ![Visual Studio Team Explorer](images/vs-git-team-explorer.png)
 
-Now it's a good time to add some files to the root folder - `README.md` and `LICENSE`. Take a look at the root of [this repository](https://github.com/miroslavpopovic/aspnetcore-workshop) for the samples. Do a `git commit` and `git push` afterwards. From this point on, we won't mention git commands unless it's not required. Commit and push your code at your own pace, preferrably often.
+Now it's a good time to add some files to the root folder - `README.md` and `LICENSE`. Take a look at the root of [this repository](https://github.com/miroslavpopovic/aspnetcore-workshop) for the samples. Do a `git commit` and `git push` afterwards. From this point on, we won't mention git commands unless it's not required. Commit and push your code at your own pace, preferably often.
 
 ## Running the application
 

@@ -22,7 +22,7 @@ This part of the workshop will be without coding. You need to choose the domain 
 
 ## Demo code domain
 
-This repository contains the demo code for the entire workshop. Time tracker as described above is the chosen domain.
+This repository contains the demo code for the entire workshop. Time tracker as described above is the chosen domain. For live workshops it is preferred to use this domain, since attendees will be able to follow the workshop even if they skip some days.
 
 -------
 

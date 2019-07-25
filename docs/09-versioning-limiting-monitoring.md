@@ -228,6 +228,8 @@ Wouldn't it be nice to have a status page like Azure, Facebook and other service
 services.AddHealthChecksUI();
 ```
 
+*NOTE: Unfortunately, the line above is causing issue with .NET Core Preview 7. It's related to Entity Framework Core (again) and the underlined Sqlite database used for saving health checks. You can read the rest of this section, but won't be able to implement it yet if using Preview 7.*
+
 ```c#
 // Modify app.UseEndpoints, and add UI middleware before it:
 app.UseHealthChecksUI();
@@ -262,7 +264,7 @@ If you browse `/healthchecks-ui` now, you'll get the status page.
 
 ![Health checks status page](images/healthchecks-status.png)
 
-TODO: Unfortunately, `AspNetCore.HealthChecks.UI` is using EF Core under the cover, and it's more or less broken in Preview 6, hence the error message in screenshot above.
+*TODO: Unfortunately, `AspNetCore.HealthChecks.UI` is using EF Core under the cover, and it's more or less broken in Preview 6, hence the error message in screenshot above.*
 
 ### Other monitoring types
 
@@ -271,10 +273,10 @@ There are other things you can monitor in your database. For instance, doing per
 If you are using Azure cloud, it has a number of services ready for monitoring, like Azure Monitor, Application Insights, Log Analytics, etc.
 
 There are also third party monitoring services like:
-- https://newrelic.com/ 
-- https://stackify.com/ 
-- https://www.monitis.com/ 
-- https://www.runscope.com/ 
+- https://newrelic.com/
+- https://stackify.com/
+- https://www.monitis.com/
+- https://www.runscope.com/
 - ...
 
 With this part, we have completed the API features. In the next part, we'll investigate how to consume our API from client-side Blazor.

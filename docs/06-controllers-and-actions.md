@@ -10,7 +10,7 @@ In the previous part, we have implemented our domain models / entities. Domain m
 
 So what are view models then and why do we need them?
 
-No matter how you call them - input models, display models, view models, DTOs (data transfer objects), requests, responses, etc., they are here to create a projection or a subset of domain models to be sent to or received from the clients. The name *view models* comes from MVC, where we have Views, and the models are specific and fulfill the need of views. 
+No matter how you call them - input models, display models, view models, DTOs (data transfer objects), requests, responses, etc., they are here to create a projection or a subset of domain models to be sent to or received from the clients. The name *view models* comes from MVC, where we have Views, and the models are specific and fulfill the need of views.
 
 In most cases, we don't want clients to have access to all data that we have saved in database, nor do we want clients to update that data, at least not all clients. E.g. if you have `User` class and on it `IsAdmin` property, you don't want the unauthorized user/client to update set it to `true`. You might allow the user to change its profile image and description, but not whether he's an admin or not. For a real world scenario, check out [this article](https://arstechnica.com/information-technology/2012/03/hacker-commandeers-github-to-prove-vuln-in-ruby/) about exploiting similar vulnerability in Ruby on Rails.
 
@@ -179,7 +179,7 @@ public class TimeEntryInputModel
 }
 ```
 
-Again, `TimeEntryModel` has multiple properties for each related entity, even for `Client`. `TimeEntry` only has `Project` property, and `Project` has `Client` property. However, for convenience, we have `ClientId` and `ClientName` properties on our `TimeEntryModel`. 
+Again, `TimeEntryModel` has multiple properties for each related entity, even for `Client`. `TimeEntry` only has `Project` property, and `Project` has `Client` property. However, for convenience, we have `ClientId` and `ClientName` properties on our `TimeEntryModel`.
 
 There's no `TimeEntryInputModel.HourRate` property here, as we will initialize `TimeEntry.HourRate` from `User.HourRate`. API client cannot set that value.
 
@@ -226,7 +226,7 @@ public class UserInputModelValidator : AbstractValidator<UserInputModel>
 }
 ```
 
-The validator classes in our case will be pretty simple, but you can see that adding rules to properties is pretty self-explanatory and would work for more complex cases. Validators are defined per class that needs to be validated. In the code above, that's `UserInputModel`. Of course, we only need to validate input models, since those are coming from the API client / user. 
+The validator classes in our case will be pretty simple, but you can see that adding rules to properties is pretty self-explanatory and would work for more complex cases. Validators are defined per class that needs to be validated. In the code above, that's `UserInputModel`. Of course, we only need to validate input models, since those are coming from the API client / user.
 
 We use `RuleFor` to select the property on our class and the use [fluent interface](https://martinfowler.com/bliki/FluentInterface.html) to add rules. `NotEmpty` rule forbids `null` and empty string on `Name`. `Length` defines that our `Name` property can only have value that is between 1 and 100 characters long. `GreaterThan` and `LessThen` are limiting the range of value on `HourRate` property.
 
@@ -305,7 +305,7 @@ Before we start implementing our controllers, we should take a moment to conside
 
 ### 1. Using `DbContext` class directly
 
-This is the most simple case, and hence we will use that in our sample. The con is that we won't be able to do proper unit testing, but nore on that in a future part.
+This is the most simple case, and hence we will use that in our sample. The con is that we won't be able to do proper unit testing, but more on that in a future part.
 
 ### 2. Using repositories
 
@@ -391,7 +391,7 @@ public class UsersController : Controller
 
 `UsersController` inherits from base `Controller` class which provides some useful functionality. It's also marked with `[ApiController]` attribute which enables API conventions to kick in, like better handling of action method parameters (model binding). One of the things that `[ApiController]` attribute brings is automatic validation of input which works just fine with our FluentValidation-based code. It will trigger error `400` in case of validation rules reporting errors.
 
-`[Route("/api/users")]` defines the default route (URL) for the controller action methods. This allows us to define relative routes on action methods. 
+`[Route("/api/users")]` defines the default route (URL) for the controller action methods. This allows us to define relative routes on action methods.
 
 We are using constructor dependency injection in the code above, to get an instance of `DbContext` class and logger. We save both to instance fields to be used later.
 
@@ -409,12 +409,12 @@ public async Task<ActionResult<UserModel>> GetById(long id)
     {
         return NotFound();
     }
-    
+
     return UserModel.FromUser(user);
 }
 ```
 
-This is an HTTP `GET` method and it's full URL is `/api/users/{id}`. 
+This is an HTTP `GET` method and it's full URL is `/api/users/{id}`.
 
 The method is async, which is a good practice, especially when doing database access code. `DbContext` has async methods for all operations. The return type of the method is `ActionResult<UserModel>`. This type allows us to return not just an instance of the `UserModel` class but also some HTTP status codes, like `404` when we cannot find the `User` in database.
 
@@ -698,7 +698,7 @@ public class ErrorHandlingMiddleware
             Status = (int)code
         };
 
-        var result = JsonSerializer.ToString(problem);
+        var result = JsonSerializer.Serialize(problem);
 
         context.Response.ContentType = "application/problem+json";
         context.Response.StatusCode = (int)code;
