@@ -36,7 +36,7 @@ namespace TimeTracker.Tests.UnitTests
         [Fact]
         public async Task GetById_IdIsNonExisting_ReturnsNotFoundResult()
         {
-            // EF Core Preview 6 issues - this will throw NullReferenceException
+            // EF Core Preview issues - this will throw NullReferenceException
             var result = await _controller.GetById(0);
 
             Assert.IsType<NotFoundResult>(result);
@@ -84,7 +84,7 @@ namespace TimeTracker.Tests.UnitTests
         [Fact]
         public async Task Delete_IdIsNotExisting_ReturnsNotFoundResult()
         {
-            // EF Core Preview 6 issues - this will throw NullReferenceException
+            // EF Core Preview issues - this will throw NullReferenceException
             var result = await _controller.Delete(0);
 
             Assert.IsType<NotFoundResult>(result);

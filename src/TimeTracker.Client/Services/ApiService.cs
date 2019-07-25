@@ -1,7 +1,7 @@
 ﻿using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
-using System.Text.Json.Serialization;
+using System.Text.Json;
 using System.Threading.Tasks;
 using TimeTracker.Client.Security;
 
@@ -22,7 +22,7 @@ namespace TimeTracker.Client.Services
         {
             var response = await SendAuthorizedRequest<T>(HttpMethod.Get, url, default, token);
             var responseBytes = await response.Content.ReadAsByteArrayAsync();
-            return JsonSerializer.Parse<T>(
+            return JsonSerializer.Deserialize<T>(
                 responseBytes, new JsonSerializerOptions {PropertyNamingPolicy = JsonNamingPolicy.CamelCase});
         }
 
@@ -57,7 +57,7 @@ namespace TimeTracker.Client.Services
 
             if (content != null)
             {
-                var json = JsonSerializer.ToString<object>(
+                var json = JsonSerializer.Serialize<object>(
                     content, new JsonSerializerOptions {PropertyNamingPolicy = JsonNamingPolicy.CamelCase});
                 request.Content = new StringContent(json, Encoding.UTF8, "application/json");
             }

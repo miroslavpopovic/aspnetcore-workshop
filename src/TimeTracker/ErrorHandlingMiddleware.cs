@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Net;
-using System.Text.Json.Serialization;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -52,7 +52,7 @@ namespace TimeTracker
                 Status = (int)code
             };
 
-            var result = JsonSerializer.ToString(problem);
+            var result = JsonSerializer.Serialize(problem);
 
             context.Response.ContentType = "application/problem+json";
             context.Response.StatusCode = (int)code;

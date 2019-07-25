@@ -72,7 +72,7 @@ public class TokenAuthenticationStateProvider : AuthenticationStateProvider
     {
         var payload = jwt.Split('.')[1];
         var jsonBytes = ParseBase64WithoutPadding(payload);
-        var keyValuePairs = JsonSerializer.Parse<Dictionary<string, object>>(jsonBytes);
+        var keyValuePairs = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonBytes);
 
         // We need this claim to fill AuthState.User.Identity.Name (to display current user name)
         keyValuePairs.Add("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name", user.Name);
@@ -279,7 +279,7 @@ public class ApiService
 
         var response = await _httpClient.SendAsync(request);
         var responseBytes = await response.Content.ReadAsByteArrayAsync();
-        return JsonSerializer.Parse<T>(
+        return JsonSerializer.Deserialize<T>(
             responseBytes, new JsonSerializerOptions {PropertyNamingPolicy = JsonNamingPolicy.CamelCase});
     }
 }
@@ -368,7 +368,7 @@ Looks rather simple, doesn't it? We are using `<EditForm>` component which point
 
 `LogIn` method is containing the login logic. It creates a URL and makes a call to token endpoint. The token returned is used for loading the user with the given ID. If user is successfully retrieved, both token and user instance are saved locally using `TokenAuthenticationStateProvider.SetTokenAndUserAsync()`. After that, the user is redirected to home page.
 
-If any exception happens during token or user request, the exception message is retrieved and saved locally, and also bound to be displayed on a page as alert. 
+If any exception happens during token or user request, the exception message is retrieved and saved locally, and also bound to be displayed on a page as alert.
 
 ## Adding pages
 
@@ -414,7 +414,7 @@ public async Task<T> GetAsync<T>(string url, string token = null)
 {
     var response = await SendAuthorizedRequest<T>(HttpMethod.Get, url, default, token);
     var responseBytes = await response.Content.ReadAsByteArrayAsync();
-    return JsonSerializer.Parse<T>(
+    return JsonSerializer.Deserialize<T>(
         responseBytes, new JsonSerializerOptions {PropertyNamingPolicy = JsonNamingPolicy.CamelCase});
 }
 
@@ -431,7 +431,7 @@ private async Task<HttpResponseMessage> SendAuthorizedRequest<T>(
 
     if (content != null)
     {
-        var json = JsonSerializer.ToString<object>(
+        var json = JsonSerializer.Serialize<object>(
             content, new JsonSerializerOptions {PropertyNamingPolicy = JsonNamingPolicy.CamelCase});
         request.Content = new StringContent(json, Encoding.UTF8, "application/json");
     }
@@ -1039,7 +1039,7 @@ day = model.EntryDate.Day.ToString();
 When time entry is saved, the `TimeEntry.EntryDate` is set from those fields:
 
 ```c#
-timeEntry.EntryDate = 
+timeEntry.EntryDate =
     new DateTime(int.Parse(year), int.Parse(month), int.Parse(day));
 ```
 

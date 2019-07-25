@@ -12,17 +12,17 @@
   <ItemGroup>
     <PackageReference Include="AspNetCore.HealthChecks.Sqlite" Version="2.2.0" />
     <PackageReference Include="AspNetCore.HealthChecks.UI" Version="2.2.32" />
-    <PackageReference Include="FluentValidation.AspNetCore" Version="8.5.0-preview2" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.0.0-preview6.19307.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.0.0-preview6.19307.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.0.0-preview6.19304.10" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.0.0-preview6.19304.10">
+    <PackageReference Include="FluentValidation.AspNetCore" Version="8.5.0-preview4" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.0.0-preview7.19365.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.0.0-preview7.19365.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.0.0-preview7.19362.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.0.0-preview7.19362.6">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="NSwag.AspNetCore" Version="13.0.3" />
-    <PackageReference Include="Serilog.AspNetCore" Version="3.0.0-dev-00058" />
-    <PackageReference Include="Serilog.Sinks.File" Version="4.1.0-dev-00838" />
+    <PackageReference Include="NSwag.AspNetCore" Version="13.0.4" />
+    <PackageReference Include="Serilog.AspNetCore" Version="3.0.0-dev-00059" />
+    <PackageReference Include="Serilog.Sinks.File" Version="4.1.0-dev-00847" />
   </ItemGroup>
 
 </Project>
