@@ -45,7 +45,7 @@
     - Worker
     - gRPC
     - Server-side Blazor
-    - Client-side Blazor 
+    - Client-side Blazor
 - Explain:
     - Folder / namespace structure
     - Dependencies
@@ -76,7 +76,7 @@
     - Don't enable README, .gitignore and LICENSE
 - Publish to new repository from VS
 - Add `README.md` and `LICENSE` file to root folder - https://choosealicense.com/
-- Run the app - F5 
+- Run the app - F5
     - Explain other options
     - IIS Express, etc.
 - Make a request from Postman to `/api/values`
@@ -102,7 +102,7 @@
 - Explain what the db migrations are
 - `dotnet-tools.json`
 - `dotnet new tool-manifest` from the solution root
-- `dotnet tool install dotnet-ef --version 3.0.0-preview6.19304.10` to install EF Core tools
+- `dotnet tool install dotnet-ef --version 3.0.0-preview7.19362.6` to install EF Core tools
 - From the project folder: `dotnet ef migrations add "InitialMigration" --output-dir "Data/Migrations"`
 - Look at the migrations folder content
 - `dotnet ef database update` to update the database
@@ -268,7 +268,7 @@
         - Call it from `Startup.ConfigureServices`
     - Modify `App.razor` to add `<CascadingAuthenticationState>`
         - Explain
-    - Modify the main `_Imports.razor` 
+    - Modify the main `_Imports.razor`
         - add `@using Microsoft.AspNetCore.Authorization`
     - Add `wwwroot/scripts/localStorage.js`
         - Include it in `wwwroot/index.html`
