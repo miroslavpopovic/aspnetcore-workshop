@@ -10,7 +10,7 @@ This workshop is intended as a walk-through into .NET Core and ASP.NET Core 3.0 
 
 The workshop is partially based on my talk [Building production-ready APIs with ASP.NET Core](https://github.com/miroslavpopovic/production-ready-apis-sample-3.0).
 
-It's also inspired by [.NET Presentations](https://github.com/dotnet-presentations/home) and [workshops](https://github.com/dotnet-presentations/blazor-workshop) created by .NET Core and ASP.NET Core teams. Some content for presentations is borrowed from there, as well as the Power Point presentation templates.
+It's also inspired by [.NET Presentations](https://github.com/dotnet-presentations/home) and [workshops](https://github.com/dotnet-presentations/blazor-workshop) created by .NET Core and ASP.NET Core teams. Some content for presentations is borrowed from there, as well as the Power Point presentation templates. Just to be clear - it's not a fork of some existing ASP.NET Core workshop, but a new one, created from scratch. Sample code and instructions for all sessions below are created for this workshop specifically.
 
 ## Getting started
 
