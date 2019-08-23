@@ -16,15 +16,15 @@
     <div class="alert alert-danger">@errorMessage</div>
 }
 
-<button type="button" class="btn btn-danger" onclick="@DeleteProject">Delete</button>
+<button type="button" class="btn btn-danger" @onclick="DeleteProject">Delete</button>
 <a href="/projects" class="btn btn-link">Cancel</a>
 
 @code {
-    [Parameter] private long Id { get; set; }
+    [Parameter] public long Id { get; set; }
     private ProjectModel project;
     private string errorMessage;
 
-    protected override async Task OnInitAsync()
+    protected override async Task OnInitializedAsync()
     {
         await LoadProject();
     }

@@ -31,7 +31,7 @@ else
 
     <div class="form-group">
         <label for="projectId">Project</label>
-        <InputSelect id="projectId" class="form-control" @bind-Value="@projectId">
+        <InputSelect id="projectId" class="form-control" @bind-Value="projectId">
             <option value="">Select project...</option>
             @foreach (var project in projects)
             {
@@ -44,7 +44,7 @@ else
         <label for="year">Date</label>
         <div class="row">
             <div class="col">
-                <InputSelect id="year" class="form-control" @bind-Value="@year">
+                <InputSelect id="year" class="form-control" @bind-Value="year">
                     <option value="">Select year...</option>
                     <option value="2019">2019</option>
                     <option value="2020">2020</option>
@@ -59,7 +59,7 @@ else
                 </InputSelect>
             </div>
             <div class="col">
-                <InputSelect id="month" class="form-control" @bind-Value="@month">
+                <InputSelect id="month" class="form-control" @bind-Value="month">
                     <option value="">Select month...</option>
                     <option value="1">January</option>
                     <option value="2">February</option>
@@ -76,7 +76,7 @@ else
                 </InputSelect>
             </div>
             <div class="col">
-                <InputSelect id="day" class="form-control" @bind-Value="@day">
+                <InputSelect id="day" class="form-control" @bind-Value="day">
                     <option value="">Select day...</option>
                     <option value="1">1st</option>
                     <option value="2">2nd</option>
@@ -116,12 +116,12 @@ else
 
     <div class="form-group">
         <label for="hours">Hours</label>
-        <InputNumber id="name" class="form-control" @bind-Value="@timeEntry.Hours" />
+        <InputNumber id="name" class="form-control" @bind-Value="timeEntry.Hours" />
     </div>
 
     <div class="form-group">
         <label for="description">Description</label>
-        <InputTextArea id="description" class="form-control" @bind-Value="@timeEntry.Description" />
+        <InputTextArea id="description" class="form-control" @bind-Value="timeEntry.Description" />
     </div>
 
     <button type="submit" class="btn btn-primary">Save</button>
@@ -129,7 +129,7 @@ else
 </EditForm>
 
 @code {
-    [Parameter] private long Id { get; set; }
+    [Parameter] public long Id { get; set; }
     private string projectId = string.Empty;
     private Lookup[] projects = new Lookup[] {};
     private TimeEntryInputModel timeEntry = new TimeEntryInputModel();
@@ -138,7 +138,7 @@ else
     private string month = string.Empty;
     private string day = string.Empty;
 
-    protected override async Task OnInitAsync()
+    protected override async Task OnInitializedAsync()
     {
         await LoadProjects();
 

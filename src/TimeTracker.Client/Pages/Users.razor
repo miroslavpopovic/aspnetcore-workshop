@@ -50,7 +50,7 @@ else
 @code {
     PagedList<UserModel> users;
 
-    protected override async Task OnInitAsync()
+    protected override async Task OnInitializedAsync()
     {
         await LoadUsers();
     }
