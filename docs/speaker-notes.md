@@ -79,7 +79,7 @@
 - Run the app - F5
     - Explain other options
     - IIS Express, etc.
-- Make a request from Postman to `/api/values`
+- Make a request from Postman to `/weatherforecast`
 
 ## 05 Domain models and database
 
@@ -102,7 +102,7 @@
 - Explain what the db migrations are
 - `dotnet-tools.json`
 - `dotnet new tool-manifest` from the solution root
-- `dotnet tool install dotnet-ef --version 3.0.0-preview7.19362.6` to install EF Core tools
+- `dotnet tool install dotnet-ef --version 3.0.0-preview8.19405.11` to install EF Core tools
 - From the project folder: `dotnet ef migrations add "InitialMigration" --output-dir "Data/Migrations"`
 - Look at the migrations folder content
 - `dotnet ef database update` to update the database
@@ -298,7 +298,7 @@
     - Implement create, update and delete methods
 - Adding pages for users
     - Create `Users.razor`
-        - Explain routing, DI, `OnInitAsync`...
+        - Explain routing, DI, `OnInitializedAsync`...
     - Implement `Shared/Pager.razor` component
         - Explain parameters and how they are passed
         - Explain usage of `PagedList<T>`

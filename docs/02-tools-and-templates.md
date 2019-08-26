@@ -42,7 +42,7 @@ A step further would be a template with some additional logic:
 
     dotnet new webapi
 
-This will create a new ASP.NET Core Web API project. It is the template that we will use the most in our workshop. For now, you can check what it is made of. Especially the `Startup` class and `ValuesController`.
+This will create a new ASP.NET Core Web API project. It is the template that we will use the most in our workshop. For now, you can check what it is made of. Especially the `Startup` class and `WeatherForecastController`.
 
 Next template to try, but this time with additional options:
 
