@@ -50,7 +50,7 @@ else
 @code {
     PagedList<ProjectModel> projects;
 
-    protected override async Task OnInitAsync()
+    protected override async Task OnInitializedAsync()
     {
         await LoadProjects();
     }

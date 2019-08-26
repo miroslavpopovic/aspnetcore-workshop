@@ -99,13 +99,12 @@ else
 
 @code {
     private TimeEntryModel[] timeEntries;
-    private string errorMessage;
     private string year;
     private string month;
     private decimal totalAmount;
     private decimal totalHours;
 
-    protected override async Task OnInitAsync()
+    protected override async Task OnInitializedAsync()
     {
         year = DateTime.Today.Year.ToString();
         month = DateTime.Today.Month.ToString();

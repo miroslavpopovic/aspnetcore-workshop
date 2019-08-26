@@ -152,7 +152,7 @@ It will create a new manifest file. You only need to do this once, no matter how
 
 Next, run the following command to install EF CLI tool:
 
-    dotnet tool install dotnet-ef --version 3.0.0-preview7.19362.6
+    dotnet tool install dotnet-ef --version 3.0.0-preview8.19405.11
 
 Now, navigate to the project directory `src\TimeTracker\` and run this command:
 

@@ -36,7 +36,7 @@ Now that the folder structure is created, let's modify `TimeTracker.sln` file to
 
     Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeTracker", "TimeTracker\TimeTracker.csproj", "{6B239834-5A44-48A7-A80A-1DC9BA1B6A88}"
 
-Into this:
+Into this (leave the same Guid values, just change the path to `.csproj` file):
 
     Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeTracker", "src\TimeTracker\TimeTracker.csproj", "{6B239834-5A44-48A7-A80A-1DC9BA1B6A88}"
 
@@ -86,13 +86,13 @@ By default, Visual Studio will configure your application to run under IIS Expre
 
 Your browser might give you a warning about potential security risk. That's because HTTPS is used by default, and IIS Express is using self-signed certificate for local development. Browsers do not like self-signed certificates, hence the warning. You can ignore it and proceed (Accept the risk and continue).
 
-API template comes with `ValuesController` that serves as a sample for API. When you run the app, the browser will go to `https://localhost:port/api/values` (where port is your port number) and return JSON `["value1","value2"]`. This is what we expect, but browsers aren't really good when trying APIs, since we also need to have the ability to easily create `GET`, `POST`, `PUT` and `DELETE` methods, define parameters, etc. For that purpose, other tools should be used. Enters Postman.
+API template comes with `WeatherForecastController` that serves as a sample for API. When you run the app, the browser will go to `https://localhost:port/weatherforecast` (where port is your port number) and return JSON with an array of weather forecast information for the next 5 days. This is what we expect, but browsers aren't really good when trying APIs, since we also need to have the ability to easily create `GET`, `POST`, `PUT` and `DELETE` methods, define parameters, etc. For that purpose, other tools should be used. Enters Postman.
 
 ## Using Postman
 
 [Postman](https://www.getpostman.com/) is a tool for managing APIs. We can also use it to quick test if everything is working correctly with our API.
 
-Run Postman and create a new GET request. Enter `https://localhost:port/api/values` as URL and click *Send*. You should get HTTP status code 200 in response, with JSON payload.
+Run Postman and create a new GET request. Enter `https://localhost:port/weatherforecast` as URL and click *Send*. You should get HTTP status code 200 in response, with JSON payload.
 
 ![Postman first request](images/postman-first-request.png)
 

@@ -264,7 +264,7 @@ If you browse `/healthchecks-ui` now, you'll get the status page.
 
 ![Health checks status page](images/healthchecks-status.png)
 
-*TODO: Unfortunately, `AspNetCore.HealthChecks.UI` is using EF Core under the cover, and it's more or less broken in Preview 6, hence the error message in screenshot above.*
+*TODO: Unfortunately, `AspNetCore.HealthChecks.UI` is using EF Core under the cover, and it's more or less broken in Preview 6-8, hence the error message in screenshot above.*
 
 ### Other monitoring types
 

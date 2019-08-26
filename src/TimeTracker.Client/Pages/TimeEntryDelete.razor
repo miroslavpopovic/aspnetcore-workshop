@@ -16,15 +16,15 @@
     <div class="alert alert-danger">@errorMessage</div>
 }
 
-<button type="button" class="btn btn-danger" onclick="@DeleteTimeEntry">Delete</button>
-<a href="/time-entries" class="btn btn-link">Cancel</a>
+<button type="button" class="btn btn-danger" @onclick="DeleteTimeEntry">Delete</button>
+<a href="/" class="btn btn-link">Cancel</a>
 
 @code {
-    [Parameter] private long Id { get; set; }
+    [Parameter] public long Id { get; set; }
     private TimeEntryModel timeEntry;
     private string errorMessage;
 
-    protected override async Task OnInitAsync()
+    protected override async Task OnInitializedAsync()
     {
         await LoadTimeEntry();
     }

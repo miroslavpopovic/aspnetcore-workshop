@@ -128,7 +128,7 @@ public class UsersControllerTests
 }
 ```
 
-Note those pesky comments and extra lines above? It's because EF Core 3.0 Preview 6 has a lot of issues, which are clearly stated in [announcement post](https://devblogs.microsoft.com/dotnet/announcing-entity-framework-core-3-0-preview-6-and-entity-framework-6-3-preview-6/). This will be fixed with next release. For now, we have added *Skip* message to the `[Fact]`.
+Note those pesky comments and extra lines above? It's because EF Core 3.0 Preview 6-8 have a lot of issues, which are clearly stated in [announcement post](https://devblogs.microsoft.com/dotnet/announcing-entity-framework-core-3-0-preview-6-and-entity-framework-6-3-preview-6/). This will be fixed with the final release. For now, we have added *Skip* message to the `[Fact]`.
 
 Run the test explorer in Visual Studio - *Test > Windows > Test Explorer* and select *Run All Tests*. Note that your test should be ignored, and not displayed as successful.
 
@@ -399,7 +399,7 @@ app.UseOpenApi();
 app.UseSwaggerUi3();
 ```
 
-Prior to this, whenever we start debugging our TimeTracker API, it would start the browser with `/api/values` URL. Let's change that to `swagger` and also remove `ValuesController` from the project. Right click on `TimeTracker` project in solution explorer and choose *Properties*. Go to *Debug* tab and modify *Launch browser* value:
+Prior to this, whenever we start debugging our TimeTracker API, it would start the browser with `/weatherforecast` URL. Let's change that to `swagger` and also finally remove `WeatherForecastController` and `WeatherForecast` model from the project. Right click on `TimeTracker` project in solution explorer and choose *Properties*. Go to *Debug* tab and modify *Launch browser* value:
 
 ![Modify Launch browser value](images/vs-change-launch-url.png)
 

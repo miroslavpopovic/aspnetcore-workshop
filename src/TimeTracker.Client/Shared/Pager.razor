@@ -14,7 +14,7 @@
             else
             {
                 <li class="page-item">
-                    <a class="page-link" href="javascript: void(0)" onclick="@(async () => await Loader(1))">&laquo;</a>
+                    <a class="page-link" href="javascript: void(0)" @onclick="(async () => await Loader(1))">&laquo;</a>
                 </li>
             }
             @for (var i = 1; i <= Model.TotalPages; i++)
@@ -23,7 +23,7 @@
                 var item = Model.Items.FirstOrDefault();
 
                 <li class="page-item @(pageNumber == Model.Page ? "active" : "")">
-                    <a class="page-link" href="javascript: void(0)" onclick="@(async () => await Loader(pageNumber))">@i</a>
+                    <a class="page-link" href="javascript: void(0)" @onclick="(async () => await Loader(pageNumber))">@i</a>
                 </li>
             }
             @if (Model.Page == Model.TotalPages)
@@ -35,7 +35,7 @@
             else
             {
                 <li class="page-item">
-                    <a class="page-link" href="javascript: void(0)" onclick="@(async () => await Loader(Model.TotalPages))">&raquo;</a>
+                    <a class="page-link" href="javascript: void(0)" @onclick="(async () => await Loader(Model.TotalPages))">&raquo;</a>
                 </li>
             }
         </ul>
@@ -43,6 +43,6 @@
 }
 
 @code {
-    [Parameter] PagedList<T> Model { get; set; }
-    [Parameter] Func<int, Task> Loader { get; set; }
+    [Parameter] public PagedList<T> Model { get; set; }
+    [Parameter] public Func<int, Task> Loader { get; set; }
 }

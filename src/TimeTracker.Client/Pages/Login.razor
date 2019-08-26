@@ -13,7 +13,7 @@
 <EditForm Model="@this">
     <div class="form-group">
         <label for="userId">User ID:</label>
-        <InputText id="userId" @bind-value="@userId" class="form-control" />
+        <InputText id="userId" @bind-Value="userId" class="form-control" />
     </div>
 
     @if (!string.IsNullOrWhiteSpace(errorMessage))
@@ -23,8 +23,8 @@
         </div>
     }
 
-    <button type="button" class="btn btn-secondary" onclick="@LogInRegular">Login as Regular User</button>
-    <button type="button" class="btn btn-primary" onclick="@LogInAdmin">Login as Admin User</button>
+    <button type="button" class="btn btn-secondary" @onclick="LogInRegular">Login as Regular User</button>
+    <button type="button" class="btn btn-primary" @onclick="LogInAdmin">Login as Admin User</button>
 </EditForm>
 
 @code {

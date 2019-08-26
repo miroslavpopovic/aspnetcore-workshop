@@ -48,7 +48,7 @@ else
 @code {
     PagedList<ClientModel> clients;
 
-    protected override async Task OnInitAsync()
+    protected override async Task OnInitializedAsync()
     {
         await LoadClients();
     }

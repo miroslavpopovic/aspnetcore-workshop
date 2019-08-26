@@ -4,6 +4,8 @@ Documentation and samples for ASP.NET Core 3.0 workshop.
 
 **NOTE: This is a work in progress, using a preview version of .NET Core 3.0! Some planned features are not implemented because of bugs in EF Core 3.0 Preview and missing third-party library support for .NET Core 3.0**
 
+**NOTE: Updated to .NET Core 3.0 Preview 8**
+
 ![Cover image](docs/images/workshop-cover.png)
 
 This workshop is intended as a walk-through into .NET Core and ASP.NET Core 3.0 features, creating a new Web API, preparing it for production use and consuming it from client-side Blazor client.

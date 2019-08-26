@@ -28,12 +28,12 @@ else
 
     <div class="form-group">
         <label for="name">Name</label>
-        <InputText id="name" class="form-control" @bind-Value="@project.Name" />
+        <InputText id="name" class="form-control" @bind-Value="project.Name" />
     </div>
 
     <div class="form-group">
         <label for="clientId">Client</label>
-        <InputSelect id="clientId" class="form-control" @bind-Value="@clientId">
+        <InputSelect id="clientId" class="form-control" @bind-Value="clientId">
             <option value="">Select client...</option>
             @foreach (var client in clients)
             {
@@ -47,13 +47,13 @@ else
 </EditForm>
 
 @code {
-    [Parameter] private long Id { get; set; }
+    [Parameter] public long Id { get; set; }
     private string clientId = string.Empty;
     private Lookup[] clients = new Lookup[] {};
     private ProjectInputModel project = new ProjectInputModel();
     private string errorMessage;
 
-    protected override async Task OnInitAsync()
+    protected override async Task OnInitializedAsync()
     {
         await LoadClients();
 

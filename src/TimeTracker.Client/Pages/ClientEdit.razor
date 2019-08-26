@@ -28,7 +28,7 @@ else
 
     <div class="form-group">
         <label for="name">Name</label>
-        <InputText id="name" class="form-control" @bind-Value="@client.Name" />
+        <InputText id="name" class="form-control" @bind-Value="client.Name" />
     </div>
 
     <button type="submit" class="btn btn-primary">Save</button>
@@ -36,11 +36,11 @@ else
 </EditForm>
 
 @code {
-    [Parameter] private long Id { get; set; }
+    [Parameter] public long Id { get; set; }
     private ClientInputModel client = new ClientInputModel();
     private string errorMessage;
 
-    protected override async Task OnInitAsync()
+    protected override async Task OnInitializedAsync()
     {
         if (Id > 0)
         {
