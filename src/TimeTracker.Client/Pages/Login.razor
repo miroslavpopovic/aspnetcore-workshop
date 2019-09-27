@@ -1,12 +1,11 @@
 ﻿@page "/login"
-@using Microsoft.AspNetCore.Components
 @using TimeTracker.Client.Models
 @using TimeTracker.Client.Security
 @using TimeTracker.Client.Services
 @inject HttpClient Http
 @inject ApiService ApiService
 @inject TokenAuthenticationStateProvider AuthStateProvider
-@inject IUriHelper UriHelper
+@inject NavigationManager NavigationManager
 
 <h1>Login</h1>
 
@@ -58,7 +57,7 @@
 
             await AuthStateProvider.SetTokenAndUserAsync(token, user);
 
-            UriHelper.NavigateTo("/");
+            NavigationManager.NavigateTo("/");
         }
         catch (Exception ex)
         {

@@ -1,14 +1,21 @@
-﻿<CascadingAuthenticationState>
-    <Router AppAssembly="typeof(Program).Assembly">
-        <NotFoundContent>
-            <p>Sorry, there's nothing at this address.</p>
-        </NotFoundContent>
-        <NotAuthorizedContent>
-            <h1>Access denied</h1>
-            <p>Only logged-in users can access the TimeTracker client app.</p>
-        </NotAuthorizedContent>
-        <AuthorizingContent>
-            Logging in...
-        </AuthorizingContent>
-    </Router>
-</CascadingAuthenticationState>
+﻿<Router AppAssembly="@typeof(Program).Assembly">
+    <Found Context="routeData">
+        <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+            <NotAuthorized>
+                <h1>Access denied</h1>
+                <p>Only logged-in users can access the TimeTracker client app.</p>
+            </NotAuthorized>
+            <Authorizing>
+                Logging in...
+            </Authorizing>
+        </AuthorizeRouteView>
+    </Found>
+    <NotFound>
+        <CascadingAuthenticationState>
+            <LayoutView Layout="@typeof(MainLayout)">
+                <h1>Page not found</h1>
+                <p>Sorry, there's nothing at this address.</p>
+            </LayoutView>
+        </CascadingAuthenticationState>
+    </NotFound>
+</Router>

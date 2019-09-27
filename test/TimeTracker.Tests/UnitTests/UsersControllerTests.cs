@@ -24,7 +24,6 @@ namespace TimeTracker.Tests.UnitTests
             var dbContext = new TimeTrackerDbContext(options);
             var logger = new FakeLogger<UsersController>();
 
-            // HACK: EF Core Preview issues, adding new values here
             dbContext.Users.Add(new User {Id = 1, Name = "Test User 1", HourRate = 15});
             dbContext.Users.Add(new User {Id = 2, Name = "Test User 2", HourRate = 20});
             dbContext.Users.Add(new User {Id = 3, Name = "Test User 3", HourRate = 25});
@@ -33,12 +32,12 @@ namespace TimeTracker.Tests.UnitTests
             _controller = new UsersController(dbContext, logger);
         }
 
-        [Fact(Skip = "EF Core Preview issues - looking for entity with non-existing ID throws null reference exception")]
+        [Fact]
         public async Task GetById_IdIsNonExisting_ReturnsNotFoundResult()
         {
             var result = await _controller.GetById(0);
 
-            Assert.IsType<NotFoundResult>(result);
+            Assert.IsType<NotFoundResult>(result.Result);
         }
 
         [Fact]
@@ -80,7 +79,7 @@ namespace TimeTracker.Tests.UnitTests
             Assert.Equal(expectedTotalCount, result.Value.TotalCount);
         }
 
-        [Fact(Skip = "EF Core Preview issues - looking for entity with non-existing ID throws null reference exception")]
+        [Fact]
         public async Task Delete_IdIsNotExisting_ReturnsNotFoundResult()
         {
             var result = await _controller.Delete(0);

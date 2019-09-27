@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using TimeTracker.Domain;
 
@@ -33,47 +32,47 @@ namespace TimeTracker.Data
                 new { Id = 2L, Name = "Project 2", ClientId = 1L },
                 new { Id = 3L, Name = "Project 3", ClientId = 2L });
 
-            //modelBuilder.Entity<TimeEntry>().HasData(
-            //    new
-            //    {
-            //        Id = 1L,
-            //        UserId = 1L,
-            //        ProjectId = 1L,
-            //        EntryDate = new DateTime(2019, 7, 1),
-            //        Hours = 5,
-            //        HourRate = 25m,
-            //        Description = "Time entry description 1"
-            //    },
-            //    new
-            //    {
-            //        Id = 2L,
-            //        UserId = 1L,
-            //        ProjectId = 2L,
-            //        EntryDate = new DateTime(2019, 7, 1),
-            //        Hours = 2,
-            //        HourRate = 25m,
-            //        Description = "Time entry description 2"
-            //    },
-            //    new
-            //    {
-            //        Id = 3L,
-            //        UserId = 1L,
-            //        ProjectId = 3L,
-            //        EntryDate = new DateTime(2019, 7, 1),
-            //        Hours = 1,
-            //        HourRate = 25m,
-            //        Description = "Time entry description 3"
-            //    },
-            //    new
-            //    {
-            //        Id = 4L,
-            //        UserId = 2L,
-            //        ProjectId = 3L,
-            //        EntryDate = new DateTime(2019, 7, 1),
-            //        Hours = 8,
-            //        HourRate = 30m,
-            //        Description = "Time entry description 4"
-            //    });
+            modelBuilder.Entity<TimeEntry>().HasData(
+                new
+                {
+                    Id = 1L,
+                    UserId = 1L,
+                    ProjectId = 1L,
+                    EntryDate = new DateTime(2019, 7, 1),
+                    Hours = 5,
+                    HourRate = 25m,
+                    Description = "Time entry description 1"
+                },
+                new
+                {
+                    Id = 2L,
+                    UserId = 1L,
+                    ProjectId = 2L,
+                    EntryDate = new DateTime(2019, 7, 1),
+                    Hours = 2,
+                    HourRate = 25m,
+                    Description = "Time entry description 2"
+                },
+                new
+                {
+                    Id = 3L,
+                    UserId = 1L,
+                    ProjectId = 3L,
+                    EntryDate = new DateTime(2019, 7, 1),
+                    Hours = 1,
+                    HourRate = 25m,
+                    Description = "Time entry description 3"
+                },
+                new
+                {
+                    Id = 4L,
+                    UserId = 2L,
+                    ProjectId = 3L,
+                    EntryDate = new DateTime(2019, 7, 1),
+                    Hours = 8,
+                    HourRate = 30m,
+                    Description = "Time entry description 4"
+                });
         }
     }
 }

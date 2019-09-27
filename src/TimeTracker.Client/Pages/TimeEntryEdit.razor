@@ -1,15 +1,12 @@
 ﻿@page "/time-entries/{id:long}/edit"
 @page "/time-entries/add"
-@using System.ComponentModel
-@using System.ComponentModel.DataAnnotations
-@using Microsoft.AspNetCore.Components
 @using TimeTracker.Client.Models
 @using TimeTracker.Client.Security
 @using TimeTracker.Client.Services
 @attribute [Authorize]
 @inject ApiService ApiService
 @inject TokenAuthenticationStateProvider AuthStateProvider
-@inject IUriHelper UriHelper
+@inject NavigationManager NavigationManager
 
 @if (Id == 0)
 {
@@ -204,7 +201,7 @@ else
 
         if (success)
         {
-            UriHelper.NavigateTo("/");
+            NavigationManager.NavigateTo("/");
         }
         else
         {

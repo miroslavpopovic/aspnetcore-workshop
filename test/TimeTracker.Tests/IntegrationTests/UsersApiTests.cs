@@ -98,7 +98,6 @@ namespace TimeTracker.Tests.IntegrationTests
 
             var result = await _client.DeleteAsync("/api/users/0");
 
-            // EF Core Preview issues - we'll get error 500, because the server will throw NullReferenceException
             Assert.Equal(HttpStatusCode.NotFound, result.StatusCode);
         }
 
