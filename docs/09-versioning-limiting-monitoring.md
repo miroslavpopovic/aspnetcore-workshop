@@ -365,8 +365,6 @@ Wouldn't it be nice to have a status page like Azure, Facebook and other service
 services.AddHealthChecksUI();
 ```
 
-*NOTE: Unfortunately, the line above is causing issue with .NET Core Preview 7. It's related to Entity Framework Core (again) and the underlined Sqlite database used for saving health checks. You can read the rest of this section, but won't be able to implement it yet if using Preview 7.*
-
 ```c#
 // Modify app.UseEndpoints, and add UI middleware before it:
 app.UseHealthChecksUI();
@@ -389,7 +387,7 @@ Also, add the following settings to `appsettings.json` file:
 "HealthChecks": [
     {
     "Name": "HTTP-Api-Basic",
-    "Uri": "/health"
+    "Uri": "https://localhost:44383/health"
     }
 ],
 "EvaluationTimeOnSeconds": 10,
@@ -400,8 +398,6 @@ Also, add the following settings to `appsettings.json` file:
 If you browse `/healthchecks-ui` now, you'll get the status page.
 
 ![Health checks status page](images/healthchecks-status.png)
-
-*TODO: Unfortunately, `AspNetCore.HealthChecks.UI` is using EF Core under the cover, and it's more or less broken in Preview 6-8, hence the error message in screenshot above.*
 
 ### Other monitoring types
 
