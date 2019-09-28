@@ -16,8 +16,9 @@ namespace TimeTracker.Controllers
     /// Time entries endpoint of TimeTracker API.
     /// </summary>
     [ApiController]
+    [ApiVersion("2")]
     [Authorize]
-    [Route("/api/time-entries")]
+    [Route("/api/v{version:apiVersion}/time-entries")]
     public class TimeEntriesController : Controller
     {
         private readonly TimeTrackerDbContext _dbContext;
@@ -168,7 +169,7 @@ namespace TimeTracker.Controllers
 
             var resultModel = TimeEntryModel.FromTimeEntry(timeEntry);
 
-            return CreatedAtAction(nameof(GetById), "TimeEntries", new {id = timeEntry.Id}, resultModel);
+            return CreatedAtAction(nameof(GetById), "TimeEntries", new {id = timeEntry.Id, version = "2"}, resultModel);
         }
 
         /// <summary>

@@ -12,7 +12,7 @@ Good news! With ASP.NET Core already we already have HTTPS by default, so nothin
 app.UseHttpsRedirection();
 ```
 
-Just make a mental note to set up HTTPS on the environment where you will deploy your API / web application. Most cloud providers already have automated HTTPS set up and renewal using Let's Encrypt.
+Just make a mental note to set up HTTPS on the environment where you will deploy your API / web application. Most cloud providers already have automated HTTPS set up and renewal using Let's Encrypt. There are even some [ASP.NET Core middleware](https://github.com/natemcmaster/LetsEncrypt) that you can use for that purpose.
 
 ## OAuth 2.0 and OpenID Connect
 
@@ -35,7 +35,7 @@ Let's first add these parameters to the `appsettings.json` file:
 }
 ```
 
-JWT authentication support is contained in a separate NuGet [package](https://www.nuget.org/packages/Microsoft.AspNetCore.Authentication.JwtBearer/) which we need to install - `Microsoft.AspNetCore.Authentication.JwtBearer`. Don't forget to *Include prerelease* in Visual Studio NuGet Package Manager, if working with pre-release version of ASP.NET Core.
+JWT authentication support is contained in a separate NuGet [package](https://www.nuget.org/packages/Microsoft.AspNetCore.Authentication.JwtBearer/) which we need to install - `Microsoft.AspNetCore.Authentication.JwtBearer`.
 
 Next step will be to add services necessary for authentication and define token validation parameters. A best practice is not to clutter your `Startup` class, so let's implement that as an extension to `IServiceCollection`, under `Extensions` namespace:
 

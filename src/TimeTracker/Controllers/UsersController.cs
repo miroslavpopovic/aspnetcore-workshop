@@ -14,8 +14,9 @@ namespace TimeTracker.Controllers
     /// Users endpoint of TimeTracker API.
     /// </summary>
     [ApiController]
+    [ApiVersion("2")]
     [Authorize]
-    [Route("/api/users")]
+    [Route("/api/v{version:apiVersion}/users")]
     public class UsersController : Controller
     {
         private readonly TimeTrackerDbContext _dbContext;
@@ -120,7 +121,7 @@ namespace TimeTracker.Controllers
 
             var resultModel = UserModel.FromUser(user);
 
-            return CreatedAtAction(nameof(GetById), "users", new {id = user.Id}, resultModel);
+            return CreatedAtAction(nameof(GetById), "users", new {id = user.Id, version = "2"}, resultModel);
         }
 
         /// <summary>

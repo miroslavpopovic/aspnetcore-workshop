@@ -38,12 +38,14 @@ namespace TimeTracker
             services.AddControllers().AddFluentValidation(
                 fv => fv.RegisterValidatorsFromAssemblyContaining<UserInputModelValidator>());
 
+            services.AddVersioning();
+
             services.AddOpenApi();
 
             services.AddHealthChecks()
                 .AddSqlite(Configuration.GetConnectionString("DefaultConnection"));
 
-            //services.AddHealthChecksUI();
+            services.AddHealthChecksUI();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

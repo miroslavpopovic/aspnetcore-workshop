@@ -15,8 +15,9 @@ namespace TimeTracker.Controllers
     /// Projects endpoint for TimeTracker API.
     /// </summary>
     [ApiController]
+    [ApiVersion("2")]
     [Authorize]
-    [Route("/api/projects")]
+    [Route("/api/v{version:apiVersion}/projects")]
     public class ProjectsController : Controller
     {
         private readonly TimeTrackerDbContext _dbContext;
@@ -130,7 +131,7 @@ namespace TimeTracker.Controllers
 
             var resultModel = ProjectModel.FromProject(project);
 
-            return CreatedAtAction(nameof(GetById), "projects", new {id = project.Id}, resultModel);
+            return CreatedAtAction(nameof(GetById), "projects", new {id = project.Id, version = "2"}, resultModel);
         }
 
         /// <summary>

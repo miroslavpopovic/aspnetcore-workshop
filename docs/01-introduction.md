@@ -18,7 +18,7 @@ This introduction is also done in form of PowerPoint presentation. It covers ben
 
 ## Environment setup
 
-Checking if everyone have their environments set up correctly according to [prerequisites document](00-prerequisites.md). 
+Checking if everyone have their environments set up correctly according to [prerequisites document](00-prerequisites.md).
 
 Trying out if `dotnet` command line is functioning correctly and whether we have correct .NET Core version installed:
 

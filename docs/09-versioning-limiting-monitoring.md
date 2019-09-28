@@ -14,11 +14,148 @@ Whenever we make a change in our API, that would break some existing API client,
 - Accept header
     - Accept: application/json;v=2
 
-There's a NuGet package that supports all of those strategies: `Microsoft.AspNetCore.Mvc.Versioning`. It usually works really well with NSwag, however, it's still [not working for ASP.NET Core 3.0](https://github.com/microsoft/aspnet-api-versioning/issues/499).
+There's a NuGet package that supports all of those strategies: `Microsoft.AspNetCore.Mvc.Versioning`. We need to install it first. The version that included support for ASP.NET Core 3.0 is 4.0.0. It's still in preview at the time of writing, so don't forget to check *Include prerelease* when installing it via NuGet Package Manager. Also install prerelease of `Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer`.
 
-Implementing versioning manually is possible, but setting up correct version numbers for Swagger documentation using NSwag is harder. To avoid complicating things in here, we'll just skip versioning part for now.
+We are going to use URL strategy, the first one in the list above. To simulate a new API version, we'll add `Controllers\V1` folder, add a copy of our current controllers (for clients, projects, users and time entries) there and change their namespace to include `V1`. Routes on those controllers will also be changed as well as new `ApiVersion` attribute added. Here's the sample for `UsersController`:
 
-**TODO:** Update this part when `Microsoft.AspNetCore.Mvc.Versioning` starts working with ASP.NET Core 3.0.
+```c#
+namespace TimeTracker.Controllers.V1
+{
+    [ApiController]
+    [ApiVersion("1", Deprecated = true)]
+    [Authorize]
+    [Route("/api/v{version:apiVersion}/users")]
+    public class UsersController : Controller
+    {
+        // ...
+    }
+```
+
+Modify other V1 controllers too. You usually want to support older clients and give your users time to switch to new version of API, hence you need to keep older versions too, at least for some time.
+
+Now let's modify the original controllers that are left in `Controllers` namespace. They will be our current version and we'll mark them as version `V2`. For example, this is how `UsersController` will look like:
+
+```c#
+namespace TimeTracker.Controllers
+{
+    [ApiController]
+    [ApiVersion("2")]
+    [Authorize]
+    [Route("/api/v{version:apiVersion}/users")]
+    public class UsersController : Controller
+    {
+        // ...
+    }
+```
+
+Modify other V2 controllers too.
+
+Also, in all V1 and V2 controllers, look for `CreatedAtAction`. Since we have added a new route parameter for API version, we need to supply it too when calling `CreatedAtAction`. I.e. like this:
+
+    return CreatedAtAction(nameof(GetById), "users", new {id = user.Id, version = "1"}, resultModel);
+
+For V1 controllers use `version = "1"` and for V2 controllers use `version = "2"`. Without it, the server would break on `POST` methods stating that the correct address cannot be found.
+
+Next step, we need to configure versioning services. We'll do that in an extension method, defined in our `ServiceCollectionExtensions` class:
+
+```c#
+public static void AddVersioning(this IServiceCollection services)
+{
+    services.AddApiVersioning(
+        options =>
+        {
+            options.AssumeDefaultVersionWhenUnspecified = true;
+            options.ReportApiVersions = true;
+            options.ApiVersionReader = new UrlSegmentApiVersionReader();
+        });
+    services.AddVersionedApiExplorer(
+        options =>
+        {
+            options.GroupNameFormat = "'v'VVV";
+            options.SubstitutionFormat = "VVV";
+            options.SubstituteApiVersionInUrl = true;
+            options.ApiVersionParameterSource = new UrlSegmentApiVersionReader();
+        });
+}
+```
+
+While there, let's also refactor our `AddOpenApi` method to support versioning. Luckily, NSwag works OK with MVC Versioning. We'll move our document initialization code into a separate private method, and call it twice from `AddOpenApi` since we need to create two swagger documents - one for each version of the API. This is our new document initialization method:
+
+```c#
+private static void InitializeOpenApiDocumentOptions(
+    AspNetCoreOpenApiDocumentGeneratorSettings options, string version)
+{
+    options.DocumentName = version;
+    options.Title = $"Time Tracker API {version}";
+    options.ApiGroupNames = new[] {version};
+
+    options.Description = "An API for ASP.NET Core Workshop";
+    options.IgnoreObsoleteProperties = true;
+
+    options.OperationProcessors.Add(
+        new OperationSecurityScopeProcessor("jwt-token"));
+    options.DocumentProcessors.Add(
+        new SecurityDefinitionAppender(
+            "jwt-token", new[] {""}, new OpenApiSecurityScheme
+            {
+                Type = OpenApiSecuritySchemeType.ApiKey,
+                Name = "Authorization",
+                Description =
+                    "Enter \"Bearer jwt-token\" as value. " +
+                    "Use https://localhost:44383/get-token to get read-only JWT token. " +
+                    "Use https://localhost:44383/get-token?admin=true to get admin (read-write) JWT token.",
+                In = OpenApiSecurityApiKeyLocation.Header
+            }));
+
+    options.PostProcess = document =>
+    {
+        document.Info.Contact = new OpenApiContact
+        {
+            Name = "Miroslav Popovic",
+            Email = string.Empty,
+            Url = "https://miroslavpopovic.com"
+        };
+        document.Info.License = new OpenApiLicense
+        {
+            Name = "MIT",
+            Url = "https://opensource.org/licenses/MIT"
+        };
+    };
+}
+```
+
+Now we need to modify the `AddOpenApi` method to call it twice for both versions:
+
+```c#
+public static void AddOpenApi(this IServiceCollection services)
+{
+    services
+        .AddOpenApiDocument(
+            options => InitializeOpenApiDocumentOptions(options, "v2"))
+        .AddOpenApiDocument(
+            options => InitializeOpenApiDocumentOptions(options, "v1"));
+}
+```
+
+Finally, let's register `AddVersioning` from `Startup.ConfigureServices`. Add this line just below `services.AddControllers` line:
+
+    services.AddVersioning();
+
+If you run your application now and go to `/swagger` in your browsers, you'll see that both V1 and V2 are available.
+
+![Swagger with versioning](images/swagger-with-versioning.png)
+
+Great! Let's now modify Postman collection in order to access the versioned API. We'll duplicate the existing *Bearer Token Auth* folder and rename it to *Versioned Bearer Token Auth*:
+
+![Duplicate Postman collection](images/postman-add-versioning.png)
+
+Unfortunately, we haven't define `/api/` in our `{{rootUrl}}` variable in Postman, so we need to modify the URL of each request under *Versioned Bearer Token Auth* folder to include `/api/v2/`. I.e. `{{rootUrl}}/api/users` will become `{{rootUrl}}/api/v2/users`.
+
+![Postman versioned folder](images/postman-versioned.png)
+
+One more thing to fix. Our integration tests in `UserApiTests` (and other API tests if you have implemented them) were targeting `/api/users`. We need to modify each occurrence to use `/api/v2/users` prefix.
+
+That's it! Our API is now properly versioned.
 
 ## Usage limiting
 
@@ -228,8 +365,6 @@ Wouldn't it be nice to have a status page like Azure, Facebook and other service
 services.AddHealthChecksUI();
 ```
 
-*NOTE: Unfortunately, the line above is causing issue with .NET Core Preview 7. It's related to Entity Framework Core (again) and the underlined Sqlite database used for saving health checks. You can read the rest of this section, but won't be able to implement it yet if using Preview 7.*
-
 ```c#
 // Modify app.UseEndpoints, and add UI middleware before it:
 app.UseHealthChecksUI();
@@ -252,7 +387,7 @@ Also, add the following settings to `appsettings.json` file:
 "HealthChecks": [
     {
     "Name": "HTTP-Api-Basic",
-    "Uri": "/health"
+    "Uri": "https://localhost:44383/health"
     }
 ],
 "EvaluationTimeOnSeconds": 10,
@@ -263,8 +398,6 @@ Also, add the following settings to `appsettings.json` file:
 If you browse `/healthchecks-ui` now, you'll get the status page.
 
 ![Health checks status page](images/healthchecks-status.png)
-
-*TODO: Unfortunately, `AspNetCore.HealthChecks.UI` is using EF Core under the cover, and it's more or less broken in Preview 6-8, hence the error message in screenshot above.*
 
 ### Other monitoring types
 

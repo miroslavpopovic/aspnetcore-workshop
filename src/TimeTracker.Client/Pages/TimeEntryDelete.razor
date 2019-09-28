@@ -1,11 +1,9 @@
 @page "/time-entries/{id:long}/delete"
-@using System.ComponentModel
-@using Microsoft.AspNetCore.Components
 @using TimeTracker.Client.Models
 @using TimeTracker.Client.Services
 @attribute [Authorize]
 @inject ApiService ApiService
-@inject IUriHelper UriHelper
+@inject NavigationManager NavigationManager
 
 <h1>Delete time entry for @(timeEntry == null ? string.Empty : timeEntry.EntryDate.ToString("MMMM d, yyyy"))</h1>
 
@@ -39,7 +37,7 @@
     {
         if (await ApiService.DeleteAsync($"time-entries/{timeEntry.Id}"))
         {
-            UriHelper.NavigateTo("/time-entries");
+            NavigationManager.NavigateTo("/time-entries");
         }
         else
         {

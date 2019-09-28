@@ -14,15 +14,17 @@ namespace TimeTracker.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.0.0-preview6.19304.10");
+                .HasAnnotation("ProductVersion", "3.0.0");
 
             modelBuilder.Entity("TimeTracker.Domain.Client", b =>
                 {
                     b.Property<long>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -44,12 +46,15 @@ namespace TimeTracker.Data.Migrations
             modelBuilder.Entity("TimeTracker.Domain.Project", b =>
                 {
                     b.Property<long>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<long>("ClientId");
+                    b.Property<long>("ClientId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -81,20 +86,27 @@ namespace TimeTracker.Data.Migrations
             modelBuilder.Entity("TimeTracker.Domain.TimeEntry", b =>
                 {
                     b.Property<long>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Description")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("EntryDate");
+                    b.Property<DateTime>("EntryDate")
+                        .HasColumnType("TEXT");
 
-                    b.Property<decimal>("HourRate");
+                    b.Property<decimal>("HourRate")
+                        .HasColumnType("TEXT");
 
-                    b.Property<int>("Hours");
+                    b.Property<int>("Hours")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<long>("ProjectId");
+                    b.Property<long>("ProjectId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<long>("UserId");
+                    b.Property<long>("UserId")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -103,17 +115,62 @@ namespace TimeTracker.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("TimeEntries");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            Description = "Time entry description 1",
+                            EntryDate = new DateTime(2019, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            HourRate = 25m,
+                            Hours = 5,
+                            ProjectId = 1L,
+                            UserId = 1L
+                        },
+                        new
+                        {
+                            Id = 2L,
+                            Description = "Time entry description 2",
+                            EntryDate = new DateTime(2019, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            HourRate = 25m,
+                            Hours = 2,
+                            ProjectId = 2L,
+                            UserId = 1L
+                        },
+                        new
+                        {
+                            Id = 3L,
+                            Description = "Time entry description 3",
+                            EntryDate = new DateTime(2019, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            HourRate = 25m,
+                            Hours = 1,
+                            ProjectId = 3L,
+                            UserId = 1L
+                        },
+                        new
+                        {
+                            Id = 4L,
+                            Description = "Time entry description 4",
+                            EntryDate = new DateTime(2019, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            HourRate = 30m,
+                            Hours = 8,
+                            ProjectId = 3L,
+                            UserId = 2L
+                        });
                 });
 
             modelBuilder.Entity("TimeTracker.Domain.User", b =>
                 {
                     b.Property<long>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<decimal>("HourRate");
+                    b.Property<decimal>("HourRate")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 

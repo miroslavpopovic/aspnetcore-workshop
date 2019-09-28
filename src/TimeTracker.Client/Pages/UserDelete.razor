@@ -1,11 +1,9 @@
 @page "/users/{id:long}/delete"
-@using System.ComponentModel
-@using Microsoft.AspNetCore.Components
 @using TimeTracker.Client.Models
 @using TimeTracker.Client.Services
 @attribute [Authorize]
 @inject ApiService ApiService
-@inject IUriHelper UriHelper
+@inject NavigationManager NavigationManager
 
 <h1>Delete user @(user == null ? string.Empty : user.Name)</h1>
 
@@ -39,7 +37,7 @@
     {
         if (await ApiService.DeleteAsync($"users/{user.Id}"))
         {
-            UriHelper.NavigateTo("/users");
+            NavigationManager.NavigateTo("/users");
         }
         else
         {

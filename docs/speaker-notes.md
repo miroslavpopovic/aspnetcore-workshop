@@ -102,7 +102,7 @@
 - Explain what the db migrations are
 - `dotnet-tools.json`
 - `dotnet new tool-manifest` from the solution root
-- `dotnet tool install dotnet-ef --version 3.0.0-preview8.19405.11` to install EF Core tools
+- `dotnet tool install dotnet-ef` to install EF Core tools
 - From the project folder: `dotnet ef migrations add "InitialMigration" --output-dir "Data/Migrations"`
 - Look at the migrations folder content
 - `dotnet ef database update` to update the database
@@ -113,7 +113,6 @@
 - Add `OnModelCreating` override to `DbContext`
 - Use `modelBuilder.Entity<User>().HasData()` method to seed
 - `dotnet ef migrations add "SeedData" --output-dir "Data/Migrations"`
-- Check migration content - it's possible that wrong data is generated - fix IDs
 - `dotnet ef database update`
 
 ## 06 Controllers and actions
@@ -224,7 +223,17 @@
 - Versioning
     - Talk about API versioning
     - Different versioning strategies
-    - Mention `Microsoft.AspNetCore.Mvc.Versioning`
+    - Install `Microsoft.AspNetCore.Mvc.Versioning` and  `Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer` pre-release
+    - Create copy of controllers in `Controllers/V1`
+    - Update controller routes to include `/api/v{version:apiVersion}/`
+    - Add `[ApiVersion("...")]` attribute to controllers
+    - Update all `CreatedAtAction` method calls to include `version = "..."` in route parameters
+    - Create `ServiceCollectionExtensions.AddVersioning` method
+    - Refactor `AddOpenApi` method to support versioning - add `InitializeOpenApiDocumentOptions` private method
+    - Call `service.AddVersioning()` from `Startup.ConfigureServices`
+    - Test swagger UI output in browser
+    - Modify Postman collection - add new folder for versioned calls
+    - Fix integration tests in `UserApiTests` to include version number
 - Limiting
     - Create `LimitingMiddleware`
     - Add to `Startup`
@@ -250,7 +259,7 @@
         - `app.UseHealthChecksUI();`
         - `endpoints.MapHealthChecks("/health", new HealthCheckOptions { Predicate = _ => true, ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse });`
     - Add health check settings to `appsettings.json` file
-    - Browse `/healthchecks-ui` - broken in Preview 6
+    - Browse `/healthchecks-ui`
 - Mention Azure and third-party services for monitoring
 
 ## 10 Blazor client
@@ -261,6 +270,7 @@
 - Authentication
     - Mention that this is a preview of Blazor - future breaking changes are possible
     - Explain how we are simulating login
+    - Install `Microsoft.AspNetCore.Components.Authorization` NuGet package
     - Add `Models.UserModel` class
     - Create `Security.TokenAuthenticationStateProvider`
         - Explain what it does
@@ -269,7 +279,9 @@
     - Modify `App.razor` to add `<CascadingAuthenticationState>`
         - Explain
     - Modify the main `_Imports.razor`
+        - add `@using System.Net.Http.Headers`
         - add `@using Microsoft.AspNetCore.Authorization`
+        - add `@using Microsoft.AspNetCore.Components.Authorization`
     - Add `wwwroot/scripts/localStorage.js`
         - Include it in `wwwroot/index.html`
     - Add `@attribute [Authorize]` attribute to some pages
@@ -285,6 +297,7 @@
     - Add `Config` class to hold all the configuration constants (e.g. URLs)
     - Add `Services.ApiService` with `GetAsync` method
         - Explain `HttpClient` and how we get token
+        - Register `ApiService` in `Startup` - `services.AddScoped<ApiService>();`
     - Implement `Login.razor` page
         - Explain `EditForm` component and its `Model` property
         - Explain buttons and `onclick` handlers

@@ -60,7 +60,7 @@ namespace TimeTracker.Tests.IntegrationTests
         public async Task Delete_NoAuthorizationHeader_ReturnsUnauthorized()
         {
             _client.DefaultRequestHeaders.Clear();
-            var result = await _client.DeleteAsync("/api/users/1");
+            var result = await _client.DeleteAsync("/api/v2/users/1");
 
             Assert.Equal(HttpStatusCode.Unauthorized, result.StatusCode);
         }
@@ -72,7 +72,7 @@ namespace TimeTracker.Tests.IntegrationTests
             _client.DefaultRequestHeaders
                 .Add("Authorization", new[] { $"Bearer {_nonAdminToken}" });
 
-            var result = await _client.DeleteAsync("/api/users/1");
+            var result = await _client.DeleteAsync("/api/v2/users/1");
 
             Assert.Equal(HttpStatusCode.Forbidden, result.StatusCode);
         }
@@ -84,7 +84,7 @@ namespace TimeTracker.Tests.IntegrationTests
             _client.DefaultRequestHeaders
                 .Add("Authorization", new[] { $"Bearer {_adminToken}" });
 
-            var result = await _client.DeleteAsync("/api/users/ ");
+            var result = await _client.DeleteAsync("/api/v2/users/ ");
 
             Assert.Equal(HttpStatusCode.MethodNotAllowed, result.StatusCode);
         }
@@ -96,9 +96,8 @@ namespace TimeTracker.Tests.IntegrationTests
             _client.DefaultRequestHeaders
                 .Add("Authorization", new[] { $"Bearer {_adminToken}" });
 
-            var result = await _client.DeleteAsync("/api/users/0");
+            var result = await _client.DeleteAsync("/api/v2/users/0");
 
-            // EF Core Preview issues - we'll get error 500, because the server will throw NullReferenceException
             Assert.Equal(HttpStatusCode.NotFound, result.StatusCode);
         }
 
@@ -109,7 +108,7 @@ namespace TimeTracker.Tests.IntegrationTests
             _client.DefaultRequestHeaders
                 .Add("Authorization", new[] { $"Bearer {_adminToken}" });
 
-            var result = await _client.DeleteAsync("/api/users/1");
+            var result = await _client.DeleteAsync("/api/v2/users/1");
 
             Assert.Equal(HttpStatusCode.OK, result.StatusCode);
         }

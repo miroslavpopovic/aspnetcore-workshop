@@ -1,12 +1,10 @@
 ﻿@page "/clients/{id:long}/edit"
 @page "/clients/add"
-@using System.ComponentModel
-@using Microsoft.AspNetCore.Components
 @using TimeTracker.Client.Models
 @using TimeTracker.Client.Services
 @attribute [Authorize]
 @inject ApiService ApiService
-@inject IUriHelper UriHelper
+@inject NavigationManager NavigationManager
 
 @if (Id == 0)
 {
@@ -74,7 +72,7 @@ else
 
         if (success)
         {
-            UriHelper.NavigateTo("/clients");
+            NavigationManager.NavigateTo("/clients");
         }
         else
         {
