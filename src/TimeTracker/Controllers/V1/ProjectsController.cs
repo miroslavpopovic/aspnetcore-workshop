@@ -9,13 +9,13 @@ using TimeTracker.Data;
 using TimeTracker.Domain;
 using TimeTracker.Models;
 
-namespace TimeTracker.Controllers
+namespace TimeTracker.Controllers.V1
 {
     /// <summary>
     /// Projects endpoint for TimeTracker API.
     /// </summary>
     [ApiController]
-    [ApiVersion("2")]
+    [ApiVersion("1", Deprecated = true)]
     [Authorize]
     [Route("/api/v{version:apiVersion}/projects")]
     public class ProjectsController : Controller
@@ -131,7 +131,7 @@ namespace TimeTracker.Controllers
 
             var resultModel = ProjectModel.FromProject(project);
 
-            return CreatedAtAction(nameof(GetById), "projects", new {id = project.Id, version = "2"}, resultModel);
+            return CreatedAtAction(nameof(GetById), "projects", new {id = project.Id, version = "1"}, resultModel);
         }
 
         /// <summary>

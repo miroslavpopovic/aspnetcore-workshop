@@ -8,13 +8,13 @@ using Microsoft.Extensions.Logging;
 using TimeTracker.Data;
 using TimeTracker.Models;
 
-namespace TimeTracker.Controllers
+namespace TimeTracker.Controllers.V1
 {
     /// <summary>
     /// Users endpoint of TimeTracker API.
     /// </summary>
     [ApiController]
-    [ApiVersion("2")]
+    [ApiVersion("1", Deprecated = true)]
     [Authorize]
     [Route("/api/v{version:apiVersion}/users")]
     public class UsersController : Controller
@@ -121,7 +121,7 @@ namespace TimeTracker.Controllers
 
             var resultModel = UserModel.FromUser(user);
 
-            return CreatedAtAction(nameof(GetById), "users", new {id = user.Id, version = "2"}, resultModel);
+            return CreatedAtAction(nameof(GetById), "users", new {id = user.Id, version = "1"}, resultModel);
         }
 
         /// <summary>

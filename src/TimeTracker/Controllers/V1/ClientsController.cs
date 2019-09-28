@@ -9,13 +9,13 @@ using TimeTracker.Data;
 using TimeTracker.Domain;
 using TimeTracker.Models;
 
-namespace TimeTracker.Controllers
+namespace TimeTracker.Controllers.V1
 {
     /// <summary>
     /// Clients endpoint of TimeTracker API.
     /// </summary>
     [ApiController]
-    [ApiVersion("2")]
+    [ApiVersion("1", Deprecated = true)]
     [Authorize]
     [Route("/api/v{version:apiVersion}/clients")]
     public class ClientsController : Controller
@@ -122,7 +122,7 @@ namespace TimeTracker.Controllers
 
             var resultModel = ClientModel.FromClient(client);
 
-            return CreatedAtAction(nameof(GetById), "clients", new {id = client.Id, version = "2"}, resultModel);
+            return CreatedAtAction(nameof(GetById), "clients", new {id = client.Id, version = "1"}, resultModel);
         }
 
         /// <summary>

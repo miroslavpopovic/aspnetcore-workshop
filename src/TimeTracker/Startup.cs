@@ -38,6 +38,8 @@ namespace TimeTracker
             services.AddControllers().AddFluentValidation(
                 fv => fv.RegisterValidatorsFromAssemblyContaining<UserInputModelValidator>());
 
+            services.AddVersioning();
+
             services.AddOpenApi();
 
             services.AddHealthChecks()

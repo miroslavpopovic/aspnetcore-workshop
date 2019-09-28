@@ -1166,6 +1166,656 @@
 					}
 				}
 			]
+		},
+		{
+			"name": "Versioned Bearer Token Auth",
+			"item": [
+				{
+					"name": "Admin",
+					"item": [
+						{
+							"name": "Create user",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"Postman Test User\",\n\t\"hourRate\": 20\n}"
+								},
+								"url": {
+									"raw": "{{rootUrl}}/api/v2/users",
+									"host": [
+										"{{rootUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"users"
+									]
+								},
+								"description": "Create a new user"
+							},
+							"response": []
+						},
+						{
+							"name": "Create client",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"Postman Test Client\"\n}"
+								},
+								"url": {
+									"raw": "{{rootUrl}}/api/v2/clients",
+									"host": [
+										"{{rootUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"clients"
+									]
+								},
+								"description": "Create a new client"
+							},
+							"response": []
+						},
+						{
+							"name": "Create project",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"Postman Test Client\",\n\t\"clientId\": 1\n}"
+								},
+								"url": {
+									"raw": "{{rootUrl}}/api/v2/projects",
+									"host": [
+										"{{rootUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"projects"
+									]
+								},
+								"description": "Create a new project"
+							},
+							"response": []
+						},
+						{
+							"name": "Create time entry",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"userId\": 1,\n\t\"projectId\": 1,\n\t\"entryDate\": \"2019-07-01\",\n\t\"hours\": 6,\n\t\"description\": \"Created from Postman\"\n}"
+								},
+								"url": {
+									"raw": "{{rootUrl}}/api/v2/time-entries",
+									"host": [
+										"{{rootUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"time-entries"
+									]
+								},
+								"description": "Create a new time entry"
+							},
+							"response": []
+						},
+						{
+							"name": "Update user",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"Postman Test User UPDATE\",\n\t\"hourRate\": 15\n}"
+								},
+								"url": {
+									"raw": "{{rootUrl}}/api/v2/users/3",
+									"host": [
+										"{{rootUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"users",
+										"3"
+									]
+								},
+								"description": "Update existing user"
+							},
+							"response": []
+						},
+						{
+							"name": "Update client",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"Postman Test Client UPDATE\"\n}"
+								},
+								"url": {
+									"raw": "{{rootUrl}}/api/v2/clients/3",
+									"host": [
+										"{{rootUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"clients",
+										"3"
+									]
+								},
+								"description": "Update existing client"
+							},
+							"response": []
+						},
+						{
+							"name": "Update project",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"Postman Test Project UPDATE\",\n\t\"clientId\": 1\n}"
+								},
+								"url": {
+									"raw": "{{rootUrl}}/api/v2/projects/3",
+									"host": [
+										"{{rootUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"projects",
+										"3"
+									]
+								},
+								"description": "Update existing project"
+							},
+							"response": []
+						},
+						{
+							"name": "Update time entry",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"userId\": 1,\n\t\"projectId\": 1,\n\t\"entryDate\": \"2019-07-02\",\n\t\"hours\": 5,\n\t\"description\": \"Updated from Postman\"\n}"
+								},
+								"url": {
+									"raw": "{{rootUrl}}/api/v2/time-entries/1",
+									"host": [
+										"{{rootUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"time-entries",
+										"1"
+									]
+								},
+								"description": "Update existing time entry"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete user",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{rootUrl}}/api/v2/users/3",
+									"host": [
+										"{{rootUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"users",
+										"3"
+									]
+								},
+								"description": "Delete an existing user"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete client",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{rootUrl}}/api/v2/clients/3",
+									"host": [
+										"{{rootUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"clients",
+										"3"
+									]
+								},
+								"description": "Delete an existing client"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete project",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{rootUrl}}/api/v2/projects/3",
+									"host": [
+										"{{rootUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"projects",
+										"3"
+									]
+								},
+								"description": "Delete an existing project"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete time entry",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{rootUrl}}/api/v2/time-entries/1",
+									"host": [
+										"{{rootUrl}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"time-entries",
+										"1"
+									]
+								},
+								"description": "Delete an existing time entry"
+							},
+							"response": []
+						}
+					],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "{{adminToken}}",
+								"type": "string"
+							}
+						]
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "15a3a647-d5d4-436a-8691-fac7e5b68985",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "57ee5cf2-6467-4e30-9c8f-dde980c39205",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Get users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}/api/v2/users?page=1&size=5",
+							"host": [
+								"{{rootUrl}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"users"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Page number to retrieve"
+								},
+								{
+									"key": "size",
+									"value": "5",
+									"description": "Size of a single page"
+								}
+							]
+						},
+						"description": "Get a page of users."
+					},
+					"response": []
+				},
+				{
+					"name": "Get clients",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}/api/v2/clients?page=1&size=5",
+							"host": [
+								"{{rootUrl}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"clients"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Page number to retrieve"
+								},
+								{
+									"key": "size",
+									"value": "5",
+									"description": "Size of a single page"
+								}
+							]
+						},
+						"description": "Get a page of clients."
+					},
+					"response": []
+				},
+				{
+					"name": "Get projects",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}/api/v2/projects?page=1&size=5",
+							"host": [
+								"{{rootUrl}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"projects"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Page number to retrieve"
+								},
+								{
+									"key": "size",
+									"value": "5",
+									"description": "Size of a single page"
+								}
+							]
+						},
+						"description": "Get a page of projects."
+					},
+					"response": []
+				},
+				{
+					"name": "Get time entries",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}/api/v2/time-entries?page=1&size=5",
+							"host": [
+								"{{rootUrl}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"time-entries"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Page number to retrieve"
+								},
+								{
+									"key": "size",
+									"value": "5",
+									"description": "Size of a single page"
+								}
+							]
+						},
+						"description": "Get a page of time entries."
+					},
+					"response": []
+				},
+				{
+					"name": "Get time entries by user and month",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}/api/v2/time-entries/user/1/2019/07",
+							"host": [
+								"{{rootUrl}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"time-entries",
+								"user",
+								"1",
+								"2019",
+								"07"
+							]
+						},
+						"description": "Get a page of time entries."
+					},
+					"response": []
+				},
+				{
+					"name": "Get user by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}/api/v2/users/1",
+							"host": [
+								"{{rootUrl}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"users",
+								"1"
+							]
+						},
+						"description": "Get a single user by user id."
+					},
+					"response": []
+				},
+				{
+					"name": "Get client by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}/api/v2/clients/1",
+							"host": [
+								"{{rootUrl}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"clients",
+								"1"
+							]
+						},
+						"description": "Get a single client by client id."
+					},
+					"response": []
+				},
+				{
+					"name": "Get project by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}/api/v2/projects/1",
+							"host": [
+								"{{rootUrl}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"projects",
+								"1"
+							]
+						},
+						"description": "Get a single project by project id."
+					},
+					"response": []
+				},
+				{
+					"name": "Get time entry by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}/api/v2/time-entries/2",
+							"host": [
+								"{{rootUrl}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"time-entries",
+								"2"
+							]
+						},
+						"description": "Get a single time entry by time entry id."
+					},
+					"response": []
+				}
+			],
+			"description": "These are requests prior to adding Bearer token auth",
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "e899460b-31b1-4ae8-acbc-8581defed833",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "203dccbe-8c22-4676-b577-4a2f0846954b",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
 		}
 	],
 	"event": [
@@ -1192,19 +1842,19 @@
 	],
 	"variable": [
 		{
-			"id": "85b606c3-4036-47ea-9666-292c46666496",
+			"id": "0447b306-f725-4ed8-8fbc-d44240577680",
 			"key": "rootUrl",
 			"value": "https://localhost:44383",
 			"type": "string"
 		},
 		{
-			"id": "d64d1b5b-c831-4da0-996f-ab96e0f3a008",
+			"id": "35b472b3-a4b5-4753-b50a-c1d4880fdba0",
 			"key": "token",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "d6ebe925-3a99-404b-a17d-e3337a9b8e07",
+			"id": "f20b994d-28f1-40e1-a9ba-ac0444ef17cb",
 			"key": "adminToken",
 			"value": "",
 			"type": "string"

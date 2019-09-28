@@ -1,6 +1,7 @@
 {
     "cSpell.words": [
         "Appender",
+        "Iddict",
         "Intelli",
         "LINQ's",
         "Miroslav",
@@ -14,6 +15,7 @@
         "gitignore",
         "grpc",
         "miroslavpopovic",
+        "nameof",
         "weatherforecast",
         "webapi"
     ]
