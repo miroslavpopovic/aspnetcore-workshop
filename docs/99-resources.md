@@ -24,5 +24,5 @@ This is a list of APIs you can use as samples:
 ## Samples
 
 - [REST samples and video course](https://github.com/nbarbettini/BeautifulRestApi) by Nate Barbettini
-- [Practical ASP.NET Core samples](https://github.com/dodyg/practical-aspnetcore) by Dody Gunawinata - 250+ ASP.NET Core samples
-- [My sample for production-ready APIs talk](https://github.com/miroslavpopovic/production-ready-apis-sample-3.0)
+- [Practical ASP.NET Core samples](https://github.com/dodyg/practical-aspnetcore) by Dody Gunawinata - 300+ ASP.NET Core samples
+- [My sample for production-ready APIs talk](https://github.com/miroslavpopovic/production-ready-apis-sample-3)

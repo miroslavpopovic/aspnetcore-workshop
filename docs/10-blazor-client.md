@@ -4,7 +4,7 @@
 
 Blazor components are a new way to define encapsulated component. They can be shared between projects as NuGet packages and embedded into both ASP.NET Core server side applications as well as client side applications. Code-behind logic and event handlers are written in C#. Third-party vendors like [Telerik](https://www.telerik.com/blazor-ui), [DevExpress](https://www.devexpress.com/blazor/) and [Syncfusion](https://www.syncfusion.com/blazor-components) are already providing their own set of Blazor components.
 
-Like mentioned above, Blazor components can be hosted on both client and server. What that means is that client-side Blazor enables running C# / .NET code in the browser. This is possible using WebAssembly standard. It means that you can write client-side web applications in .NET, without the need for JavaScript or frameworks like Aurelia, React, Vue or Angular. It's basically a replacement for them.
+Like mentioned above, Blazor components can be hosted on both client and server. What that means is that Blazor WebAssembly (client-side) enables running C# / .NET code in the browser. This is possible using WebAssembly standard. It means that you can write client-side web applications in .NET, without the need for JavaScript or frameworks like Aurelia, React, Vue or Angular. It's basically a replacement for them.
 
 ## Introduction to Blazor
 
@@ -12,7 +12,7 @@ An introduction to Blazor is done in form of PowerPoint presentation. It explain
 
 ## Creating client-side Blazor project
 
-Add new project to your `TimeTracker` solution, named `TimeTracker.Client`. Select *Blazor (client-side)* template.
+Add new Blazor App project to your `TimeTracker` solution, named `TimeTracker.Client`. Select *Blazor WebAssembly App* template.
 
 ![New Blazor client-side project](images/vs-new-blazor-application.png)
 
@@ -32,7 +32,9 @@ Note that the following implementation might change a lot in future versions of 
 
 Let's modify the Blazor client app to support authentication. The initial support for auth has been added in the preview 6 version, just on time for this workshop, so we'll use that. Most of the code that follows has been taken from excellent [NDC Oslo presentation](https://www.youtube.com/watch?v=uW-Kk7Qpv5U) by [Steve Sanderson](https://twitter.com/stevensanderson). The presentation samples can be found [on GitHub](https://github.com/SteveSandersonMS/presentation-2019-06-NDCOslo/).
 
-The first thing we need is to implement `AuthenticationStateProvider` that is capable of handling tokens in local storage. We'll add it to `Security` folder.
+To support auth, we'll need to install `Microsoft.AspNetCore.Components.Authorization` NuGet package to our `TimeTracker.Client` project. Do that now.
+
+The first thing we need to implement is `AuthenticationStateProvider` that is capable of handling tokens in local storage. We'll add it to `Security` folder.
 
 ```c#
 public class TokenAuthenticationStateProvider : AuthenticationStateProvider
@@ -84,8 +86,12 @@ public class TokenAuthenticationStateProvider : AuthenticationStateProvider
     {
         switch (base64.Length % 4)
         {
-            case 2: base64 += "=="; break;
-            case 3: base64 += "="; break;
+            case 2:
+                base64 += "==";
+                break;
+            case 3:
+                base64 += "=";
+                break;
         }
         return Convert.FromBase64String(base64);
     }
@@ -131,27 +137,35 @@ public void ConfigureServices(IServiceCollection services)
 Next step is to modify our `App.razor` file to enable cascading usage of the authentication state provider and to define information to display for non-authorized users.
 
 ```razor
-<CascadingAuthenticationState>
-    <Router AppAssembly="typeof(Program).Assembly">
-        <NotFoundContent>
-            <p>Sorry, there's nothing at this address.</p>
-        </NotFoundContent>
-        <NotAuthorizedContent>
-            <h1>Access denied</h1>
-            <p>Only logged-in users can access the TimeTracker client app.</p>
-        </NotAuthorizedContent>
-        <AuthorizingContent>
-            Logging in...
-        </AuthorizingContent>
-    </Router>
-</CascadingAuthenticationState>
+<Router AppAssembly="@typeof(Program).Assembly">
+    <Found Context="routeData">
+        <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+            <NotAuthorized>
+                <h1>Access denied</h1>
+                <p>Only logged-in users can access the TimeTracker client app.</p>
+            </NotAuthorized>
+            <Authorizing>
+                Logging in...
+            </Authorizing>
+        </AuthorizeRouteView>
+    </Found>
+    <NotFound>
+        <CascadingAuthenticationState>
+            <LayoutView Layout="@typeof(MainLayout)">
+                <h1>Page not found</h1>
+                <p>Sorry, there's nothing at this address.</p>
+            </LayoutView>
+        </CascadingAuthenticationState>
+    </NotFound>
+</Router>
 ```
 
-Also modify the main `_Imports.razor` file, to add the following lines:
+You'll get some squiggly lines in Visual Studio for the above code. To fix it, modify the main `_Imports.razor` file, to add the following lines:
 
 ```razor
 @using System.Net.Http.Headers
 @using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
 ```
 
 Our `TokenAuthenticationStateProvider` above had the call to `blazorLocalStorage` helper which we currently don't have defined. Let's fix that. Add the `wwwroot/scripts/localStorage.js` file with this content:
@@ -175,7 +189,7 @@ To test how it works when users are not authenticated, let's protect some pages 
 @attribute [Authorize]
 ```
 
-If you try to navigate to this pages now, you'll get the *Access denied* message we defined above in `App.razor` file.
+If you try to navigate to this pages now, you'll get the *Access denied* message that we defined above in `App.razor` file.
 
 ### Adding login capability
 
@@ -245,7 +259,7 @@ Before implementing the login page, it would be good to define all the settings 
 public static class Config
 {
     public const string ApiRootUrl = "https://localhost:44383/";
-    public const string ApiResourceUrl = ApiRootUrl + "api/";
+    public const string ApiResourceUrl = ApiRootUrl + "api/v2/";
     public const string TokenUrl = ApiRootUrl + "get-token";
 }
 ```
@@ -287,6 +301,12 @@ public class ApiService
 
 This service uses `HttpClient` and our `TokenAuthenticationServiceProvider` as dependencies and will implement methods for calling the API. For now, there is a generic `GetJsonApi` method that creates an HTTP GET request and returns deserialized JSON response. The token is retrieved either from `token` parameter (e.g. when calling from login page) or from `TokenAuthenticationServiceProvider.GetTokenAsync()` and used as Bearer token for the request. Root URLs are read from `Config` class.
 
+In order to use this service as a dependency we need to register it for dependency injection. Add the following line to `Startup.ConfigureServices`:
+
+```c#
+services.AddScoped<ApiService>();
+```
+
 Finally, let's implement our `Login.razor` page. This is how it should look like:
 
 ![Login page](images/blazor-login.png)
@@ -295,14 +315,13 @@ Instead of regular username / password pair, we'll just use user ID - it's a dem
 
 ```razor
 @page "/login"
-@using Microsoft.AspNetCore.Components
 @using TimeTracker.Client.Models
 @using TimeTracker.Client.Security
 @using TimeTracker.Client.Services
 @inject HttpClient Http
 @inject ApiService ApiService
 @inject TokenAuthenticationStateProvider AuthStateProvider
-@inject IUriHelper UriHelper
+@inject NavigationManager NavigationManager
 
 <h1>Login</h1>
 
@@ -354,7 +373,7 @@ Instead of regular username / password pair, we'll just use user ID - it's a dem
 
             await AuthStateProvider.SetTokenAndUserAsync(token, user);
 
-            UriHelper.NavigateTo("/");
+            NavigationManager.NavigateTo("/");
         }
         catch (Exception ex)
         {
@@ -368,7 +387,7 @@ Looks rather simple, doesn't it? We are using `<EditForm>` component which point
 
 `LogIn` method is containing the login logic. It creates a URL and makes a call to token endpoint. The token returned is used for loading the user with the given ID. If user is successfully retrieved, both token and user instance are saved locally using `TokenAuthenticationStateProvider.SetTokenAndUserAsync()`. After that, the user is redirected to home page.
 
-If any exception happens during token or user request, the exception message is retrieved and saved locally, and also bound to be displayed on a page as alert.
+If any exception happens during token or user request, the exception message is retrieved and saved locally, and also bound to be displayed on a page as an alert.
 
 ## Adding pages
 
@@ -555,6 +574,19 @@ The logic for navigating between pages is implemented in `Pager` component and w
 
 In the `Users.razor` code above, we are giving two parameters to the `Pager` component - `Model`, which is an instance of `PagedList<T>`, and `Loader`, which is a method that runs each time a link is clicked in the `Pager` component. This method accepts one parameter - `page`, which is a current page number, and must reload the list of items. In the code above, it loads a page of items from users.
 
+You can copy `PagedList<T>` from `TimeTracker` project models.
+
+```c#
+public class PagedList<T>
+{
+    public IEnumerable<T> Items { get; set; }
+    public int Page { get; set; }
+    public int PageSize { get; set; }
+    public int TotalCount { get; set; }
+    public int TotalPages => (int) Math.Ceiling((double) TotalCount / PageSize);
+}
+```
+
 *Note*: to test how pager works, try setting `pageSize` to `1` in the code above or creating more users later when we implement create functionality.
 
 ### Adding `Pager` component
@@ -562,7 +594,7 @@ In the `Users.razor` code above, we are giving two parameters to the `Pager` com
 Here's how the `Pager` component is implemented (it goes into `Shared` folder):
 
 ```razor
-typeparam T
+@typeparam T
 @using TimeTracker.Client.Models
 
 @if (Model != null)
@@ -645,13 +677,11 @@ We'll implement both create and update logic on the same page, to improve code r
 ```razor
 @page "/users/{id:long}/edit"
 @page "/users/add"
-@using System.ComponentModel
-@using Microsoft.AspNetCore.Components
 @using TimeTracker.Client.Models
 @using TimeTracker.Client.Services
 @attribute [Authorize]
 @inject ApiService ApiService
-@inject IUriHelper UriHelper
+@inject NavigationManager NavigationManager
 
 @if (Id == 0)
 {
@@ -725,7 +755,7 @@ else
 
         if (success)
         {
-            UriHelper.NavigateTo("/users");
+            NavigationManager.NavigateTo("/users");
         }
         else
         {
@@ -737,7 +767,7 @@ else
 
 Let's give it a closer look:
 - There are two page directives - `@page "/users/{id:long}/edit"` and `@page "/users/add"` - it's perfectly valid, one is for update and one for creating new user.
-- We are injecting `IUriHelper` for navigating away after successful save.
+- We are injecting `NavigationManager` for navigating away after successful save.
 - Different heading is displayed depending on whether we are creating new user or updating an existing one.
 - Main model of the page is `user` field of type `UserInputModel`.
 - We are using `OnValidateSubmit` parameter of `EditForm`, so `SaveUser` method is only called if validation is successful.
@@ -759,13 +789,11 @@ Let's give it a closer look:
 
 ```razor
 @page "/users/{id:long}/delete"
-@using System.ComponentModel
-@using Microsoft.AspNetCore.Components
 @using TimeTracker.Client.Models
 @using TimeTracker.Client.Services
 @attribute [Authorize]
 @inject ApiService ApiService
-@inject IUriHelper UriHelper
+@inject NavigationManager NavigationManager
 
 <h1>Delete user @(user == null ? string.Empty : user.Name)</h1>
 
@@ -799,7 +827,7 @@ Let's give it a closer look:
     {
         if (await ApiService.DeleteAsync($"users/{user.Id}"))
         {
-            UriHelper.NavigateTo("/users");
+            NavigationManager.NavigateTo("/users");
         }
         else
         {
@@ -833,6 +861,7 @@ To implement it, we need a hack since `InputSelect` component does not support n
 </div>
 
 <!-- Inside @code -->
+{
     [Parameter] public long Id { get; set; }
     private string clientId = string.Empty;
     private Lookup[] clients = new Lookup[] {};
@@ -886,7 +915,7 @@ To implement it, we need a hack since `InputSelect` component does not support n
 
         if (success)
         {
-            UriHelper.NavigateTo("/projects");
+            NavigationManager.NavigateTo("/projects");
         }
         else
         {
