@@ -52,13 +52,13 @@ MVC template will create a lot more files, and in addition, we have also asked f
 
 Open the project in Visual Studio or Visual Studio Code and compare the structure and files with the introduction we had in the previous part of workshop. You should already recognized some concepts that we have mentioned there.
 
-Other templates you can try are `angular`, `react`, `grpc`, `worker` and `serversideblazor`.
+Other templates you can try are `angular`, `react`, `grpc`, `worker` and `blazorserver`.
 
 ## Visual Studio 2019
 
 ### New Project dialog
 
-The latest version of Visual Studio has a new redesigned New Project dialog where you can pick and configure all the templates we have mentioned above, when we tried `dotnet` CLI.
+The latest version of Visual Studio has a redesigned New Project dialog where you can pick and configure all the templates we have mentioned above, when we tried `dotnet` CLI.
 
 ![New Project Dialog](images/vs-new-project-dialog.png)
 
@@ -66,7 +66,7 @@ When creating a new project in Visual Studio, you have the ability to select the
 
 ![New ASP.NET Core Dialog](images/vs-new-aspnetcore.png)
 
-In the current preview of .NET Core 3.0, all ASP.NET Core project templates, together with Grpc and Worker, are under *ASP.NET Core Web Application* group. They are also available separately. Use the filter on top to narrow the search.
+To create a new ASP.NET Core project, find *ASP.NET Core Web Application* template.
 
 ![New ASP.NET Core Dialog](images/vs-new-aspnetcore-2.png)
 

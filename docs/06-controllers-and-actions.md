@@ -206,7 +206,7 @@ Data coming from outside, from the user or from the API client, should never be 
 
 There are also other ways for doing validation, and we are going to use an alternative method instead, with the help of [FluentValidation](https://fluentvalidation.net/) library. Instead of modifying our models by adding attributes to properties, FluentValidation is using satellite classes as validations. This really helps with separation of concerns and is much more flexible, especially when you need to implement a custom validation logic, not supported by built in validators.
 
-Install `FluentValidation.AspNetCore` [NuGet package](https://www.nuget.org/packages/FluentValidation.AspNetCore/), version 8.5+, since the support for ASP.NET Core 3.0 is added in 8.5. At this time, it's in Preview phase, so don't forget to check *Include prerelease* in NuGet package manager.
+Install `FluentValidation.AspNetCore` [NuGet package](https://www.nuget.org/packages/FluentValidation.AspNetCore/), version 8.5+, since the support for ASP.NET Core 3.0 is added in 8.5.
 
 OK, now we can start writing our validation logic. We do that by adding validator classes inheriting from `AbstractValidator<T>`. Let's write first of them under `Models.Validation` namespace:
 

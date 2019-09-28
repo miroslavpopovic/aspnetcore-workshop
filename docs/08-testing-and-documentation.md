@@ -109,7 +109,6 @@ public class UsersControllerTests
         var dbContext = new TimeTrackerDbContext(options);
         var logger = new FakeLogger<UsersController>();
 
-        // HACK: EF Core Preview 6 has issues, adding new values here
         dbContext.Users.Add(new User {Id = 1, Name = "Test User 1", HourRate = 15});
         dbContext.Users.Add(new User {Id = 2, Name = "Test User 2", HourRate = 20});
         dbContext.Users.Add(new User {Id = 3, Name = "Test User 3", HourRate = 25});
@@ -118,7 +117,7 @@ public class UsersControllerTests
         _controller = new UsersController(dbContext, logger);
     }
 
-    [Fact(Skip = "EF Core Preview issues - looking for entity with non-existing ID throws null reference exception")]
+    [Fact]
     public async Task GetById_IdIsNonExisting_ReturnsNotFoundResult()
     {
         var result = await _controller.GetById(0);
@@ -128,10 +127,7 @@ public class UsersControllerTests
 }
 ```
 
-Note those pesky comments and extra lines above? It's because EF Core 3.0 Preview 6-8 have a lot of issues, which are clearly stated in [announcement post](https://devblogs.microsoft.com/dotnet/announcing-entity-framework-core-3-0-preview-6-and-entity-framework-6-3-preview-6/). This will be fixed with the final release. For now, we have added *Skip* message to the `[Fact]`.
-
-Run the test explorer in Visual Studio - *Test > Windows > Test Explorer* and select *Run All Tests*. Note that your test should be ignored, and not displayed as successful.
-
+Run the test explorer in Visual Studio - *Test > Windows > Test Explorer* and select *Run All Tests*.
 ![Test Explorer](images/vs-test-explorer.png)
 
 You can dock Test Explorer window somewhere. It will be updated as you add more tests and you'll be able to run or debug a single test or all tests.
@@ -186,7 +182,7 @@ public async Task GetPage_SecondPage_ReturnsExpectedResult()
 And here are some tests for deleting users:
 
 ```c#
-[Fact(Skip = "EF Core Preview issues - looking for entity with non-existing ID throws null reference exception")]
+[Fact]
 public async Task Delete_IdIsNotExisting_ReturnsNotFoundResult()
 {
     var result = await _controller.Delete(0);
@@ -209,7 +205,7 @@ Tests for other methods can be implemented the same. Same goes for testing other
 
 Now let's add some integration tests that will test the HTTP surface of our APIs.
 
-For this type of testing, we'll need to have a test server. ASP.NET Core is providing that in `Microsoft.AspNetCore.TestHost` NuGet package. Install it to the `TimeTracker.Tests` project (use prerelease).
+For this type of testing, we'll need to have a test server. ASP.NET Core is providing that in `Microsoft.AspNetCore.TestHost` NuGet package. Install it to the `TimeTracker.Tests` project.
 
 We'll need to create a small change in our `Startup` class in order to configure Sqlite differently for testing purpose. First, add the following line at the top of `Startup` class:
 
@@ -343,7 +339,7 @@ Swagger, or Open API Specification 3.0, is an API framework. At its core,it just
 
 At this point, we are only interested in API documentation, so let's focus on providing a documentation for our API. We'll be using NSwag library, although there are others, like Swashbuckle.
 
-Install `NSwag.AspNetCore` NuGet package to `TimeTracker` project. Also install `Microsoft.AspNetCore.Mvc.NewtonsoftJson` NuGet package (don't forget to include pre-release) as it is a requirement by NSwag.
+Install `NSwag.AspNetCore` NuGet package to `TimeTracker` project. Also install `Microsoft.AspNetCore.Mvc.NewtonsoftJson` NuGet package as it is a requirement by NSwag.
 
 Add a new services extension to `Extensions\ServiceCollectionExtensions`:
 
@@ -373,7 +369,6 @@ public static void AddOpenApi(this IServiceCollection services)
                 document.Info.Version = "v1";
                 document.Info.Title = "Time Tracker API v1";
                 document.Info.Description = "An API for ASP.NET Core Workshop";
-                document.Info.TermsOfService = "Do whatever you want with it :)";
                 document.Info.Contact = new OpenApiContact
                 {
                     Name = "Miroslav Popovic",
@@ -390,7 +385,9 @@ public static void AddOpenApi(this IServiceCollection services)
 }
 ```
 
-Now use the extension method above in your `Startup`'s class `ConfigureServices` method: `services.AddOpenApi()`.
+Now use the extension method above in your `Startup`'s class `ConfigureServices` method:
+
+    services.AddOpenApi();
 
 Also in `Startup` class, add the following two lines to `Configure` method after `app.UseAuthorization();`:
 

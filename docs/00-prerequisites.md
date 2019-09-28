@@ -13,8 +13,8 @@ For this workshop, you will need the following:
     - In the Visual Studio Installer, install the following workloads:
         - ASP.NET and web development
         - .NET Core cross-platform development
-        - Latest .NET Core SDK Preview is installed with Visual Studio Preview (update your installation if necessary)
-2. Latest [Blazor template installed](https://docs.microsoft.com/en-us/aspnet/core/blazor/get-started?view=aspnetcore-3.0&tabs=visual-studio) - `dotnet new -i Microsoft.AspNetCore.Blazor.Templates::3.0.0-preview8.19405.7`
+        - Latest .NET Core SDK is installed with Visual Studio Preview (update your installation if necessary)
+2. Latest [Blazor template installed](https://docs.microsoft.com/en-us/aspnet/core/blazor/get-started?view=aspnetcore-3.0&tabs=visual-studio) - `dotnet new -i Microsoft.AspNetCore.Blazor.Templates::3.0.0-preview9.19465.2`
 3. [Official git client](https://git-scm.com/downloads)
 4. [GitHub](https://github.com/) account
 5. [Postman](https://www.getpostman.com/)
@@ -26,7 +26,7 @@ If the time allows, we will also explore publish and deployment scenarios. For t
 
 ## Alternatives
 
-1. Latest [.NET Core 3.0 SDK Preview](https://dotnet.microsoft.com/download/dotnet-core/3.0)
+1. Latest [.NET Core 3.0 SDK](https://dotnet.microsoft.com/download/dotnet-core/3.0)
 2. [Visual Studio Code](https://code.visualstudio.com/) editor
     - If you are using Linux or Mac for development.
     - If you don't want to install full Visual Studio 2019 Preview on Windows.
@@ -51,7 +51,6 @@ If the time allows, we will also explore publish and deployment scenarios. For t
     - [IntelliCode](https://marketplace.visualstudio.com/items?itemName=VisualStudioExptTeam.VSIntelliCode)
     - [Sharpen](https://marketplace.visualstudio.com/items?itemName=ironcev.sharpen)
     - [GitDiffMargin](https://marketplace.visualstudio.com/items?itemName=LaurentKempe.GitDiffMargin)
-    - [Whack Whack Terminal](https://marketplace.visualstudio.com/items?itemName=DanielGriffen.WhackWhackTerminal)
 3. Visual Studio Code Extensions
     - [Live Share](https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare)
     - [EditorConfig for VS Code](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig)
