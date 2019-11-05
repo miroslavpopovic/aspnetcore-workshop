@@ -8,13 +8,13 @@ In order to prepare for the workshop, there are several tools that need to be in
 
 For this workshop, you will need the following:
 
-1. Latest [Visual Studio 2019 Preview](https://visualstudio.microsoft.com/vs/preview/)
+1. Latest [Visual Studio 2019](https://visualstudio.microsoft.com/vs/)
     - Pick up Community version if you don't have a Visual Studio subscription
     - In the Visual Studio Installer, install the following workloads:
         - ASP.NET and web development
         - .NET Core cross-platform development
-        - Latest .NET Core SDK is installed with Visual Studio Preview (update your installation if necessary)
-2. Latest [Blazor template installed](https://docs.microsoft.com/en-us/aspnet/core/blazor/get-started?view=aspnetcore-3.0&tabs=visual-studio) - `dotnet new -i Microsoft.AspNetCore.Blazor.Templates::3.0.0-preview9.19465.2`
+        - Latest .NET Core SDK is installed with Visual Studio 2019 (update your installation if necessary)
+2. Latest [Blazor template installed](https://docs.microsoft.com/en-us/aspnet/core/blazor/get-started?view=aspnetcore-3.0&tabs=visual-studio) - `dotnet new -i Microsoft.AspNetCore.Blazor.Templates::3.1.0-preview1.19508.20`
 3. [Official git client](https://git-scm.com/downloads)
 4. [GitHub](https://github.com/) account
 5. [Postman](https://www.getpostman.com/)
@@ -29,9 +29,9 @@ If the time allows, we will also explore publish and deployment scenarios. For t
 1. Latest [.NET Core 3.0 SDK](https://dotnet.microsoft.com/download/dotnet-core/3.0)
 2. [Visual Studio Code](https://code.visualstudio.com/) editor
     - If you are using Linux or Mac for development.
-    - If you don't want to install full Visual Studio 2019 Preview on Windows.
+    - If you don't want to install full Visual Studio 2019 on Windows.
     - You will also need to install [C# for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=ms-vscode.csharp) extension.
-    - *It's ok to install it side-by-side with VS 2019 Preview - during live workshop, we can demonstrate both*
+    - *It's ok to install it side-by-side with VS 2019 - during live workshop, we can demonstrate both*
 3. [JetBrains Rider](https://www.jetbrains.com/rider/)
 4. [BitBucket](https://bitbucket.com/) or another online code repository instead of GitHub
 5. Any visual tool for git (if you prefer it over command line):
